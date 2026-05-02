@@ -1,0 +1,22 @@
+{
+  "name": "TAEYANGene App",
+  "short_name": "☀️ 태양이네",
+  "description": "태양이네 보금자리 재무관리",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060c18",
+  "theme_color": "#060c18",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

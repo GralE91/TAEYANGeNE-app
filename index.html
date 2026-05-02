@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#060c18"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="TAEYANGene"/>
+  <title>☀️ TAEYANGene App</title>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="apple-touch-icon" href="/icon-192.png"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #060c18; color: #f1f5f9; font-family: 'Noto Sans KR', sans-serif; }
+    #root { min-height: 100vh; }
+    /* 로딩 화면 */
+    #loading {
+      position: fixed; inset: 0; background: #060c18;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    #loading .sun { font-size: 60px; animation: spin 3s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    #loading p { margin-top: 20px; color: #4a6080; font-size: 14px; }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <!-- 로딩 화면 -->
+  <div id="loading">
+    <div class="sun">☀️</div>
+    <p>TAEYANGene App 로딩 중...</p>
+  </div>
+
+  <div id="root"></div>
+
+  <!-- React + Babel (JSX 실행용) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+  <script type="text/babel" data-type="module" src="/app.jsx"></script>
+
+  <script>
+    // PWA Service Worker 등록
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+
+    // 로딩 화면 제거 (앱 로드 후)
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loading = document.getElementById('loading');
+        if (loading) {
+          loading.style.opacity = '0';
+          loading.style.transition = 'opacity 0.5s';
+          setTimeout(() => loading.remove(), 500);
+        }
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
