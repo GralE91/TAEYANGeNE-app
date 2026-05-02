@@ -6,65 +6,58 @@
 <meta name="theme-color" content="#060c18"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="TAEYANGene"/>
-<title>TAEYANGene App</title>
+<title>TAEYANGene App v1.2</title>
 <link rel="manifest" href="/manifest.json"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-height:100vh;padding-bottom:80px;}
-/* 헤더 */
 .hd{background:linear-gradient(135deg,#090f1e,#0f1e38);border-bottom:1px solid #1a3050;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
-/* 컨텐츠 */
 .ct{padding:14px;max-width:460px;margin:0 auto;}
-/* 카드 */
 .card{background:#0d1929;border-radius:18px;padding:16px;border:1px solid #1a3050;margin-bottom:12px;}
 .lbl{font-size:11px;color:#64748b;font-weight:600;margin-bottom:8px;}
-/* 그리드 */
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-/* 박스 */
 .box{background:#060c18;border-radius:12px;padding:11px 10px;border:1px solid #1a3050;}
-/* 섹션 */
 .sec{display:none;}.sec.on{display:block;}
-/* 탭바 */
 .tabs{position:fixed;bottom:0;left:0;right:0;background:#090f1e;border-top:1px solid #1a3050;display:flex;z-index:200;}
 .tb{flex:1;padding:9px 2px 11px;background:none;border:none;border-top:2px solid transparent;color:#4a6080;cursor:pointer;font-family:inherit;}
 .tb.on{border-top-color:#4f9cf9;color:#4f9cf9;}
-/* 프로그레스 바 */
 .pb{height:8px;border-radius:6px;background:#060c18;overflow:hidden;border:1px solid #1a3050;margin-top:4px;}
 .pf{height:100%;border-radius:6px;transition:width .8s;}
-/* 버튼 */
-.sbtn{width:100%;margin-bottom:10px;background:#1e3a5f;border:1px solid #4f9cf9;border-radius:10px;color:#4f9cf9;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
 .rbtn{background:#060c18;border:1px solid #1a3050;border-radius:10px;padding:9px;color:#4a6080;font-family:inherit;cursor:pointer;font-size:12px;}
 .rbtn.on{background:#1e3a5f;border-color:#4f9cf9;color:#4f9cf9;font-weight:800;}
-/* 항목 행 */
 .er{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1a305022;}
-/* 노션 버튼 */
-.nb{display:block;border-radius:12px;padding:14px 8px;font-weight:800;font-size:15px;text-decoration:none;text-align:center;color:#fff;margin-bottom:8px;}
-/* 타임라인 */
 .tl{display:flex;gap:14px;margin-bottom:16px;}
 .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
 .ln{width:2px;flex:1;background:#1a3050;margin-top:4px;}
-/* 게이지 (한계소비) */
-.gauge-wrap{position:relative;width:120px;height:120px;margin:0 auto 16px;}
-.gauge-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
-/* D-Day 카드 */
 .dcard{background:#060c18;border-radius:12px;padding:12px;text-align:center;border:1px solid transparent;}
-/* 목표 거리 카드 */
-.goal-badge{display:inline-block;font-size:10px;background:#064e3b;color:#34d399;padding:1px 7px;border-radius:20px;margin-left:6px;}
-/* CF 테이블 */
 .cft{width:100%;font-size:10px;border-collapse:collapse;white-space:nowrap;}
 .cft th{padding:6px 4px;color:#4a6080;font-size:9px;text-align:right;border-bottom:1px solid #1a3050;}
 .cft td{padding:6px 4px;text-align:right;}
+.row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #1a305033;font-size:11px;}
+/* 슬라이더 */
+.slider-wrap{padding:12px;background:#060c18;border-radius:12px;border:1px solid #1a3050;}
+.slider{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:linear-gradient(to right,#4f9cf9 0%,#4f9cf9 33%,#1a3050 33%,#1a3050 100%);outline:none;cursor:pointer;}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#4f9cf9;border:3px solid #f1f5f9;box-shadow:0 0 8px #4f9cf966;cursor:pointer;}
+.slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#4f9cf9;border:3px solid #f1f5f9;cursor:pointer;}
+/* 스코어보드 */
+.scen-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1a305022;}
+/* 스샷 모달 */
+.modal{display:none;position:fixed;inset:0;background:#000a;z-index:999;align-items:center;justify-content:center;}
+.modal.on{display:flex;}
+.modal-inner{background:#0d1929;border-radius:18px;padding:20px;max-width:90vw;max-height:85vh;overflow:auto;position:relative;}
+.modal-close{position:absolute;top:12px;right:16px;background:none;border:none;color:#4a6080;font-size:22px;cursor:pointer;}
+.modal-img{max-width:100%;border-radius:10px;display:block;margin-bottom:8px;}
+.ssbtn{background:#1e3a5f;border:1px solid #4f9cf9;border-radius:6px;color:#4f9cf9;font-size:10px;padding:3px 8px;cursor:pointer;font-family:inherit;margin-left:6px;flex-shrink:0;}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
-<!-- 헤더 -->
 <div class="hd">
   <div>
     <div style="font-size:17px;font-weight:900;">☀️ TAEYANGene App</div>
-    <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">VER 1.1 · 5/3 기준</div>
+    <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">VER 1.2 · 5/3 기준</div>
   </div>
   <div style="text-align:right;">
     <div style="font-size:10px;color:#4a6080;">투자+현금</div>
@@ -72,77 +65,78 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
   </div>
 </div>
 
+<!-- 스샷 모달 -->
+<div class="modal" id="modal" onclick="closeModal()">
+  <div class="modal-inner" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px;" id="modal-title">스샷</div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
 <div class="ct">
 
 <!-- ━━━ 홈 ━━━ -->
 <div class="sec on" id="s0">
-  <button class="sbtn" onclick="sync()">🔄 노션 데이터 새로고침</button>
-
-  <!-- 자산 현황 -->
   <div class="card">
     <div class="lbl">📊 자산 현황 · 5/3</div>
     <div class="g3">
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자+현금</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;">22.01억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">투자 18.64억<br>현금 3.38억</div></div>
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">+퇴직연금</div><div style="font-size:15px;font-weight:900;color:#5eead4;">24.05억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.10억<br>예진 0.94억</div></div>
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">+가능대출</div><div style="font-size:15px;font-weight:900;color:#c084fc;">29.53억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">신용+주담<br>+은행</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자자산</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;">18.64억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 11.34억<br>예진 7.29억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">현금자산</div><div style="font-size:15px;font-weight:900;color:#34d399;">3.38억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.20억<br>예진 2.18억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">+퇴직연금</div><div style="font-size:15px;font-weight:900;color:#5eead4;">2.04억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.10억<br>예진 0.94억</div></div>
     </div>
   </div>
 
-  <!-- 목표 달성률 + 거리 시각화 [NEW VER 1.1] -->
   <div class="card">
-    <div class="lbl">🎯 목표 달성률</div>
-
-    <!-- 목표까지 거리 한눈에 -->
-    <div style="background:#060c18;border-radius:12px;padding:12px;margin-bottom:14px;border:1px solid #1a3050;">
-      <div style="font-size:11px;color:#4a6080;margin-bottom:8px;font-weight:600;">반디클까지 남은 거리</div>
-      <div class="g2">
-        <div style="text-align:center;padding:10px;background:#0d1929;border-radius:10px;border:1px solid #4f9cf944;">
-          <div style="font-size:10px;color:#4f9cf9;margin-bottom:4px;">Case A까지</div>
-          <div style="font-size:18px;font-weight:900;color:#4f9cf9;">5.15억</div>
-          <div style="font-size:9px;color:#4a6080;margin-top:2px;">27.16억 목표</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:#0d1929;border-radius:10px;border:1px solid #fb923c44;">
-          <div style="font-size:10px;color:#fb923c;margin-bottom:4px;">Case B까지</div>
-          <div style="font-size:18px;font-weight:900;color:#fb923c;">4.70억</div>
-          <div style="font-size:9px;color:#4a6080;margin-top:2px;">26.71억 목표</div>
-        </div>
+    <div class="lbl">🎯 반디클 목표 달성률</div>
+    <div class="g2" style="margin-bottom:14px;">
+      <div style="text-align:center;padding:12px;background:#060c18;border-radius:12px;border:1px solid #4f9cf944;">
+        <div style="font-size:10px;color:#4f9cf9;margin-bottom:4px;font-weight:700;">Case A까지</div>
+        <div style="font-size:20px;font-weight:900;color:#4f9cf9;">5.15억</div>
+        <div style="font-size:9px;color:#4a6080;margin-top:2px;">총 27.16억 필요</div>
       </div>
-    </div>
-
-    <!-- 달성률 바 -->
-    <div style="margin-bottom:12px;">
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;">
-        <span style="font-size:12px;color:#4a6080;">계약금 자납 4.02억 <span class="goal-badge">✅</span></span>
-        <span style="font-size:12px;font-weight:700;color:#34d399;">100%</span>
+      <div style="text-align:center;padding:12px;background:#060c18;border-radius:12px;border:1px solid #fb923c44;">
+        <div style="font-size:10px;color:#fb923c;margin-bottom:4px;font-weight:700;">Case B까지</div>
+        <div style="font-size:20px;font-weight:900;color:#fb923c;">4.70억</div>
+        <div style="font-size:9px;color:#4a6080;margin-top:2px;">총 26.71억 필요</div>
       </div>
-      <div class="pb"><div class="pf" style="width:100%;background:#34d399;"></div></div>
     </div>
     <div style="margin-bottom:12px;">
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span style="font-size:12px;color:#4a6080;">Case A 27.16억</span>
-        <span style="font-size:12px;font-weight:700;color:#4f9cf9;">81%</span>
+        <span style="font-size:12px;color:#4a6080;">Case A (27.16억)</span>
+        <span style="font-size:12px;font-weight:700;color:#4f9cf9;">81.0%</span>
       </div>
       <div class="pb"><div class="pf" style="width:81%;background:#4f9cf9;"></div></div>
-      <div style="font-size:10px;color:#4a6080;margin-top:3px;text-align:right;">22.01억 / 27.16억 · 5.15억 부족</div>
     </div>
     <div>
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span style="font-size:12px;color:#4a6080;">Case B 26.71억</span>
-        <span style="font-size:12px;font-weight:700;color:#fb923c;">82%</span>
+        <span style="font-size:12px;color:#4a6080;">Case B (26.71억)</span>
+        <span style="font-size:12px;font-weight:700;color:#fb923c;">82.4%</span>
       </div>
-      <div class="pb"><div class="pf" style="width:82%;background:#fb923c;"></div></div>
-      <div style="font-size:10px;color:#4a6080;margin-top:3px;text-align:right;">22.01억 / 26.71억 · 4.70억 부족</div>
+      <div class="pb"><div class="pf" style="width:82.4%;background:#fb923c;"></div></div>
     </div>
   </div>
 
-  <!-- 주간 자산 추이 차트 [NEW VER 1.1] -->
+  <!-- 자산 추이 차트 -->
   <div class="card" style="padding:18px 10px 14px;">
     <div class="lbl">📈 주간 자산 추이</div>
-    <svg id="chart" width="320" height="220" style="display:block;margin:0 auto;overflow:visible;"></svg>
-    <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;justify-content:center;" id="chart-legend"></div>
+    <svg id="chart" width="320" height="200" style="display:block;margin:0 auto;overflow:visible;"></svg>
+    <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;justify-content:center;" id="chart-legend"></div>
   </div>
 
-  <!-- 수입/지출 요약 -->
+  <!-- 투자자산 수익률 차트 (1/11 기준) [NEW] -->
+  <div class="card" style="padding:18px 10px 14px;">
+    <div class="lbl">📊 투자자산 수익률 추이 (1/11 기준)</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="font-size:11px;color:#4a6080;">기준: 1/11 자산 16.53억</div>
+      <div style="font-size:14px;font-weight:900;color:#34d399;" id="cur-rate">현재 +33.2%</div>
+    </div>
+    <svg id="rate-chart" width="320" height="140" style="display:block;margin:0 auto;overflow:visible;"></svg>
+    <!-- 최근 주간 변화 표 -->
+    <div style="margin-top:10px;" id="rate-table"></div>
+  </div>
+
+  <!-- 수입/지출 -->
   <div class="card" id="home-cf-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
       <div class="lbl" style="margin:0;">💸 5월 수입/지출</div>
@@ -151,17 +145,20 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
     <div class="g3" style="margin-bottom:12px;">
       <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">수입</div><div style="font-size:15px;font-weight:900;color:#34d399;" id="i0">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 1,146만</div></div>
       <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">현금지출</div><div style="font-size:15px;font-weight:900;color:#f87171;" id="i1">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 560만</div></div>
-      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">순저축</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;" id="i2">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 586만</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">순저축</div><div style="font-size:15px;font-weight:900;" id="i2">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 586만</div></div>
     </div>
-    <div class="g2">
+    <div class="g2" style="margin-bottom:10px;">
       <div class="box" style="border-color:#4f9cf933;"><div style="font-size:12px;font-weight:700;color:#4f9cf9;margin-bottom:4px;">🏠 공동</div><div style="font-size:11px;" id="c0">-</div></div>
       <div class="box" style="border-color:#34d39933;"><div style="font-size:12px;font-weight:700;color:#34d399;margin-bottom:4px;">👨 근한</div><div style="font-size:11px;color:#34d399;" id="c1i">-</div><div style="font-size:11px;color:#f87171;" id="c1e">-</div></div>
       <div class="box" style="border-color:#c084fc33;"><div style="font-size:12px;font-weight:700;color:#c084fc;margin-bottom:4px;">👩 예진</div><div style="font-size:11px;color:#34d399;" id="c2i">-</div><div style="font-size:11px;color:#f87171;" id="c2e">-</div></div>
       <div class="box" style="border-color:#fbbf2433;"><div style="font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:4px;">☀️ 태양</div><div style="font-size:11px;color:#4a6080;" id="c3">미입력</div></div>
     </div>
-    <div style="margin-top:12px;border-top:1px solid #1a3050;padding-top:12px;">
+    <div style="background:#0a1020;border-radius:8px;padding:7px 10px;font-size:10px;color:#4a6080;margin-bottom:10px;">
+      🏠 월세 166만 고정지출 포함 (매월 15일)
+    </div>
+    <div style="border-top:1px solid #1a3050;padding-top:12px;">
       <div class="lbl">전체 내역 <span id="ec">(-건)</span></div>
-      <div id="el">동기화 버튼을 눌러주세요 😊</div>
+      <div id="el" style="font-size:12px;color:#4a6080;">-</div>
     </div>
   </div>
 </div>
@@ -169,36 +166,25 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 <!-- ━━━ 한계소비 ━━━ -->
 <div class="sec" id="s1">
   <div class="g2" style="gap:6px;margin-bottom:10px;">
-    <button class="rbtn on" onclick="setCase('A',this)" id="btnA">Case A (대출)</button>
-    <button class="rbtn" onclick="setCase('B',this)" id="btnB">Case B (자납)</button>
-  </div>
-  <div class="card">
-    <div class="lbl">📈 투자 기대 수익률</div>
-    <div class="g2" style="gap:6px;">
-      <button class="rbtn" onclick="sr(0.05)" data-r="0.05">5%</button>
-      <button class="rbtn" onclick="sr(0.08)" data-r="0.08">8%</button>
-      <button class="rbtn on" onclick="sr(0.12)" data-r="0.12">12% ✓</button>
-      <button class="rbtn" onclick="sr(0.15)" data-r="0.15">15%</button>
-    </div>
+    <button class="rbtn on" onclick="setCase('A')" id="btnA">Case A (중도금대출)</button>
+    <button class="rbtn" onclick="setCase('B')" id="btnB">Case B (전액자납)</button>
   </div>
 
-  <!-- 게이지 시각화 [NEW VER 1.1] -->
   <div class="card" id="lc" style="border:2px solid #34d39922;background:#060f0a;">
     <div style="font-size:14px;font-weight:900;color:#34d399;margin-bottom:16px;" id="ls">✅ 계획 페이스 OK</div>
 
-    <!-- 원형 게이지 -->
+    <!-- 게이지 -->
     <div style="text-align:center;margin-bottom:16px;">
-      <div style="font-size:11px;color:#4a6080;margin-bottom:10px;font-weight:600;">이번달 지출 / 계획 (560만)</div>
+      <div style="font-size:11px;color:#4a6080;margin-bottom:8px;font-weight:600;">현금지출 / 계획지출</div>
       <svg width="140" height="140" style="display:inline-block;">
         <circle cx="70" cy="70" r="56" fill="none" stroke="#1a3050" stroke-width="12"/>
         <circle cx="70" cy="70" r="56" fill="none" id="gauge-arc"
-          stroke="#34d399" stroke-width="12"
-          stroke-dasharray="0 352" stroke-dashoffset="88"
-          stroke-linecap="round"
-          style="transition:stroke-dasharray .8s;transform:rotate(-90deg);transform-origin:70px 70px;"/>
-        <text x="70" y="62" text-anchor="middle" fill="#f1f5f9" font-size="18" font-weight="900" id="gauge-pct">0%</text>
-        <text x="70" y="80" text-anchor="middle" fill="#4a6080" font-size="10" id="gauge-amt">0만</text>
-        <text x="70" y="95" text-anchor="middle" fill="#4a6080" font-size="9">/ 560만</text>
+          stroke="#34d399" stroke-width="12" stroke-dasharray="0 352" stroke-dashoffset="88"
+          stroke-linecap="round" style="transition:stroke-dasharray .8s;transform:rotate(-90deg);transform-origin:70px 70px;"/>
+        <text x="70" y="60" text-anchor="middle" fill="#f1f5f9" font-size="16" font-weight="900" id="gauge-pct">0%</text>
+        <text x="70" y="78" text-anchor="middle" fill="#4a6080" font-size="9" id="gauge-exp">0만</text>
+        <text x="70" y="92" text-anchor="middle" fill="#4a6080" font-size="8">/ 계획</text>
+        <text x="70" y="104" text-anchor="middle" fill="#4a6080" font-size="9" id="gauge-plan">560만</text>
       </svg>
     </div>
 
@@ -210,23 +196,101 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
         <div style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">계획지출</div><div style="font-size:13px;font-weight:800;color:#f87171;">560만</div></div>
         <div style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">계획저축</div><div style="font-size:13px;font-weight:800;color:#4f9cf9;">586만</div></div>
       </div>
+      <div style="font-size:10px;color:#4a6080;margin-top:6px;background:#0a1020;border-radius:6px;padding:5px 8px;">
+        🏠 월세 166만 포함 · 매월 15일 고정지출
+      </div>
     </div>
 
     <!-- STEP 2 -->
     <div style="margin-bottom:14px;">
       <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">📊 STEP 2. 실제 현황</div>
-      <div class="g2" style="background:#060c18;border-radius:10px;padding:12px;">
-        <div class="box" style="border:none;text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제수입</div><div style="font-size:15px;font-weight:900;color:#34d399;" id="li">-</div></div>
-        <div class="box" style="border:none;text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제현금지출</div><div style="font-size:15px;font-weight:900;" id="le">-</div><div style="font-size:9px;font-weight:700;margin-top:2px;" id="ld">-</div></div>
+      <div class="g3" style="background:#060c18;border-radius:10px;padding:12px;margin-bottom:8px;">
+        <div style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제수입</div>
+          <div style="font-size:14px;font-weight:900;color:#34d399;" id="li">-</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제지출</div>
+          <div style="font-size:14px;font-weight:900;color:#f87171;" id="le">-</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제저축</div>
+          <div style="font-size:14px;font-weight:900;" id="lsv">-</div>
+        </div>
+      </div>
+      <div style="background:#060c18;border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:#4a6080;">계획 대비 저축</span>
+        <span style="font-size:13px;font-weight:900;" id="sv-diff">-</span>
       </div>
     </div>
 
-    <!-- STEP 3 -->
+    <!-- STEP 3: 투자수익률 슬라이더 -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">📈 STEP 3. Case <span id="sim-case">A</span> · 투자수익률 시뮬</div>
+
+      <!-- 슬라이더 -->
+      <div class="slider-wrap" style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div>
+            <div style="font-size:10px;color:#4a6080;">1/11 대비 투자자산 기대 수익률</div>
+            <div style="font-size:11px;color:#4a6080;margin-top:1px;">현재 실적: <span style="color:#34d399;font-weight:700;">+33.2%</span></div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:22px;font-weight:900;color:#4f9cf9;" id="slider-val">33%</div>
+            <div style="font-size:9px;color:#4a6080;">선택 수익률</div>
+          </div>
+        </div>
+        <input type="range" class="slider" id="rate-slider" min="0" max="100" value="33" step="1" oninput="onSlider(this.value)"/>
+        <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:#4a6080;">
+          <span>0%</span>
+          <span>25%</span>
+          <span>50%</span>
+          <span>75%</span>
+          <span>100%</span>
+        </div>
+      </div>
+
+      <!-- 결과 -->
+      <div style="background:#060c18;border-radius:10px;padding:12px;">
+        <div class="g3" style="margin-bottom:10px;">
+          <div style="text-align:center;">
+            <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">총 필요현금</div>
+            <div style="font-size:13px;font-weight:900;" id="sim-total">-</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">예상투자자산</div>
+            <div style="font-size:13px;font-weight:900;color:#4f9cf9;" id="sim-invest">-</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">순예정저축</div>
+            <div style="font-size:13px;font-weight:900;color:#5eead4;" id="sim-save">-</div>
+          </div>
+        </div>
+        <!-- 금액 Status -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#0d1929;border-radius:8px;">
+          <span style="font-size:12px;font-weight:700;">금액 Status</span>
+          <div style="text-align:right;">
+            <div style="font-size:20px;font-weight:900;" id="sim-status">-</div>
+            <div style="font-size:9px;color:#4a6080;" id="sim-status-sub">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
     <div>
-      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">🎯 STEP 3. 결론</div>
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">🎯 STEP 4. 이번달 한계지출 (수익률 <span id="step4-rate">33</span>% 기준)</div>
       <div class="g2" style="margin-bottom:10px;">
-        <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">이번달 계획지출</div><div style="font-size:20px;font-weight:900;">560만</div><div style="font-size:9px;color:#4a6080;margin-top:3px;">이 안에서 쓰면 OK</div></div>
-        <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">주간 가이드</div><div style="font-size:20px;font-weight:900;color:#4f9cf9;">112만</div><div style="font-size:9px;color:#4a6080;margin-top:3px;">주당 이 정도면 돼요</div></div>
+        <div class="box" style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">월 한계지출</div>
+          <div style="font-size:20px;font-weight:900;color:#f87171;" id="limit-monthly">-</div>
+          <div style="font-size:9px;color:#4a6080;margin-top:3px;">이 안에서 써야 해요</div>
+        </div>
+        <div class="box" style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">주간 한계지출</div>
+          <div style="font-size:20px;font-weight:900;color:#fb923c;" id="limit-weekly">-</div>
+          <div style="font-size:9px;color:#4a6080;margin-top:3px;">주당 이 정도면 돼요</div>
+        </div>
       </div>
       <div id="lm" style="background:#061208;border-radius:8px;padding:10px 12px;font-size:12px;color:#34d399;line-height:1.8;">계획 페이스로 잘 가고 있어요 👍</div>
     </div>
@@ -236,7 +300,7 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 <!-- ━━━ CF분석 ━━━ -->
 <div class="sec" id="s2">
   <div class="card" style="border:1px solid #34d39933;">
-    <div class="lbl" style="color:#34d399;">✅ 5월 결산 (노션 자동반영)</div>
+    <div class="lbl" style="color:#34d399;">✅ 5월 결산 (노션 데이터)</div>
     <div class="g3">
       <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제수입</div><div style="font-size:14px;font-weight:900;color:#34d399;" id="ci">-</div></div>
       <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제지출</div><div style="font-size:14px;font-weight:900;color:#f87171;" id="ce">-</div></div>
@@ -245,76 +309,78 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
   </div>
   <div class="card">
     <div class="lbl">📊 CF 계획 전체</div>
-    <div style="overflow-x:auto;"><table class="cft" id="cft"><thead><tr><th style="text-align:left;">월</th><th>수입</th><th>지출</th><th>저축</th><th>실적</th><th>차이</th></tr></thead><tbody id="cftb"></tbody></table></div>
+    <div style="overflow-x:auto;">
+      <table class="cft">
+        <thead><tr>
+          <th style="text-align:left;">월</th><th>수입</th><th>지출</th><th>계획저축</th><th>실적저축</th><th>차이</th>
+        </tr></thead>
+        <tbody id="cftb"></tbody>
+        <tfoot id="cf-foot"></tfoot>
+      </table>
+    </div>
   </div>
 </div>
 
 <!-- ━━━ 납부일정 ━━━ -->
 <div class="sec" id="s3">
-  <!-- D-Day -->
   <div class="card">
     <div class="lbl">📅 주요 D-Day</div>
     <div class="g2" id="dd"></div>
   </div>
-
-  <!-- 투자수익 vs 이자 -->
   <div class="card" style="background:linear-gradient(135deg,#061508,#081020);border:1px solid #34d39944;">
-    <div class="lbl" style="color:#34d399;">⚖️ 투자수익 vs 이자 (연 <span id="rate-lbl">12</span>%)</div>
+    <div class="lbl" style="color:#34d399;">⚖️ A가 유리한가?</div>
+    <div style="font-size:11px;color:#4a6080;margin-bottom:10px;">중도금 대출 이자 vs 투자 유지 수익 비교</div>
     <div class="g2" style="gap:6px;margin-bottom:12px;">
-      <button class="rbtn" onclick="sr(0.05)" data-r="0.05">5%</button>
-      <button class="rbtn" onclick="sr(0.08)" data-r="0.08">8%</button>
-      <button class="rbtn on" onclick="sr(0.12)" data-r="0.12">12% ✓</button>
-      <button class="rbtn" onclick="sr(0.15)" data-r="0.15">15%</button>
+      <button class="rbtn" onclick="srTL(0)" data-r="0">0%</button>
+      <button class="rbtn on" onclick="srTL(0.10)" data-r="0.10">10% ✓</button>
+      <button class="rbtn" onclick="srTL(0.20)" data-r="0.20">20%</button>
+      <button class="rbtn" onclick="srTL(0.30)" data-r="0.30">30%</button>
     </div>
     <div class="box" id="pb"></div>
   </div>
-
-  <!-- 납부 타임라인 [NEW VER 1.1] -->
   <div class="card">
-    <div class="lbl">💰 납부 타임라인 (Case <span id="tl-case">A</span>)</div>
+    <div class="lbl">💰 납부 타임라인</div>
     <div class="g2" style="gap:6px;margin-bottom:12px;">
-      <button class="rbtn on" onclick="setCase('A',null)" id="tlA">Case A</button>
-      <button class="rbtn" onclick="setCase('B',null)" id="tlB">Case B</button>
+      <button class="rbtn on" onclick="setCase('A')" id="tlA">Case A</button>
+      <button class="rbtn" onclick="setCase('B')" id="tlB">Case B</button>
     </div>
     <div id="tl"></div>
-  </div>
-</div>
-
-<!-- ━━━ 노션입력 ━━━ -->
-<div class="sec" id="s4">
-  <div class="card" style="text-align:center;">
-    <div style="font-size:32px;margin-bottom:12px;">📱</div>
-    <div style="font-size:16px;font-weight:900;color:#4f9cf9;margin-bottom:8px;">노션에서 입력하세요!</div>
-    <div style="font-size:13px;color:#4a6080;line-height:1.9;margin-bottom:16px;">입력 후 🔄 버튼으로 실시간 반영!</div>
-    <div class="g2" style="margin-bottom:8px;">
-      <a href="https://app.notion.com/p/a690c47841a948eb9920307ea905db88" target="_blank" class="nb" style="background:#34d399;">💰<br><span style="font-size:12px;">수입 입력</span></a>
-      <a href="https://app.notion.com/p/a690c47841a948eb9920307ea905db88" target="_blank" class="nb" style="background:#f87171;">💸<br><span style="font-size:12px;">지출 입력</span></a>
+    <div style="margin-top:14px;background:#060c18;border-radius:12px;padding:14px;border:1px solid #1a3050;">
+      <div class="lbl">📊 총 직접 현금 납부</div>
+      <div id="tl-summary"></div>
     </div>
-    <a href="https://app.notion.com/p/a690c47841a948eb9920307ea905db88" target="_blank" class="nb" style="background:#060c18;border:1px solid #1a3050;color:#4a6080;">📋 전체 내역 보기</a>
-    <button onclick="sync()" class="sbtn" style="margin-top:8px;">🔄 지금 동기화하기</button>
-  </div>
-  <div class="card" style="background:#0a1020;border:1px solid #c084fc33;">
-    <div class="lbl" style="color:#c084fc;">💬 사용법</div>
-    <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;"><div style="width:22px;height:22px;border-radius:50%;background:#1e3a5f;color:#4f9cf9;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div><div style="font-size:12px;">노션에서 수입/지출 입력</div></div>
-    <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;"><div style="width:22px;height:22px;border-radius:50%;background:#1e3a5f;color:#4f9cf9;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div><div style="font-size:12px;">🔄 동기화 버튼 클릭</div></div>
-    <div style="display:flex;gap:10px;align-items:center;"><div style="width:22px;height:22px;border-radius:50%;background:#1e3a5f;color:#4f9cf9;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div><div style="font-size:12px;">홈/CF분석/한계소비 자동 반영!</div></div>
   </div>
 </div>
 
-</div><!-- .ct -->
+</div>
 
-<!-- 탭바 -->
 <div class="tabs">
   <button class="tb on" onclick="gt(0,this)"><div style="font-size:17px;">🏠</div><div style="font-size:8px;margin-top:1px;">홈</div></button>
   <button class="tb" onclick="gt(1,this)"><div style="font-size:17px;">🎯</div><div style="font-size:8px;margin-top:1px;">한계소비</div></button>
   <button class="tb" onclick="gt(2,this)"><div style="font-size:17px;">💸</div><div style="font-size:8px;margin-top:1px;">CF분석</div></button>
   <button class="tb" onclick="gt(3,this)"><div style="font-size:17px;">📅</div><div style="font-size:8px;margin-top:1px;">납부일정</div></button>
-  <button class="tb" onclick="gt(4,this)"><div style="font-size:17px;">📱</div><div style="font-size:8px;margin-top:1px;">노션입력</div></button>
 </div>
 
 <script>
-// ━━━ 데이터 ━━━
-const CF={
+// ━━━ 반디클 상수 ━━━
+var C6=600000000,취득세=99000000,발코니=120000000;
+var 신용=198000000,주담대=200000000,은행=150000000;
+var 대출합=신용+주담대+은행;
+var 월이자=C6*0.045/12,총이자A=월이자*12+월이자*8;
+var 총필요=C6*5+취득세+발코니;
+var 목표A=총필요+총이자A-대출합,목표B=총필요-대출합;
+
+// 자산 (5/3 기준)
+var 투자자산=1863619029,현금자산=337618838;
+var 현자산=투자자산+현금자산;
+var 월세=1660000;
+
+// 1/11 기준값 (수익률 기준점)
+var 기준자산=1652883707; // 1/11 총자산 (WK[0])
+var 현재수익률=(현자산-기준자산)/기준자산*100; // ≈ 33.2%
+
+// CF 계획
+var CF={
   "2026-05":{i:11463959,e:5600000},"2026-06":{i:17290121,e:4750000},
   "2026-07":{i:10367619,e:4000000},"2026-08":{i:9403959,e:4000000},
   "2026-09":{i:11743113,e:5600000},"2026-10":{i:10087113,e:4000000},
@@ -326,9 +392,10 @@ const CF={
   "2027-09":{i:8737700,e:4000000},"2027-10":{i:6982340,e:4000000},
   "2027-11":{i:5515300,e:4000000},"2027-12":{i:4753865,e:4000000}
 };
+var CUR_MONTH="2026-05";
 
-// 주간 자산 추이 데이터
-const WK=[
+// 주간 자산 추이 (총자산)
+var WK=[
   {d:"1/11",v:16.53},{d:"1/18",v:17.36},{d:"1/25",v:18.23},
   {d:"2/1",v:19.18},{d:"2/8",v:18.46},{d:"2/15",v:19.33},
   {d:"2/22",v:20.13},{d:"3/1",v:21.98},{d:"3/8",v:19.69},
@@ -336,333 +403,462 @@ const WK=[
   {d:"4/5",v:18.69},{d:"4/12",v:19.83},{d:"4/19",v:21.00},
   {d:"4/26",v:21.50},{d:"5/3",v:22.01}
 ];
-const 퇴직 = 2.04, 대출 = 5.48;
-const 목표A = 27.16, 목표B = 26.71;
+var 퇴직억=2.04;
+var 목표A억=목표A/1e8,목표B억=목표B/1e8;
 
-// 노션 초기 데이터
-let EN=[
-  {n:"4월 급여",t:"수입",c:"근한",a:6090240,p:"현금",w:"1주차",d:"2026-04-21"},
-  {n:"4월 급여",t:"수입",c:"예진",a:4063620,p:"현금",w:"1주차",d:"2026-04-21"},
-  {n:"1주차 생활비 정산",t:"지출",c:"근한",a:85900,p:"현금",w:"1주차",d:"2026-04-26"},
-  {n:"1주차 생활비 정산",t:"지출",c:"예진",a:342170,p:"현금",w:"1주차",d:"2026-04-26"},
-  {n:"3월 관리비",t:"지출",c:"공동",a:219410,p:"현금",w:"1주차",d:"2026-04-25"},
-  {n:"어버이날용돈(할머니할아부지)",t:"지출",c:"공동",a:400000,p:"현금",w:"2주차",d:"2026-05-02"}
+// 노션 데이터
+var EN=[
+  {n:"4월 급여",t:"수입",c:"근한",a:6090240,p:"현금",w:"1주차",d:"2026-04-21",ss:[]},
+  {n:"4월 급여",t:"수입",c:"예진",a:4063620,p:"현금",w:"1주차",d:"2026-04-21",ss:[]},
+  {n:"1주차 생활비 정산",t:"지출",c:"근한",a:85900,p:"현금",w:"1주차",d:"2026-04-26",ss:[]},
+  {n:"1주차 생활비 정산",t:"지출",c:"예진",a:342170,p:"현금",w:"1주차",d:"2026-04-26",ss:[]},
+  {n:"3월 관리비",t:"지출",c:"공동",a:219410,p:"현금",w:"1주차",d:"2026-04-25",ss:[]},
+  {n:"어버이날용돈(할머니할아부지)",t:"지출",c:"공동",a:400000,p:"현금",w:"2주차",d:"2026-05-02",ss:[]}
 ];
-let rate=0.12, caseType="A";
+var ACTUAL_SV={};
+var sliderRate=Math.round(현재수익률); // 현재 수익률로 초기화 (33)
+var caseType="A",tlRate=0.10;
 
 // ━━━ 유틸 ━━━
 function f(n){
   if(n==null||isNaN(n))return"-";
-  const s=n<0,a=Math.abs(n);
-  if(a>=100000000)return(s?"-":"")+(a/100000000).toFixed(2)+"억";
-  if(a>=10000)return(s?"-":"")+Math.round(a/10000).toLocaleString()+"만";
+  var s=n<0,a=Math.abs(n);
+  if(a>=1e8)return(s?"-":"")+(a/1e8).toFixed(2)+"억";
+  if(a>=1e4)return(s?"-":"")+Math.round(a/1e4).toLocaleString()+"만";
   return(s?"-":"")+Math.round(a).toLocaleString()+"원";
 }
+function fStatus(n){
+  var a=Math.abs(n);
+  var str=(a>=1e8)?(a/1e8).toFixed(2)+"억":(a>=1e4)?Math.round(a/1e4).toLocaleString()+"만":Math.round(a).toLocaleString()+"원";
+  return n<0?"△"+str:"+"+str;
+}
+
 function calc(){
-  let ti=0,ce=0,ge=0;
-  const ct={공동:{i:0,c:0,g:0},근한:{i:0,c:0,g:0},예진:{i:0,c:0,g:0},태양:{i:0,c:0,g:0}};
-  EN.forEach(e=>{
+  var ti=0,ce=0,ge=0;
+  var ct={공동:{i:0,c:0},근한:{i:0,c:0},예진:{i:0,c:0},태양:{i:0,c:0}};
+  EN.forEach(function(e){
     if(e.t==="수입"){ti+=e.a;if(ct[e.c])ct[e.c].i+=e.a;}
     else if(e.p==="현금"){ce+=e.a;if(ct[e.c])ct[e.c].c+=e.a;}
-    else{ge+=e.a;if(ct[e.c])ct[e.c].g+=e.a;}
+    else ge+=e.a;
   });
-  return{ti,ce,ge,sv:ti-ce,ct};
+  ce+=월세;ct.공동.c+=월세;
+  return{ti:ti,ce:ce,ge:ge,sv:ti-ce,ct:ct};
 }
 
-// ━━━ 차트 [NEW VER 1.1] ━━━
+function calcPlanSvTotal(){
+  var total=0;
+  Object.keys(CF).forEach(function(k){
+    total+=ACTUAL_SV[k]!=null?ACTUAL_SV[k]:(CF[k].i-CF[k].e);
+  });
+  return total;
+}
+
+// 슬라이더 기반 예상투자자산 계산
+// 슬라이더값 r% = 1/11 기준 총자산 대비 최종 기대 수익률
+// 예상투자자산 = 기준자산 × (1 + r/100) × (투자자산/현자산) 비율
+// 더 직관적으로: 현재 투자자산이 슬라이더 수익률만큼 추가로 성장한다고 가정
+// 단, 슬라이더=현재수익률(33%)일 때 = 현재 투자자산(18.64억)
+// 슬라이더 r%일 때 예상투자자산 = 투자자산 × (1 + r/100) / (1 + 현재수익률/100)
+function calcExpectedInvest(r){
+  return 투자자산*(1+r/100)/(1+현재수익률/100);
+}
+
+// ━━━ 주간 자산 차트 ━━━
 function drawChart(){
-  const svg=document.getElementById("chart");
-  const W=320,H=220,PL=32,PR=36,PT=16,PB=24;
-  const IW=W-PL-PR,IH=H-PT-PB,n=WK.length;
-  const vTuHyeon=WK.map(d=>d.v);
-  const vTuHyeonToe=WK.map(d=>d.v+퇴직);
-  const vMax=WK.map(d=>d.v+퇴직+대출);
-  const allV=[...vTuHyeon,...vTuHyeonToe,...vMax,목표A,목표B];
-  const minV=Math.floor(Math.min(...allV)-1);
-  const maxV=Math.ceil(Math.max(...allV)+1);
-  const X=i=>PL+(i/(n-1))*IW;
-  const Y=v=>PT+IH-((v-minV)/(maxV-minV))*IH;
-  const mkPath=arr=>arr.map((v,i)=>(i===0?"M":"L")+X(i).toFixed(1)+","+Y(v).toFixed(1)).join(" ");
+  var svg=document.getElementById("chart");
+  var W=320,H=200,PL=32,PR=36,PT=16,PB=24;
+  var IW=W-PL-PR,IH=H-PT-PB,n=WK.length;
+  var v1=WK.map(function(d){return d.v;});
+  var v2=WK.map(function(d){return d.v+퇴직억;});
+  var allV=v1.concat(v2,[목표A억,목표B억]);
+  var minV=Math.floor(Math.min.apply(null,allV)-1);
+  var maxV=Math.ceil(Math.max.apply(null,allV)+1);
+  function X(i){return PL+(i/(n-1))*IW;}
+  function Y(v){return PT+IH-((v-minV)/(maxV-minV))*IH;}
+  function mkPath(arr){return arr.map(function(v,i){return(i===0?"M":"L")+X(i).toFixed(1)+","+Y(v).toFixed(1);}).join(" ");}
+  var html="";
+  var step=Math.ceil((maxV-minV)/6);
+  for(var v=Math.ceil(minV);v<=maxV;v+=step){
+    html+='<line x1="'+PL+'" y1="'+Y(v).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(v).toFixed(1)+'" stroke="#1a3050" stroke-width="0.5" stroke-dasharray="3,5"/>';
+    html+='<text x="'+(PL-5)+'" y="'+(Y(v)+4).toFixed(1)+'" fill="#4a6080" font-size="8" text-anchor="end">'+v+'억</text>';
+  }
+  html+='<line x1="'+PL+'" y1="'+Y(목표A억).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(목표A억).toFixed(1)+'" stroke="#4f9cf9" stroke-width="1.5" stroke-dasharray="7,4" opacity="0.9"/>';
+  html+='<text x="'+(PL+IW+4)+'" y="'+(Y(목표A억)+4).toFixed(1)+'" fill="#4f9cf9" font-size="9" font-weight="700">A</text>';
+  html+='<line x1="'+PL+'" y1="'+Y(목표B억).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(목표B억).toFixed(1)+'" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="7,4" opacity="0.9"/>';
+  html+='<text x="'+(PL+IW+4)+'" y="'+(Y(목표B억)+4).toFixed(1)+'" fill="#fb923c" font-size="9" font-weight="700">B</text>';
+  var lx=X(n-1),btmY=PT+IH;
+  html+='<path d="'+mkPath(v1)+' L'+lx.toFixed(1)+','+btmY+' L'+X(0).toFixed(1)+','+btmY+' Z" fill="#4f9cf9" opacity="0.07"/>';
+  html+='<path d="'+mkPath(v2)+'" fill="none" stroke="#5eead4" stroke-width="2.2"/>';
+  html+='<path d="'+mkPath(v1)+'" fill="none" stroke="#4f9cf9" stroke-width="3"/>';
+  var ly1=Y(WK[n-1].v),ly2=Y(WK[n-1].v+퇴직억);
+  html+='<circle cx="'+lx.toFixed(1)+'" cy="'+ly2.toFixed(1)+'" r="4" fill="#5eead4" stroke="#0d1929" stroke-width="2"/>';
+  html+='<circle cx="'+lx.toFixed(1)+'" cy="'+ly1.toFixed(1)+'" r="5" fill="#4f9cf9" stroke="#0d1929" stroke-width="2"/>';
+  html+='<text x="'+(lx-5).toFixed(1)+'" y="'+(ly1-10).toFixed(1)+'" fill="#4f9cf9" font-size="10" font-weight="800" text-anchor="end">'+WK[n-1].v+'억</text>';
+  html+='<text x="'+(lx-5).toFixed(1)+'" y="'+(ly2-10).toFixed(1)+'" fill="#5eead4" font-size="9" text-anchor="end">'+(WK[n-1].v+퇴직억).toFixed(2)+'억</text>';
+  WK.forEach(function(d,i){if(i%4===0||i===n-1)html+='<text x="'+X(i).toFixed(1)+'" y="'+H+'" fill="#4a6080" font-size="8" text-anchor="middle">'+d.d+'</text>';});
+  svg.innerHTML=html;
+  var leg=[{c:"#4f9cf9",l:"투자+현금",thick:true},{c:"#5eead4",l:"+퇴직"},{c:"#4f9cf9",l:"목표A",dash:true},{c:"#fb923c",l:"목표B",dash:true}];
+  document.getElementById("chart-legend").innerHTML=leg.map(function(x){
+    return '<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#4a6080;"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="'+x.c+'" stroke-width="'+(x.thick?3:2)+'" stroke-dasharray="'+(x.dash?"6,3":"none")+'"/></svg>'+x.l+'</div>';
+  }).join("");
+}
+
+// ━━━ 투자자산 수익률 차트 (1/11 기준) ━━━
+function drawRateChart(){
+  var base=WK[0].v; // 16.53억
+  var rates=WK.map(function(d){return(d.v-base)/base*100;});
+  var curRate=(현자산/1e8-base)/base*100;
+  document.getElementById("cur-rate").textContent="현재 +"+curRate.toFixed(1)+"%";
+
+  var svg=document.getElementById("rate-chart");
+  var W=320,H=140,PL=32,PR=20,PT=14,PB=24;
+  var IW=W-PL-PR,IH=H-PT-PB,n=WK.length;
+  var minR=Math.min.apply(null,rates)-2;
+  var maxR=Math.max.apply(null,rates)+3;
+  function X(i){return PL+(i/(n-1))*IW;}
+  function Y(r){return PT+IH-((r-minR)/(maxR-minR))*IH;}
+
+  var html="";
+  // 0% 기준선
+  html+='<line x1="'+PL+'" y1="'+Y(0).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(0).toFixed(1)+'" stroke="#4a6080" stroke-width="1" stroke-dasharray="4,4"/>';
+  html+='<text x="'+(PL-5)+'" y="'+(Y(0)+4).toFixed(1)+'" fill="#4a6080" font-size="8" text-anchor="end">0%</text>';
 
   // 눈금
-  const step=Math.ceil((maxV-minV)/6);
-  let ticks="";
-  for(let v=Math.ceil(minV);v<=maxV;v+=step){
-    ticks+=`<line x1="${PL}" y1="${Y(v).toFixed(1)}" x2="${PL+IW}" y2="${Y(v).toFixed(1)}" stroke="#1a3050" stroke-width="0.5" stroke-dasharray="3,5"/>
-    <text x="${PL-5}" y="${(Y(v)+4).toFixed(1)}" fill="#4a6080" font-size="8" text-anchor="end">${v}억</text>`;
+  var rStep=10;
+  for(var r=Math.ceil(minR/rStep)*rStep;r<=maxR;r+=rStep){
+    if(r===0)continue;
+    html+='<line x1="'+PL+'" y1="'+Y(r).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(r).toFixed(1)+'" stroke="#1a3050" stroke-width="0.5" stroke-dasharray="2,4"/>';
+    html+='<text x="'+(PL-5)+'" y="'+(Y(r)+4).toFixed(1)+'" fill="#4a6080" font-size="8" text-anchor="end">'+r+'%</text>';
   }
 
-  // 목표선
-  const tAy=Y(목표A).toFixed(1), tBy=Y(목표B).toFixed(1);
-  const targets=`
-    <line x1="${PL}" y1="${tAy}" x2="${PL+IW}" y2="${tAy}" stroke="#34d399" stroke-width="1.5" stroke-dasharray="7,4" opacity="0.9"/>
-    <text x="${PL+IW+4}" y="${parseFloat(tAy)+4}" fill="#34d399" font-size="9" font-weight="700">A</text>
-    <line x1="${PL}" y1="${tBy}" x2="${PL+IW}" y2="${tBy}" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="7,4" opacity="0.9"/>
-    <text x="${PL+IW+4}" y="${parseFloat(tBy)+4}" fill="#fb923c" font-size="9" font-weight="700">B</text>`;
-
-  // 면적
-  const lastX=X(n-1).toFixed(1), firstX=X(0).toFixed(1), btmY=(PT+IH).toFixed(1);
-  const area=`<path d="${mkPath(vTuHyeon)} L${lastX},${btmY} L${firstX},${btmY} Z" fill="#4f9cf9" opacity="0.07"/>`;
-
-  // 3선
-  const lines=`
-    <path d="${mkPath(vMax)}" fill="none" stroke="#c084fc" stroke-width="1.8" stroke-dasharray="5,4" opacity="0.8"/>
-    <path d="${mkPath(vTuHyeonToe)}" fill="none" stroke="#5eead4" stroke-width="2.2"/>
-    <path d="${mkPath(vTuHyeon)}" fill="none" stroke="#4f9cf9" stroke-width="3"/>`;
-
-  // 최신 점 + 라벨
-  const lx=X(n-1), ly1=Y(WK[n-1].v), ly2=Y(WK[n-1].v+퇴직), ly3=Y(WK[n-1].v+퇴직+대출);
-  const dots=`
-    <circle cx="${lx.toFixed(1)}" cy="${ly3.toFixed(1)}" r="4" fill="#c084fc"/>
-    <circle cx="${lx.toFixed(1)}" cy="${ly2.toFixed(1)}" r="4" fill="#5eead4"/>
-    <circle cx="${lx.toFixed(1)}" cy="${ly1.toFixed(1)}" r="5" fill="#4f9cf9"/>
-    <text x="${(lx-5).toFixed(1)}" y="${(ly1-10).toFixed(1)}" fill="#4f9cf9" font-size="10" font-weight="800" text-anchor="end">${WK[n-1].v}억</text>
-    <text x="${(lx-5).toFixed(1)}" y="${(ly2-10).toFixed(1)}" fill="#5eead4" font-size="9" text-anchor="end">${(WK[n-1].v+퇴직).toFixed(2)}억</text>
-    <text x="${(lx-5).toFixed(1)}" y="${(ly3+18).toFixed(1)}" fill="#c084fc" font-size="9" text-anchor="end">${(WK[n-1].v+퇴직+대출).toFixed(2)}억</text>`;
+  // 막대 그래프
+  var barW=Math.max(4,(IW/n)-2);
+  rates.forEach(function(r,i){
+    var x=X(i)-barW/2;
+    var y0=Y(0),y1=Y(r);
+    var barH=Math.abs(y1-y0);
+    var isPos=r>=0;
+    var isLast=(i===n-1);
+    var c=isLast?"#fbbf24":(isPos?"#34d399":"#f87171");
+    html+='<rect x="'+x.toFixed(1)+'" y="'+(isPos?y1:y0).toFixed(1)+'" width="'+barW+'" height="'+barH.toFixed(1)+'" fill="'+c+'" opacity="0.8" rx="2"/>';
+    // 라벨 (마지막 + 일부)
+    if(isLast||i===0){
+      html+='<text x="'+X(i).toFixed(1)+'" y="'+(isPos?y1-3:y1+10).toFixed(1)+'" fill="'+c+'" font-size="8" text-anchor="middle" font-weight="700">'+(r>=0?"+":"")+r.toFixed(1)+'%</text>';
+    }
+  });
 
   // X축
-  let xaxis="";
-  WK.forEach((d,i)=>{
-    if(i%4===0||i===n-1) xaxis+=`<text x="${X(i).toFixed(1)}" y="${H}" fill="#4a6080" font-size="8" text-anchor="middle">${d.d}</text>`;
+  WK.forEach(function(d,i){
+    if(i===0||i%4===0||i===n-1)html+='<text x="'+X(i).toFixed(1)+'" y="'+H+'" fill="#4a6080" font-size="8" text-anchor="middle">'+d.d+'</text>';
   });
 
-  svg.innerHTML=ticks+targets+area+lines+dots+xaxis;
+  svg.innerHTML=html;
 
-  // 범례
-  document.getElementById("chart-legend").innerHTML=
-    [{c:"#4f9cf9",l:"투자+현금",thick:true},{c:"#5eead4",l:"+퇴직"},{c:"#c084fc",l:"+대출",dash:true},{c:"#34d399",l:"목표A",dash:true},{c:"#fb923c",l:"목표B",dash:true}]
-    .map(x=>`<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#4a6080;">
-      <svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="${x.c}" stroke-width="${x.thick?3:2}" stroke-dasharray="${x.dash?"6,3":"none"}"/></svg>${x.l}</div>`).join("");
+  // 최근 4주 변화 표
+  var recent=WK.slice(-4);
+  var tableHtml='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;">';
+  recent.forEach(function(d,i){
+    var prevV=i>0?recent[i-1].v:WK[WK.length-5].v;
+    var weekChg=(d.v-prevV)/prevV*100;
+    var fromBase=(d.v-base)/base*100;
+    var isLast=(i===recent.length-1);
+    tableHtml+='<div style="background:#060c18;border-radius:8px;padding:7px;text-align:center;border:1px solid '+(isLast?"#fbbf2444":"#1a3050")+'">';
+    tableHtml+='<div style="font-size:9px;color:#4a6080;margin-bottom:2px;">'+d.d+'</div>';
+    tableHtml+='<div style="font-size:11px;font-weight:900;color:'+(fromBase>=0?"#34d399":"#f87171")+';">'+(fromBase>=0?"+":"")+fromBase.toFixed(1)+'%</div>';
+    tableHtml+='<div style="font-size:9px;color:'+(weekChg>=0?"#34d399":"#f87171")+';margin-top:1px;">'+(weekChg>=0?"▲":"▼")+Math.abs(weekChg).toFixed(1)+'%</div>';
+    tableHtml+='</div>';
+  });
+  tableHtml+='</div><div style="font-size:9px;color:#4a6080;margin-top:6px;text-align:center;">상단: 1/11 기준 누적 / 하단: 전주 대비</div>';
+  document.getElementById("rate-table").innerHTML=tableHtml;
 }
 
-// ━━━ UI 업데이트 ━━━
-function ui(){
-  const s=calc();
-  const planExp=5600000, d=s.ce-planExp;
+// ━━━ 슬라이더 업데이트 ━━━
+function onSlider(val){
+  sliderRate=parseInt(val);
+  // 슬라이더 그라데이션 업데이트
+  var slider=document.getElementById("rate-slider");
+  slider.style.background='linear-gradient(to right,#4f9cf9 0%,#4f9cf9 '+val+'%,#1a3050 '+val+'%,#1a3050 100%)';
+  document.getElementById("slider-val").textContent=val+"%";
+  document.getElementById("step4-rate").textContent=val;
+  updateSimulation();
+}
 
-  // 홈 집계
-  document.getElementById("i0").textContent=f(s.ti);
-  document.getElementById("i1").textContent=f(s.ce);
-  document.getElementById("i2").textContent=f(s.sv);
-  const ok2=d<=0;
-  const cfStatus=document.getElementById("cf-status");
-  cfStatus.textContent=ok2?"✅ 정상":"⚠️ 초과";
-  cfStatus.style.color=ok2?"#34d399":"#f87171";
-  document.getElementById("home-cf-card").style.border=`1px solid ${ok2?"#1a3050":"#f8717144"}`;
+function updateSimulation(){
+  var s=calc();
+  var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
+  var planSvTotal=calcPlanSvTotal();
+  var 목표=caseType==="A"?목표A:목표B;
 
-  // 카테고리
-  document.getElementById("c0").innerHTML=`<span style="color:#f87171;">${s.ct.공동.c>0?"-"+f(s.ct.공동.c):"없음"}</span>`;
-  document.getElementById("c1i").textContent=s.ct.근한.i>0?"+"+f(s.ct.근한.i):"";
-  document.getElementById("c1e").textContent=s.ct.근한.c>0?"-"+f(s.ct.근한.c):"";
-  document.getElementById("c2i").textContent=s.ct.예진.i>0?"+"+f(s.ct.예진.i):"";
-  document.getElementById("c2e").textContent=s.ct.예진.c>0?"-"+f(s.ct.예진.c):"";
-  document.getElementById("c3").textContent=s.ct.태양.i>0||s.ct.태양.c>0?"입력있음":"미입력";
+  // 예상투자자산 (슬라이더 기반)
+  var expInvest=calcExpectedInvest(sliderRate);
+  // 순예정저축 = 현금자산 + CF저축합 (투자 성장분 제외)
+  var pureSave=현금자산+planSvTotal;
+  // 최종 예상자산 = 예상투자자산 + 순예정저축
+  var finalAsset=expInvest+pureSave;
+  var status=finalAsset-목표;
 
-  // 내역
-  const emo={공동:"🏠",근한:"👨",예진:"👩",태양:"☀️"};
-  const col={공동:"#4f9cf9",근한:"#34d399",예진:"#c084fc",태양:"#fbbf24"};
-  document.getElementById("ec").textContent="("+EN.length+"건)";
-  document.getElementById("el").innerHTML=EN.map(e=>`
-    <div class="er">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span style="font-size:16px;">${emo[e.c]||"📦"}</span>
-        <div><div style="font-size:12px;font-weight:600;color:${col[e.c]||"#f1f5f9"};">${e.n}</div>
-        <div style="font-size:10px;color:#4a6080;">${e.w} · ${e.d}</div></div>
-      </div>
-      <span style="font-size:13px;font-weight:700;color:${e.t==="수입"?"#34d399":e.p==="현금"?"#f87171":"#5eead4"};">${e.t==="수입"?"+":"-"}${f(e.a)}</span>
-    </div>`).join("");
+  document.getElementById("sim-case").textContent=caseType;
+  document.getElementById("sim-total").textContent=f(목표);
+  document.getElementById("sim-total").style.color=caseType==="A"?"#4f9cf9":"#fb923c";
+  document.getElementById("sim-invest").textContent=f(expInvest);
+  document.getElementById("sim-save").textContent=f(pureSave);
 
-  // CF 분석
-  document.getElementById("ci").textContent=f(s.ti);
-  document.getElementById("ce").textContent=f(s.ce+s.ge);
-  document.getElementById("cs").textContent=f(s.sv);
-  let tb="";
-  Object.entries(CF).forEach(([k,v])=>{
-    const sv=v.i-v.e, cur=k==="2026-05";
-    const act=cur?s.sv:null, df=act!==null?act-sv:null;
-    tb+=`<tr style="background:${cur?"#1a305044":"transparent"};border-bottom:1px solid #1a305022;">
-      <td style="padding:6px 4px;color:${cur?"#4f9cf9":"#4a6080"};font-weight:${cur?700:400};text-align:left;">${k.slice(2)}</td>
-      <td style="color:#34d399;">${f(v.i)}</td><td style="color:#f87171;">${f(v.e)}</td>
-      <td style="color:#4f9cf9;font-weight:700;">${f(sv)}</td>
-      <td style="color:#34d399;">${act!==null?f(act):"-"}</td>
-      <td style="font-weight:700;color:${df===null?"#4a6080":df>=0?"#34d399":"#f87171"};">${df===null?"-":(df>=0?"+":"")+f(Math.abs(df))}</td>
-    </tr>`;
-  });
-  document.getElementById("cftb").innerHTML=tb;
+  var statusEl=document.getElementById("sim-status");
+  statusEl.textContent=fStatus(status);
+  statusEl.style.color=status>=0?"#4f9cf9":"#f87171";
+  document.getElementById("sim-status-sub").textContent=status>=0?"예상자산 "+f(finalAsset)+" — 여유 있어요 ✅":"예상자산 "+f(finalAsset)+" — 부족해요";
 
-  // 한계소비 게이지 [NEW VER 1.1]
-  const pctVal=Math.min(100,s.ce/planExp*100);
-  const circ=2*Math.PI*56;
-  const dash=circ*pctVal/100;
-  const arc=document.getElementById("gauge-arc");
-  if(arc){
-    arc.setAttribute("stroke-dasharray",`${dash.toFixed(1)} ${(circ-dash).toFixed(1)}`);
-    arc.setAttribute("stroke",d>0?"#f87171":"#34d399");
+  // STEP4 한계지출
+  var planExp=CF[CUR_MONTH].e;
+  var limitMonthly=planExp;
+  if(status<0){
+    var remainMonths=Object.keys(CF).filter(function(k){return ACTUAL_SV[k]==null;}).length;
+    var extraSave=remainMonths>0?Math.ceil(Math.abs(status)/remainMonths):0;
+    limitMonthly=Math.max(0,planExp-extraSave);
   }
-  const gp=document.getElementById("gauge-pct");
-  const ga=document.getElementById("gauge-amt");
-  if(gp)gp.textContent=Math.round(pctVal)+"%";
-  if(ga)ga.textContent=Math.round(s.ce/10000)+"만";
-  document.getElementById("li").textContent=f(s.ti);
-  const ec=document.getElementById("le");
-  ec.textContent=f(s.ce); ec.style.color=d>0?"#f87171":"#34d399";
-  const ed=document.getElementById("ld");
-  ed.textContent=d>0?"계획보다 "+f(d)+" 초과":"계획보다 "+f(-d)+" 절약";
-  ed.style.color=d>0?"#f87171":"#34d399";
-  if(d>0){
-    document.getElementById("ls").textContent="⚠️ 지출 조정 필요";
-    document.getElementById("ls").style.color="#f87171";
-    document.getElementById("lc").style.border="2px solid #f8717122";
-    document.getElementById("lc").style.background="#120606";
-    document.getElementById("lm").style.color="#f87171";
-    document.getElementById("lm").style.background="#1a0808";
-    document.getElementById("lm").innerHTML="계획보다 <strong>"+f(d)+"</strong> 더 썼어요<br>→ 10월 계약금 납부에 영향 가능<br>→ 주당 <strong>"+f(d/4)+"</strong> 씩 줄여야 해요";
-  } else {
+  document.getElementById("limit-monthly").textContent=f(limitMonthly);
+  document.getElementById("limit-weekly").textContent=f(Math.round(limitMonthly/5));
+
+  // 결론
+  var ok=s.sv>=planSv;
+  var svDiff=s.sv-planSv;
+  if(ok){
     document.getElementById("ls").textContent="✅ 계획 페이스 OK";
     document.getElementById("ls").style.color="#34d399";
     document.getElementById("lc").style.border="2px solid #34d39922";
     document.getElementById("lc").style.background="#060f0a";
     document.getElementById("lm").style.color="#34d399";
     document.getElementById("lm").style.background="#061208";
-    document.getElementById("lm").innerHTML=d<0?f(-d)+" 절약 중이에요 👍<br>→ 10월 계약금 납부 여유 예상":"계획 딱 맞게 쓰고 있어요 👍";
+    document.getElementById("lm").innerHTML=f(Math.abs(svDiff))+(svDiff>=0?" 더 저축했어요 👍":" 저축 살짝 부족해요")+"<br>→ "+sliderRate+"% 수익률 시 "+f(Math.abs(status))+(status>=0?" 여유 예상":"" + " 부족 예상");
+  }else{
+    document.getElementById("ls").textContent="⚠️ 저축 부족";
+    document.getElementById("ls").style.color="#f87171";
+    document.getElementById("lc").style.border="2px solid #f8717122";
+    document.getElementById("lc").style.background="#120606";
+    document.getElementById("lm").style.color="#f87171";
+    document.getElementById("lm").style.background="#1a0808";
+    document.getElementById("lm").innerHTML="저축 <strong>"+f(Math.abs(svDiff))+"</strong> 부족<br>→ 월 한계지출: <strong>"+f(limitMonthly)+"</strong><br>→ 주간 한계지출: <strong>"+f(Math.round(limitMonthly/5))+"</strong>";
   }
+}
 
-  // 투자수익 vs 이자
-  const mr=rate/12;
-  const p1=600000000*(Math.pow(1+mr,12)-1);
-  const p2=600000000*(Math.pow(1+mr,8)-1);
-  const nt=p1+p2-45000000;
-  document.getElementById("pb").innerHTML=`
-    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1a305033;font-size:11px;"><span style="color:#4a6080;">중도금1(6억×12개월)</span><span style="color:#34d399;font-weight:700;">+${f(p1)}</span></div>
-    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1a305033;font-size:11px;"><span style="color:#4a6080;">중도금2(6억×8개월)</span><span style="color:#34d399;font-weight:700;">+${f(p2)}</span></div>
-    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1a305033;font-size:11px;"><span style="color:#4a6080;">중도금 이자(4.5%)</span><span style="color:#f87171;font-weight:700;">-${f(45000000)}</span></div>
-    <div style="display:flex;justify-content:space-between;padding-top:10px;align-items:center;">
-      <span style="font-size:13px;font-weight:800;">A가 B보다 버는 돈</span>
-      <span style="font-size:18px;font-weight:900;color:${nt>0?"#34d399":"#f87171"};">${nt>0?"+":""}${f(nt)}</span>
-    </div>
-    <div style="font-size:11px;color:${nt>0?"#34d399":"#f87171"};margin-top:6px;">${nt>0?"✅ A가 유리!":"❌ B가 유리"}</div>`;
+// ━━━ 메인 UI ━━━
+function ui(){
+  var s=calc();
+  var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
+  var svDiff=s.sv-planSv;
+  ACTUAL_SV[CUR_MONTH]=s.sv;
+
+  // 홈
+  document.getElementById("i0").textContent=f(s.ti);
+  document.getElementById("i1").textContent=f(s.ce);
+  document.getElementById("i2").textContent=f(s.sv);
+  document.getElementById("i2").style.color=s.sv>=planSv?"#4f9cf9":"#f87171";
+  var ok=s.sv>=planSv;
+  document.getElementById("cf-status").textContent=ok?"✅ 저축 정상":"⚠️ 저축 부족";
+  document.getElementById("cf-status").style.color=ok?"#34d399":"#f87171";
+  document.getElementById("home-cf-card").style.border="1px solid "+(ok?"#1a3050":"#f8717144");
+
+  var emo={공동:"🏠",근한:"👨",예진:"👩",태양:"☀️"};
+  var col={공동:"#4f9cf9",근한:"#34d399",예진:"#c084fc",태양:"#fbbf24"};
+  document.getElementById("c0").innerHTML='<span style="color:#f87171;">'+(s.ct.공동.c>0?"-"+f(s.ct.공동.c):"없음")+'</span>';
+  document.getElementById("c1i").textContent=s.ct.근한.i>0?"+"+f(s.ct.근한.i):"";
+  document.getElementById("c1e").textContent=s.ct.근한.c>0?"-"+f(s.ct.근한.c):"";
+  document.getElementById("c2i").textContent=s.ct.예진.i>0?"+"+f(s.ct.예진.i):"";
+  document.getElementById("c2e").textContent=s.ct.예진.c>0?"-"+f(s.ct.예진.c):"";
+  document.getElementById("c3").textContent=(s.ct.태양.i>0||s.ct.태양.c>0)?"입력있음":"미입력";
+  document.getElementById("ec").textContent="("+(EN.length+1)+"건)";
+
+  var allEN=[{n:"월세(고정)",t:"지출",c:"공동",a:월세,p:"현금",w:"이번달",d:"15일 고정",ss:[]}].concat(EN);
+  document.getElementById("el").innerHTML=allEN.map(function(e){
+    var ssBtn=e.ss&&e.ss.length>0?'<button class="ssbtn" onclick="showSS(\''+encodeURIComponent(e.n)+'\',\''+encodeURIComponent(JSON.stringify(e.ss))+'\')">📷</button>':"";
+    return '<div class="er"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">'+
+      '<span style="font-size:16px;flex-shrink:0;">'+(emo[e.c]||"📦")+'</span>'+
+      '<div style="min-width:0;overflow:hidden;"><div style="font-size:12px;font-weight:600;color:'+(col[e.c]||"#f1f5f9")+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+e.n+'</div>'+
+      '<div style="font-size:10px;color:#4a6080;">'+e.w+' · '+e.d+'</div></div></div>'+
+      '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">'+
+      '<span style="font-size:12px;font-weight:700;color:'+(e.t==="수입"?"#34d399":e.p==="현금"?"#f87171":"#5eead4")+';">'+(e.t==="수입"?"+":"-")+f(e.a)+'</span>'+
+      ssBtn+'</div></div>';
+  }).join("");
+
+  // CF
+  document.getElementById("ci").textContent=f(s.ti);
+  document.getElementById("ce").textContent=f(s.ce+s.ge);
+  document.getElementById("cs").textContent=f(s.sv);
+  var tb="",totalPlanSv=0,totalActSv=0;
+  Object.keys(CF).forEach(function(k){
+    var v=CF[k],sv=v.i-v.e,cur=k===CUR_MONTH;
+    var actSv=ACTUAL_SV[k]!=null?ACTUAL_SV[k]:null;
+    var df=actSv!==null?actSv-sv:null;
+    totalPlanSv+=sv;totalActSv+=actSv!==null?actSv:sv;
+    tb+='<tr style="background:'+(cur?"#1a305044":"transparent")+';border-bottom:1px solid #1a305022;">'+
+      '<td style="padding:6px 4px;color:'+(cur?"#4f9cf9":"#4a6080")+';font-weight:'+(cur?700:400)+';text-align:left;">'+k.slice(2)+'</td>'+
+      '<td style="color:#34d399;">'+f(v.i)+'</td><td style="color:#f87171;">'+f(v.e)+'</td>'+
+      '<td style="color:#4f9cf9;font-weight:700;">'+f(sv)+'</td>'+
+      '<td style="color:#34d399;">'+(actSv!==null?f(actSv):"-")+'</td>'+
+      '<td style="font-weight:700;color:'+(df===null?"#4a6080":df>=0?"#34d399":"#f87171")+'">'+(df===null?"-":(df>=0?"+":"")+f(Math.abs(df)))+'</td></tr>';
+  });
+  document.getElementById("cftb").innerHTML=tb;
+  var diffTotal=totalActSv-totalPlanSv;
+  document.getElementById("cf-foot").innerHTML=
+    '<tr style="border-top:2px solid #1a3050;background:#0d1929;">'+
+    '<td style="padding:7px 4px;font-weight:800;color:#f1f5f9;text-align:left;">합계</td>'+
+    '<td></td><td></td>'+
+    '<td style="color:#4f9cf9;font-weight:900;">'+f(totalPlanSv)+'</td>'+
+    '<td style="color:#5eead4;font-weight:900;">'+f(totalActSv)+'</td>'+
+    '<td style="font-weight:900;color:'+(diffTotal>=0?"#34d399":"#f87171")+'">'+(diffTotal>=0?"+":"")+f(diffTotal)+'</td></tr>'+
+    '<tr style="background:#0a1020;">'+
+    '<td colspan="3" style="padding:6px 4px;font-size:9px;color:#4a6080;text-align:left;">💡 현자산+예상저축</td>'+
+    '<td colspan="3" style="padding:6px 4px;font-size:11px;font-weight:900;color:#5eead4;text-align:right;">'+f(현자산+totalActSv)+'</td></tr>';
+
+  // 게이지
+  var planExp=CF[CUR_MONTH].e;
+  var pctVal=Math.min(150,s.ce/planExp*100);
+  var circ=2*Math.PI*56,dash=circ*Math.min(100,pctVal)/100;
+  var arc=document.getElementById("gauge-arc");
+  arc.setAttribute("stroke-dasharray",dash.toFixed(1)+" "+(circ-dash).toFixed(1));
+  arc.setAttribute("stroke",ok?"#34d399":"#f87171");
+  document.getElementById("gauge-pct").textContent=Math.round(pctVal)+"%";
+  document.getElementById("gauge-exp").textContent=Math.round(s.ce/10000)+"만";
+  document.getElementById("gauge-plan").textContent=Math.round(planExp/10000)+"만";
+
+  // STEP 2
+  document.getElementById("li").textContent=f(s.ti);
+  document.getElementById("le").textContent=f(s.ce);
+  document.getElementById("lsv").textContent=f(s.sv);
+  document.getElementById("lsv").style.color=s.sv>=planSv?"#4f9cf9":"#f87171";
+  var svEl=document.getElementById("sv-diff");
+  svEl.textContent=(svDiff>=0?"+":"")+f(svDiff)+" (계획 "+f(planSv)+")";
+  svEl.style.color=svDiff>=0?"#4f9cf9":"#f87171";
+
+  // 슬라이더 초기 설정
+  document.getElementById("slider-val").textContent=sliderRate+"%";
+  document.getElementById("step4-rate").textContent=sliderRate;
+  updateSimulation();
+
+  // TL 투자수익 vs 이자
+  updateTLProfit();
+}
+
+function updateTLProfit(){
+  var mr=tlRate/12;
+  var p1=C6*(Math.pow(1+mr,12)-1);
+  var p2=C6*(Math.pow(1+mr,8)-1);
+  var nt=p1+p2-총이자A;
+  document.getElementById("pb").innerHTML=
+    '<div class="row"><span style="color:#4a6080;">중도금1(6억×12개월) 투자수익</span><span style="color:#34d399;font-weight:700;">+'+f(p1)+'</span></div>'+
+    '<div class="row"><span style="color:#4a6080;">중도금2(6억×8개월) 투자수익</span><span style="color:#34d399;font-weight:700;">+'+f(p2)+'</span></div>'+
+    '<div class="row"><span style="color:#4a6080;">중도금 이자 (연4.5%)</span><span style="color:#f87171;font-weight:700;">-'+f(총이자A)+'</span></div>'+
+    '<div style="display:flex;justify-content:space-between;padding-top:10px;align-items:center;">'+
+    '<span style="font-size:13px;font-weight:800;">A가 B보다 버는 돈</span>'+
+    '<span style="font-size:18px;font-weight:900;color:'+(nt>0?"#34d399":"#f87171")+';">'+(nt>0?"+":"")+f(nt)+'</span></div>'+
+    '<div style="font-size:11px;color:'+(nt>0?"#34d399":"#f87171")+';margin-top:6px;">'+(nt>0?"✅ "+Math.round(tlRate*100)+"% 수익률이면 A가 유리!":"❌ B가 유리")+'</div>';
 }
 
 // ━━━ D-Day ━━━
 function initDD(){
-  const td=new Date(2026,4,3);
-  const dd=[
+  var td=new Date(2026,4,3);
+  var items=[
     {l:"☀️ 태양이 탄생",d:new Date(2026,5,3),c:"#fbbf24"},
     {l:"🏠 계약금 납부",d:new Date(2026,9,1),c:"#4f9cf9"},
     {l:"💳 중도금1",d:new Date(2026,11,1),c:"#5eead4"},
     {l:"🎉 잔금&입주",d:new Date(2027,11,1),c:"#34d399"},
   ];
-  document.getElementById("dd").innerHTML=dd.map(x=>{
-    const dy=Math.ceil((x.d-td)/86400000);
-    return`<div class="dcard" style="border-color:${x.c}33;">
-      <div style="font-size:11px;color:#4a6080;margin-bottom:4px;">${x.l}</div>
-      <div style="font-size:20px;font-weight:900;color:${x.c};">${dy>0?"D-"+dy:"D-Day"}</div>
-      <div style="font-size:10px;color:#4a6080;margin-top:2px;">${x.d.toISOString().slice(0,10)}</div>
-    </div>`;
+  document.getElementById("dd").innerHTML=items.map(function(x){
+    var dy=Math.ceil((x.d-td)/86400000);
+    return '<div class="dcard" style="border-color:'+x.c+'33;"><div style="font-size:11px;color:#4a6080;margin-bottom:4px;">'+x.l+'</div><div style="font-size:20px;font-weight:900;color:'+x.c+';">'+(dy>0?"D-"+dy:"D-Day")+'</div><div style="font-size:10px;color:#4a6080;margin-top:2px;">'+x.d.toISOString().slice(0,10)+'</div></div>';
   }).join("");
 }
 
-// ━━━ 납부 타임라인 [NEW VER 1.1] ━━━
+// ━━━ 납부 타임라인 ━━━
 function initTL(){
-  document.getElementById("tl-case").textContent=caseType;
-  const isA=caseType==="A";
-  const items=[
-    {k:"2026-10",l:"🏠 계약금",
-     note:isA?"신용대출 실행 후 4.02억 자납":"신용대출 실행 후 4.02억 자납",
-     amt:402000000, cash:true, c:"#4f9cf9"},
-    {k:"2026-12",l:"💳 중도금 1회차",
-     note:isA?"집단대출 실행 (현금 무소요)":"현금 6억 자납",
-     amt:isA?0:600000000, cash:!isA, c:"#5eead4"},
-    {k:"2027-04",l:"💳 중도금 2회차",
-     note:isA?"집단대출 실행 (현금 무소요)":"현금 6억 자납",
-     amt:isA?0:600000000, cash:!isA, c:"#5eead4"},
-    {k:"2027-08",l:"💳 중도금 3회차",
-     note:"현금 6억 자납 (공통)",
-     amt:600000000, cash:true, c:"#fb923c"},
-    {k:"2027-12",l:"🎉 잔금 & 입주",
-     note:isA?"대출 5.48억 실행\n중도금 12억 상환\n잔금+취득세+발코니":"대출 5.48억 실행\n잔금+취득세+발코니",
-     amt:isA?14490000000:4490000000, cash:true, c:"#34d399"},
+  var isA=caseType==="A";
+  var 잔금시A=C6+취득세+발코니+C6*2-주담대-은행;
+  var 잔금시B=C6+취득세+발코니-주담대-은행;
+  var items=[
+    {k:"2026-10",l:"🏠 계약금",amtA:C6,noteA:"6억 납부\n(신용대출 1.98억 별도 실행)",amtB:C6,noteB:"6억 납부\n(신용대출 1.98억 별도 실행)",c:"#4f9cf9"},
+    {k:"2026-12",l:"💳 중도금 1회차",amtA:0,noteA:"집단대출 실행 현금 무소요 ✅\n이자 월 225만 시작",amtB:C6,noteB:"현금 6억 자납",c:"#5eead4"},
+    {k:"2027-04",l:"💳 중도금 2회차",amtA:0,noteA:"집단대출 실행 현금 무소요 ✅\n이자 월 450만으로 증가",amtB:C6,noteB:"현금 6억 자납",c:"#5eead4"},
+    {k:"2027-08",l:"💳 중도금 3회차",amtA:C6,noteA:"현금 6억 자납 (공통)",amtB:C6,noteB:"현금 6억 자납 (공통)",c:"#fb923c"},
+    {k:"2027-12",l:"🎉 잔금 & 입주",amtA:잔금시A,noteA:"잔금6억+취득세9,900만+발코니1.2억\n중도금12억 상환\n주담대+은행대출 실행 차감",amtB:잔금시B,noteB:"잔금6억+취득세9,900만+발코니1.2억\n주담대+은행대출 실행 차감",c:"#34d399"},
   ];
-  document.getElementById("tl").innerHTML=items.map((x,i)=>`
-    <div class="tl">
-      <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
-        <div class="dot" style="background:${x.c};margin-top:3px;"></div>
-        ${i<items.length-1?`<div class="ln"></div>`:""}
-      </div>
-      <div style="flex:1;padding-bottom:4px;">
-        <div style="font-size:10px;color:#4a6080;">${x.k}</div>
-        <div style="font-size:13px;font-weight:700;margin-top:1px;">${x.l}</div>
-        ${x.amt>0?`<div style="font-size:11px;color:#f87171;margin-top:2px;">납부 ${f(x.amt)}</div>`:`<div style="font-size:11px;color:#5eead4;margin-top:2px;">현금 무소요</div>`}
-        <div style="font-size:10px;color:#4a6080;margin-top:3px;line-height:1.7;white-space:pre-line;">${x.note}</div>
-      </div>
-    </div>`).join("");
+  document.getElementById("tl").innerHTML=items.map(function(x,i){
+    var amt=isA?x.amtA:x.amtB,note=isA?x.noteA:x.noteB;
+    var ln=i<items.length-1?'<div class="ln"></div>':"";
+    var amtHtml=amt>0?'<div style="font-size:12px;color:#f87171;margin-top:2px;font-weight:700;">납부 '+f(amt)+'</div>':'<div style="font-size:12px;color:#5eead4;margin-top:2px;font-weight:700;">현금 무소요 ✅</div>';
+    return '<div class="tl"><div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;"><div class="dot" style="background:'+x.c+';margin-top:3px;"></div>'+ln+'</div><div style="flex:1;padding-bottom:4px;"><div style="font-size:10px;color:#4a6080;">'+x.k+'</div><div style="font-size:13px;font-weight:700;margin-top:1px;">'+x.l+'</div>'+amtHtml+'<div style="font-size:10px;color:#4a6080;margin-top:3px;line-height:1.7;white-space:pre-line;">'+note+'</div></div></div>';
+  }).join("");
 
-  // Case 버튼 스타일
-  ["A","B"].forEach(c=>{
-    const btn=document.getElementById("tl"+c);
-    if(btn){btn.className=c===caseType?"rbtn on":"rbtn";}
-  });
+  var rows=isA?[{l:"계약금 6억",v:C6,c:"#4f9cf9"},{l:"중도금 3회차 자납",v:C6,c:"#fb923c"},{l:"중도금 이자(4.5%)",v:총이자A,c:"#f87171"},{l:"잔금+취득세+발코니",v:C6+취득세+발코니,c:"#5eead4"},{l:"중도금 12억 상환",v:C6*2,c:"#f87171"},{l:"대출 전체 차감",v:-대출합,c:"#34d399"}]:[{l:"계약금 6억",v:C6,c:"#4f9cf9"},{l:"중도금 1+2+3 (각 6억)",v:C6*3,c:"#5eead4"},{l:"잔금+취득세+발코니",v:C6+취득세+발코니,c:"#5eead4"},{l:"대출 전체 차감",v:-대출합,c:"#34d399"}];
+  var 합계=isA?목표A:목표B;
+  document.getElementById("tl-summary").innerHTML=
+    rows.map(function(x){return '<div class="row"><span style="color:#4a6080;">'+x.l+'</span><span style="color:'+x.c+';font-weight:700;">'+(x.v<0?"-":"+")+f(Math.abs(x.v))+'</span></div>';}).join("")+
+    '<div style="display:flex;justify-content:space-between;padding-top:8px;font-size:13px;font-weight:900;"><span>총 직접 현금</span><span style="color:'+(isA?"#4f9cf9":"#fb923c")+';">'+f(합계)+'</span></div>';
+
+  document.getElementById("tlA").className=caseType==="A"?"rbtn on":"rbtn";
+  document.getElementById("tlB").className=caseType==="B"?"rbtn on":"rbtn";
 }
 
-// ━━━ 탭 전환 ━━━
+// ━━━ 스샷 모달 ━━━
+function showSS(title,encodedUrls){
+  var urls=JSON.parse(decodeURIComponent(encodedUrls));
+  document.getElementById("modal-title").textContent=decodeURIComponent(title)+" 스샷";
+  if(!urls||!urls.length){document.getElementById("modal-content").innerHTML='<div style="color:#4a6080;">스샷 없음</div>';return;}
+  document.getElementById("modal-content").innerHTML=urls.map(function(u){return '<img class="modal-img" src="'+u+'"/>';}).join("");
+  document.getElementById("modal").classList.add("on");
+}
+function closeModal(){document.getElementById("modal").classList.remove("on");}
+
+// ━━━ 탭/케이스/수익률 ━━━
 function gt(n,btn){
-  document.querySelectorAll(".sec").forEach(s=>s.classList.remove("on"));
-  document.querySelectorAll(".tb").forEach(b=>b.classList.remove("on"));
+  document.querySelectorAll(".sec").forEach(function(s){s.classList.remove("on");});
+  document.querySelectorAll(".tb").forEach(function(b){b.classList.remove("on");});
   document.getElementById("s"+n).classList.add("on");
   btn.classList.add("on");
 }
-
-// ━━━ Case 선택 ━━━
-function setCase(c,btn){
+function setCase(c){
   caseType=c;
-  ["A","B"].forEach(x=>{
-    const b=document.getElementById("btn"+x);
-    if(b)b.className=x===c?"rbtn on":"rbtn";
+  ["A","B"].forEach(function(x){
+    var b1=document.getElementById("btn"+x),b2=document.getElementById("tl"+x);
+    if(b1)b1.className=x===c?"rbtn on":"rbtn";
+    if(b2)b2.className=x===c?"rbtn on":"rbtn";
   });
-  initTL();
+  updateSimulation();initTL();
 }
-
-// ━━━ 수익률 ━━━
-function sr(r){
-  rate=r;
-  document.querySelectorAll(".rbtn[data-r]").forEach(b=>{
-    const br=parseFloat(b.getAttribute("data-r"));
+function srTL(r){
+  tlRate=r;
+  document.querySelectorAll(".rbtn[data-r]").forEach(function(b){
+    var br=parseFloat(b.getAttribute("data-r"));
     if(Math.abs(br-r)<0.001){b.classList.add("on");b.textContent=(r*100)+"% ✓";}
     else{b.classList.remove("on");b.textContent=(br*100)+"%";}
   });
-  const rl=document.getElementById("rate-lbl");
-  if(rl)rl.textContent=Math.round(r*100);
-  ui();
+  updateTLProfit();
 }
 
 // ━━━ 노션 동기화 ━━━
-async function sync(){
-  const btns=document.querySelectorAll(".sbtn");
-  btns.forEach(b=>{b.textContent="⏳ 동기화 중...";b.disabled=true;});
+async function syncNotion(){
   try{
-    const res=await fetch("/api/notion");
-    if(!res.ok)throw new Error("오류");
-    const data=await res.json();
+    var res=await fetch("/api/notion");
+    if(!res.ok)throw new Error();
+    var data=await res.json();
     if(data.entries&&data.entries.length>0){
-      EN=data.entries.map(e=>({
-        n:e["내용"]||"",t:e["유형"]||"지출",c:e["카테고리"]||"공동",
-        a:e["금액"]||0,p:e["결제수단"]||"현금",w:e["주차"]||"1주차",d:e["날짜"]||""
-      }));
+      EN=data.entries.map(function(e){
+        return{n:e["내용"]||"",t:e["유형"]||"지출",c:e["카테고리"]||"공동",a:e["금액"]||0,p:e["결제수단"]||"현금",w:e["주차"]||"1주차",d:e["날짜"]||"",ss:e["스샷"]||[]};
+      });
     }
-    const now=new Date().toLocaleTimeString("ko-KR");
-    document.getElementById("st").textContent="VER 1.1 · 🔄 "+now;
+    document.getElementById("st").textContent="VER 1.2 · 🔄 "+new Date().toLocaleTimeString("ko-KR");
     ui();
   }catch(e){
-    document.getElementById("st").textContent="⚠️ 동기화실패 - 기존데이터 표시중";
+    document.getElementById("st").textContent="VER 1.2 · 5/3 기준";
   }
-  btns.forEach(b=>{b.textContent="🔄 노션 데이터 새로고침";b.disabled=false;});
 }
 
 // ━━━ 초기화 ━━━
 drawChart();
+drawRateChart();
 initDD();
 initTL();
 ui();
+syncNotion();
 if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js");
 </script>
 </body>
