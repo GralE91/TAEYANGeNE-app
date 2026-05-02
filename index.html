@@ -1,68 +1,403 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <meta name="theme-color" content="#060c18"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="TAEYANGene"/>
-  <title>☀️ TAEYANGene App</title>
-  <link rel="manifest" href="/manifest.json"/>
-  <link rel="apple-touch-icon" href="/icon-192.png"/>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #060c18; color: #f1f5f9; font-family: 'Noto Sans KR', sans-serif; }
-    #root { min-height: 100vh; }
-    /* 로딩 화면 */
-    #loading {
-      position: fixed; inset: 0; background: #060c18;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      z-index: 9999;
-    }
-    #loading .sun { font-size: 60px; animation: spin 3s linear infinite; }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    #loading p { margin-top: 20px; color: #4a6080; font-size: 14px; }
-  </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="theme-color" content="#060c18"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="TAEYANGene"/>
+<title>TAEYANGene App</title>
+<link rel="manifest" href="/manifest.json"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-height:100vh;padding-bottom:80px;}
+.hd{background:linear-gradient(135deg,#090f1e,#0f1e38);border-bottom:1px solid #1a3050;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+.ct{padding:14px;max-width:460px;margin:0 auto;}
+.card{background:#0d1929;border-radius:18px;padding:16px;border:1px solid #1a3050;margin-bottom:12px;}
+.lbl{font-size:11px;color:#64748b;font-weight:600;margin-bottom:8px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.box{background:#060c18;border-radius:12px;padding:11px 10px;border:1px solid #1a3050;}
+.sec{display:none;}.sec.on{display:block;}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#090f1e;border-top:1px solid #1a3050;display:flex;z-index:200;}
+.tb{flex:1;padding:9px 2px 11px;background:none;border:none;border-top:2px solid transparent;color:#4a6080;cursor:pointer;font-family:inherit;}
+.tb.on{border-top-color:#4f9cf9;color:#4f9cf9;}
+.pb{height:8px;border-radius:6px;background:#060c18;overflow:hidden;border:1px solid #1a3050;margin-top:4px;}
+.pf{height:100%;border-radius:6px;transition:width .8s;}
+.eb{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1a305022;}
+.sbtn{width:100%;margin-bottom:10px;background:#1e3a5f;border:1px solid #4f9cf9;border-radius:10px;color:#4f9cf9;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.rbtn{background:#060c18;border:1px solid #1a3050;border-radius:10px;padding:9px;color:#4a6080;font-family:inherit;cursor:pointer;font-size:12px;}
+.rbtn.on{background:#1e3a5f;border-color:#4f9cf9;color:#4f9cf9;font-weight:800;}
+.nbtn{display:block;border-radius:12px;padding:14px 8px;font-weight:800;font-size:15px;text-decoration:none;text-align:center;color:#fff;margin-bottom:8px;}
+.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1a305033;font-size:11px;}
+.tl{display:flex;gap:14px;margin-bottom:16px;}
+.dot{width:12px;height:12px;border-radius:50%;margin-top:3px;flex-shrink:0;}
+.ln{width:2px;flex:1;background:#1a3050;margin-top:4px;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet"/>
 </head>
 <body>
-  <!-- 로딩 화면 -->
-  <div id="loading">
-    <div class="sun">☀️</div>
-    <p>TAEYANGene App 로딩 중...</p>
+<div class="hd">
+  <div>
+    <div style="font-size:17px;font-weight:900;">☀️ TAEYANGene App</div>
+    <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">5/3 기준 · 로딩 중...</div>
   </div>
+  <div style="text-align:right;">
+    <div style="font-size:10px;color:#4a6080;">투자+현금</div>
+    <div style="font-size:20px;font-weight:900;color:#4f9cf9;">22.01억</div>
+  </div>
+</div>
+<div class="ct">
 
-  <div id="root"></div>
+<!-- 홈 -->
+<div class="sec on" id="s0">
+  <button class="sbtn" onclick="sync()">🔄 노션 데이터 새로고침</button>
+  <div class="card">
+    <div class="lbl">📊 자산 현황 · 5/3</div>
+    <div class="g3">
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;">투자+현금</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;">22.01억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">투자 18.64억<br>현금 3.38억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;">+퇴직연금</div><div style="font-size:15px;font-weight:900;color:#5eead4;">24.05억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.10억<br>예진 0.94억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;">+가능대출</div><div style="font-size:15px;font-weight:900;color:#c084fc;">29.53억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">신용+주담<br>+은행</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="lbl">🎯 목표 달성률</div>
+    <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#4a6080;">계약금 자납 4.02억 <span style="font-size:10px;background:#064e3b;color:#34d399;padding:1px 7px;border-radius:20px;">✅</span></span><span style="font-size:12px;font-weight:700;color:#34d399;">100%</span></div><div class="pb"><div class="pf" style="width:100%;background:#34d399;"></div></div></div>
+    <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#4a6080;">Case A 27.16억</span><span style="font-size:12px;font-weight:700;color:#4f9cf9;">81%</span></div><div class="pb"><div class="pf" style="width:81%;background:#4f9cf9;"></div></div></div>
+    <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#4a6080;">Case B 26.71억</span><span style="font-size:12px;font-weight:700;color:#fb923c;">82%</span></div><div class="pb"><div class="pf" style="width:82%;background:#fb923c;"></div></div></div>
+  </div>
+  <div class="card">
+    <div class="lbl">💸 5월 수입/지출</div>
+    <div class="g3" style="margin-bottom:12px;">
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">수입</div><div style="font-size:15px;font-weight:900;color:#34d399;" id="i0">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 1,146만</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">현금지출</div><div style="font-size:15px;font-weight:900;color:#f87171;" id="i1">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 560만</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">순저축</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;" id="i2">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 586만</div></div>
+    </div>
+    <div class="g2" style="margin-bottom:12px;">
+      <div class="box" style="border-color:#4f9cf933;"><div style="font-size:12px;font-weight:700;color:#4f9cf9;margin-bottom:4px;">🏠 공동</div><div style="font-size:11px;color:#f87171;" id="c0">-</div></div>
+      <div class="box" style="border-color:#34d39933;"><div style="font-size:12px;font-weight:700;color:#34d399;margin-bottom:4px;">👨 근한</div><div style="font-size:11px;color:#34d399;" id="c1i">-</div><div style="font-size:11px;color:#f87171;" id="c1e">-</div></div>
+      <div class="box" style="border-color:#c084fc33;"><div style="font-size:12px;font-weight:700;color:#c084fc;margin-bottom:4px;">👩 예진</div><div style="font-size:11px;color:#34d399;" id="c2i">-</div><div style="font-size:11px;color:#f87171;" id="c2e">-</div></div>
+      <div class="box" style="border-color:#fbbf2433;"><div style="font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:4px;">☀️ 태양</div><div style="font-size:11px;color:#4a6080;" id="c3">미입력</div></div>
+    </div>
+    <div style="border-top:1px solid #1a3050;padding-top:12px;">
+      <div class="lbl">전체 내역 <span id="ec">(-건)</span></div>
+      <div id="el">동기화 버튼을 눌러주세요 😊</div>
+    </div>
+  </div>
+</div>
 
-  <!-- React + Babel (JSX 실행용) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<!-- 한계소비 -->
+<div class="sec" id="s1">
+  <div class="card">
+    <div class="lbl">📈 투자 기대 수익률</div>
+    <div class="g2" style="gap:6px;">
+      <button class="rbtn" onclick="sr(0.05)" data-r="0.05">5%</button>
+      <button class="rbtn" onclick="sr(0.08)" data-r="0.08">8%</button>
+      <button class="rbtn on" onclick="sr(0.12)" data-r="0.12">12% ✓</button>
+      <button class="rbtn" onclick="sr(0.15)" data-r="0.15">15%</button>
+    </div>
+  </div>
+  <div class="card" id="lc" style="border:2px solid #34d39922;background:#060f0a;">
+    <div style="font-size:14px;font-weight:900;color:#34d399;margin-bottom:14px;" id="ls">✅ 계획 페이스 OK</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">📋 STEP 1. 이번달 계획</div>
+      <div class="g3" style="background:#060c18;border-radius:10px;padding:12px;">
+        <div style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">계획수입</div><div style="font-size:13px;font-weight:800;color:#34d399;">1,146만</div></div>
+        <div style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">계획지출</div><div style="font-size:13px;font-weight:800;color:#f87171;">560만</div></div>
+        <div style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">계획저축</div><div style="font-size:13px;font-weight:800;color:#4f9cf9;">586만</div></div>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">📊 STEP 2. 실제 현황</div>
+      <div class="g2" style="background:#060c18;border-radius:10px;padding:12px;">
+        <div class="box" style="border:none;text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제수입</div><div style="font-size:15px;font-weight:900;color:#34d399;" id="li">-</div></div>
+        <div class="box" style="border:none;text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제현금지출</div><div style="font-size:15px;font-weight:900;" id="le">-</div><div style="font-size:9px;font-weight:700;margin-top:2px;" id="ld">-</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">🎯 STEP 3. 결론</div>
+      <div class="g2" style="margin-bottom:10px;">
+        <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">이번달 계획지출</div><div style="font-size:20px;font-weight:900;">560만</div><div style="font-size:9px;color:#4a6080;margin-top:3px;">이 안에서 쓰면 OK</div></div>
+        <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">주간 가이드</div><div style="font-size:20px;font-weight:900;color:#4f9cf9;">112만</div><div style="font-size:9px;color:#4a6080;margin-top:3px;">주당 이 정도면 돼요</div></div>
+      </div>
+      <div id="lm" style="background:#061208;border-radius:8px;padding:10px 12px;font-size:12px;color:#34d399;line-height:1.8;">계획 페이스로 잘 가고 있어요 👍</div>
+    </div>
+  </div>
+</div>
 
-  <script type="text/babel" src="./app.jsx"></script>
+<!-- CF분석 -->
+<div class="sec" id="s2">
+  <div class="card" style="border:1px solid #34d39933;">
+    <div class="lbl" style="color:#34d399;">✅ 5월 결산 (노션 자동반영)</div>
+    <div class="g3">
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제수입</div><div style="font-size:14px;font-weight:900;color:#34d399;" id="ci">-</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제지출</div><div style="font-size:14px;font-weight:900;color:#f87171;" id="ce">-</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제저축</div><div style="font-size:14px;font-weight:900;color:#4f9cf9;" id="cs">-</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="lbl">📊 CF 계획 전체</div>
+    <div style="overflow-x:auto;"><table style="width:100%;font-size:10px;border-collapse:collapse;white-space:nowrap;" id="cft"></table></div>
+  </div>
+</div>
 
-  <script>
-    // PWA Service Worker 등록
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js');
-      });
+<!-- 납부일정 -->
+<div class="sec" id="s3">
+  <div class="card">
+    <div class="lbl">📅 주요 D-Day</div>
+    <div class="g2" id="dd"></div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,#061508,#081020);border:1px solid #34d39944;">
+    <div class="lbl" style="color:#34d399;">⚖️ 투자수익 vs 이자</div>
+    <div class="g2" style="gap:6px;margin-bottom:12px;">
+      <button class="rbtn" onclick="sr(0.05)" data-r="0.05">5%</button>
+      <button class="rbtn" onclick="sr(0.08)" data-r="0.08">8%</button>
+      <button class="rbtn on" onclick="sr(0.12)" data-r="0.12">12% ✓</button>
+      <button class="rbtn" onclick="sr(0.15)" data-r="0.15">15%</button>
+    </div>
+    <div class="box" id="pb"></div>
+  </div>
+  <div class="card">
+    <div class="lbl">💰 납부 타임라인</div>
+    <div id="tl"></div>
+  </div>
+</div>
+
+<!-- 노션입력 -->
+<div class="sec" id="s4">
+  <div class="card" style="text-align:center;">
+    <div style="font-size:32px;margin-bottom:12px;">📱</div>
+    <div style="font-size:16px;font-weight:900;color:#4f9cf9;margin-bottom:8px;">노션에서 입력하세요!</div>
+    <div style="font-size:13px;color:#4a6080;line-height:1.9;margin-bottom:16px;">입력하면 🔄 버튼으로 실시간 반영!</div>
+    <div class="g2" style="margin-bottom:8px;">
+      <a href="https://app.notion.com/p/a690c47841a948eb9920307ea905db88" target="_blank" class="nbtn" style="background:#34d399;">💰<br><span style="font-size:12px;">수입 입력</span></a>
+      <a href="https://app.notion.com/p/a690c47841a948eb9920307ea905db88" target="_blank" class="nbtn" style="background:#f87171;">💸<br><span style="font-size:12px;">지출 입력</span></a>
+    </div>
+    <a href="https://app.notion.com/p/a690c47841a948eb9920307ea905db88" target="_blank" class="nbtn" style="background:#060c18;border:1px solid #1a3050;color:#4a6080;">📋 전체 내역 보기</a>
+    <button onclick="sync()" class="sbtn" style="margin-top:8px;">🔄 지금 동기화하기</button>
+  </div>
+</div>
+
+</div>
+
+<!-- 탭바 -->
+<div class="tabs">
+  <button class="tb on" onclick="gt(0,this)"><div style="font-size:17px;">🏠</div><div style="font-size:8px;margin-top:1px;">홈</div></button>
+  <button class="tb" onclick="gt(1,this)"><div style="font-size:17px;">🎯</div><div style="font-size:8px;margin-top:1px;">한계소비</div></button>
+  <button class="tb" onclick="gt(2,this)"><div style="font-size:17px;">💸</div><div style="font-size:8px;margin-top:1px;">CF분석</div></button>
+  <button class="tb" onclick="gt(3,this)"><div style="font-size:17px;">📅</div><div style="font-size:8px;margin-top:1px;">납부일정</div></button>
+  <button class="tb" onclick="gt(4,this)"><div style="font-size:17px;">📱</div><div style="font-size:8px;margin-top:1px;">노션입력</div></button>
+</div>
+
+<script>
+const CF={
+  "2026-05":{i:11463959,e:5600000},"2026-06":{i:17290121,e:4750000},
+  "2026-07":{i:10367619,e:4000000},"2026-08":{i:9403959,e:4000000},
+  "2026-09":{i:11743113,e:5600000},"2026-10":{i:10087113,e:4000000},
+  "2026-11":{i:8703113,e:4000000},"2026-12":{i:7484778,e:4000000},
+  "2027-01":{i:9699701,e:4000000},"2027-02":{i:9305201,e:5600000},
+  "2027-03":{i:8002081,e:4000000},"2027-04":{i:7883181,e:4000000},
+  "2027-05":{i:10087797,e:5600000},"2027-06":{i:6965528,e:4000000},
+  "2027-07":{i:6865676,e:4000000},"2027-08":{i:8282197,e:5600000},
+  "2027-09":{i:8737700,e:4000000},"2027-10":{i:6982340,e:4000000},
+  "2027-11":{i:5515300,e:4000000},"2027-12":{i:4753865,e:4000000}
+};
+
+let EN=[
+  {n:"4월 급여",t:"수입",c:"근한",a:6090240,p:"현금",w:"1주차",d:"2026-04-21"},
+  {n:"4월 급여",t:"수입",c:"예진",a:4063620,p:"현금",w:"1주차",d:"2026-04-21"},
+  {n:"1주차 생활비 정산",t:"지출",c:"근한",a:85900,p:"현금",w:"1주차",d:"2026-04-26"},
+  {n:"1주차 생활비 정산",t:"지출",c:"예진",a:342170,p:"현금",w:"1주차",d:"2026-04-26"},
+  {n:"3월 관리비",t:"지출",c:"공동",a:219410,p:"현금",w:"1주차",d:"2026-04-25"},
+  {n:"어버이날용돈(할머니할아부지)",t:"지출",c:"공동",a:400000,p:"현금",w:"2주차",d:"2026-05-02"}
+];
+let rate=0.12;
+
+function f(n){
+  if(n==null||isNaN(n))return"-";
+  const s=n<0,a=Math.abs(n);
+  if(a>=100000000)return(s?"-":"")+(a/100000000).toFixed(2)+"억";
+  if(a>=10000)return(s?"-":"")+Math.round(a/10000).toLocaleString()+"만";
+  return(s?"-":"")+Math.round(a).toLocaleString()+"원";
+}
+
+function calc(){
+  let ti=0,ce=0,ge=0;
+  const ct={공동:{i:0,c:0,g:0},근한:{i:0,c:0,g:0},예진:{i:0,c:0,g:0},태양:{i:0,c:0,g:0}};
+  EN.forEach(e=>{
+    if(e.t==="수입"){ti+=e.a;if(ct[e.c])ct[e.c].i+=e.a;}
+    else if(e.p==="현금"){ce+=e.a;if(ct[e.c])ct[e.c].c+=e.a;}
+    else{ge+=e.a;if(ct[e.c])ct[e.c].g+=e.a;}
+  });
+  return{ti,ce,ge,sv:ti-ce,ct};
+}
+
+function ui(){
+  const s=calc();
+  const d=s.ce-5600000;
+  document.getElementById("i0").textContent=f(s.ti);
+  document.getElementById("i1").textContent=f(s.ce);
+  document.getElementById("i2").textContent=f(s.sv);
+  const ce=["공동","근한","예진","태양"];
+  const ids=[["c0"],["c1i","c1e"],["c2i","c2e"],["c3"]];
+  ce.forEach((k,idx)=>{
+    const ct=s.ct[k];
+    if(idx===0){document.getElementById("c0").textContent=ct.c>0?"지출 "+f(ct.c):"없음";}
+    else if(idx===3){document.getElementById("c3").textContent=(ct.i>0||ct.c>0)?"입력있음":"미입력";}
+    else{
+      const ii=document.getElementById(ids[idx][0]);
+      const ie=document.getElementById(ids[idx][1]);
+      if(ii)ii.textContent=ct.i>0?"+"+f(ct.i):"";
+      if(ie)ie.textContent=ct.c>0?"-"+f(ct.c):"";
     }
+  });
+  document.getElementById("ec").textContent="("+EN.length+"건)";
+  const emo={공동:"🏠",근한:"👨",예진:"👩",태양:"☀️"};
+  const col={공동:"#4f9cf9",근한:"#34d399",예진:"#c084fc",태양:"#fbbf24"};
+  document.getElementById("el").innerHTML=EN.map(e=>`
+    <div class="eb">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:16px;">${emo[e.c]||"📦"}</span>
+        <div><div style="font-size:12px;font-weight:600;color:${col[e.c]||"#f1f5f9"};">${e.n}</div><div style="font-size:10px;color:#4a6080;">${e.w} · ${e.d}</div></div>
+      </div>
+      <span style="font-size:13px;font-weight:700;color:${e.t==="수입"?"#34d399":e.p==="현금"?"#f87171":"#5eead4"};">${e.t==="수입"?"+":"-"}${f(e.a)}</span>
+    </div>`).join("");
+  document.getElementById("ci").textContent=f(s.ti);
+  document.getElementById("ce").textContent=f(s.ce+s.ge);
+  document.getElementById("cs").textContent=f(s.sv);
+  document.getElementById("li").textContent=f(s.ti);
+  const ec=document.getElementById("le");
+  ec.textContent=f(s.ce);
+  ec.style.color=d>0?"#f87171":"#34d399";
+  const ed=document.getElementById("ld");
+  ed.textContent=d>0?"계획보다 "+f(d)+" 초과":"계획보다 "+f(-d)+" 절약";
+  ed.style.color=d>0?"#f87171":"#34d399";
+  if(d>0){
+    document.getElementById("ls").textContent="⚠️ 지출 조정 필요";
+    document.getElementById("ls").style.color="#f87171";
+    document.getElementById("lc").style.border="2px solid #f8717122";
+    document.getElementById("lc").style.background="#120606";
+    document.getElementById("lm").style.color="#f87171";
+    document.getElementById("lm").style.background="#1a0808";
+    document.getElementById("lm").innerHTML="계획보다 <strong>"+f(d)+"</strong> 더 썼어요<br>→ 10월 계약금 납부에 영향 가능";
+  } else {
+    document.getElementById("ls").textContent="✅ 계획 페이스 OK";
+    document.getElementById("ls").style.color="#34d399";
+    document.getElementById("lm").style.color="#34d399";
+    document.getElementById("lm").style.background="#061208";
+    document.getElementById("lm").innerHTML=d<0?f(-d)+" 절약 중이에요 👍":"계획 딱 맞게 쓰고 있어요 👍";
+  }
+  // CF 테이블
+  let th='<tr style="background:#060c18;"><th style="padding:6px 4px;color:#4a6080;font-size:9px;text-align:right;border-bottom:1px solid #1a3050;">월</th><th style="padding:6px 4px;color:#4a6080;font-size:9px;text-align:right;border-bottom:1px solid #1a3050;">수입</th><th style="padding:6px 4px;color:#4a6080;font-size:9px;text-align:right;border-bottom:1px solid #1a3050;">지출</th><th style="padding:6px 4px;color:#4a6080;font-size:9px;text-align:right;border-bottom:1px solid #1a3050;">저축</th><th style="padding:6px 4px;color:#4a6080;font-size:9px;text-align:right;border-bottom:1px solid #1a3050;">실적</th><th style="padding:6px 4px;color:#4a6080;font-size:9px;text-align:right;border-bottom:1px solid #1a3050;">차이</th></tr>';
+  let tb='';
+  Object.entries(CF).forEach(([k,v])=>{
+    const sv=v.i-v.e,cur=k==="2026-05";
+    const act=cur?s.sv:null,df=act!==null?act-sv:null;
+    tb+=`<tr style="background:${cur?"#1a305044":"transparent"};border-bottom:1px solid #1a305022;">
+      <td style="padding:6px 4px;color:${cur?"#4f9cf9":"#4a6080"};font-weight:${cur?700:400};">${k.slice(2)}</td>
+      <td style="padding:6px 4px;text-align:right;color:#34d399;">${f(v.i)}</td>
+      <td style="padding:6px 4px;text-align:right;color:#f87171;">${f(v.e)}</td>
+      <td style="padding:6px 4px;text-align:right;color:#4f9cf9;font-weight:700;">${f(sv)}</td>
+      <td style="padding:6px 4px;text-align:right;color:#34d399;">${act!==null?f(act):"-"}</td>
+      <td style="padding:6px 4px;text-align:right;font-weight:700;color:${df===null?"#4a6080":df>=0?"#34d399":"#f87171"};">${df===null?"-":(df>=0?"+":"")+f(Math.abs(df))}</td>
+    </tr>`;
+  });
+  document.getElementById("cft").innerHTML=th+tb;
+  // 납부일정 투자수익
+  const mr=rate/12;
+  const p1=600000000*(Math.pow(1+mr,12)-1);
+  const p2=600000000*(Math.pow(1+mr,8)-1);
+  const tp=p1+p2,nt=tp-45000000;
+  document.getElementById("pb").innerHTML=`
+    <div class="row"><span style="color:#4a6080;">중도금1(6억×12개월) 투자수익</span><span style="color:#34d399;font-weight:700;">+${f(p1)}</span></div>
+    <div class="row"><span style="color:#4a6080;">중도금2(6억×8개월) 투자수익</span><span style="color:#34d399;font-weight:700;">+${f(p2)}</span></div>
+    <div class="row"><span style="color:#4a6080;">중도금 이자(4.5%)</span><span style="color:#f87171;font-weight:700;">-${f(45000000)}</span></div>
+    <div style="display:flex;justify-content:space-between;padding-top:10px;align-items:center;">
+      <span style="font-size:13px;font-weight:800;">A가 B보다 버는 돈</span>
+      <span style="font-size:18px;font-weight:900;color:${nt>0?"#34d399":"#f87171"};">${nt>0?"+":""}${f(nt)}</span>
+    </div>
+    <div style="font-size:11px;color:${nt>0?"#34d399":"#f87171"};margin-top:6px;">${nt>0?"✅ A가 유리!":"❌ B가 유리"}</div>`;
+}
 
-    // 로딩 화면 제거 (앱 로드 후)
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const loading = document.getElementById('loading');
-        if (loading) {
-          loading.style.opacity = '0';
-          loading.style.transition = 'opacity 0.5s';
-          setTimeout(() => loading.remove(), 500);
-        }
-      }, 1500);
-    });
-  </script>
+function initDD(){
+  const td=new Date(2026,4,3);
+  const dd=[
+    {l:"☀️ 태양이 탄생",d:new Date(2026,5,3),c:"#fbbf24"},
+    {l:"🏠 계약금 납부",d:new Date(2026,9,1),c:"#4f9cf9"},
+    {l:"💳 중도금1",d:new Date(2026,11,1),c:"#5eead4"},
+    {l:"🎉 잔금&입주",d:new Date(2027,11,1),c:"#34d399"},
+  ];
+  document.getElementById("dd").innerHTML=dd.map(x=>{
+    const dy=Math.ceil((x.d-td)/86400000);
+    return`<div class="box" style="border-color:${x.c}33;text-align:center;"><div style="font-size:11px;color:#4a6080;margin-bottom:4px;">${x.l}</div><div style="font-size:20px;font-weight:900;color:${x.c};">${dy>0?"D-"+dy:"D-Day"}</div><div style="font-size:10px;color:#4a6080;margin-top:2px;">${x.d.toISOString().slice(0,10)}</div></div>`;
+  }).join("");
+}
+
+function initTL(){
+  const items=[
+    {k:"2026-10",l:"계약금 자납",A:"신용대출 실행<br>현금 4.02억 납부",B:"동일",c:"#4f9cf9"},
+    {k:"2026-12",l:"중도금 1회차",A:"집단대출 실행<br>(현금 무소요)",B:"현금 6억 자납",c:"#5eead4"},
+    {k:"2027-04",l:"중도금 2회차",A:"집단대출 실행<br>(현금 무소요)",B:"현금 6억 자납",c:"#5eead4"},
+    {k:"2027-08",l:"중도금 3회차(공통자납)",A:"현금 6억 납부",B:"현금 6억 납부",c:"#fb923c"},
+    {k:"2027-12",l:"잔금 & 입주!",A:"대출 5.48억 실행<br>중도금 12억 상환<br>잔금+취득세+발코니",B:"대출 5.48억 실행<br>잔금+취득세+발코니",c:"#34d399"},
+  ];
+  document.getElementById("tl").innerHTML=items.map((x,i)=>`
+    <div class="tl">
+      <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+        <div class="dot" style="background:${x.c};"></div>
+        ${i<items.length-1?'<div class="ln"></div>':""}
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:10px;color:#4a6080;">${x.k}</div>
+        <div style="font-size:13px;font-weight:700;margin-top:1px;">${x.l}</div>
+        <div class="g2" style="margin-top:6px;">
+          <div class="box" style="border-color:#4f9cf933;"><div style="font-size:10px;color:#4f9cf9;font-weight:700;margin-bottom:4px;">Case A</div><div style="font-size:10px;color:#4a6080;">${x.A}</div></div>
+          <div class="box" style="border-color:#fb923c33;"><div style="font-size:10px;color:#fb923c;font-weight:700;margin-bottom:4px;">Case B</div><div style="font-size:10px;color:#4a6080;">${x.B}</div></div>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+function gt(n,btn){
+  document.querySelectorAll(".sec").forEach(s=>s.classList.remove("on"));
+  document.querySelectorAll(".tb").forEach(b=>b.classList.remove("on"));
+  document.getElementById("s"+n).classList.add("on");
+  btn.classList.add("on");
+}
+
+function sr(r){
+  rate=r;
+  document.querySelectorAll(".rbtn").forEach(b=>{
+    const br=parseFloat(b.getAttribute("data-r"));
+    if(Math.abs(br-r)<0.001){b.classList.add("on");b.textContent=(r*100)+"% ✓";}
+    else{b.classList.remove("on");b.textContent=(br*100)+"%";}
+  });
+  ui();
+}
+
+async function sync(){
+  const btns=document.querySelectorAll(".sbtn");
+  btns.forEach(b=>{b.textContent="⏳ 동기화 중...";b.disabled=true;});
+  try{
+    const res=await fetch("/api/notion");
+    if(!res.ok)throw new Error("오류");
+    const data=await res.json();
+    if(data.entries&&data.entries.length>0){
+      EN=data.entries.map(e=>({
+        n:e["내용"]||"",t:e["유형"]||"지출",c:e["카테고리"]||"공동",
+        a:e["금액"]||0,p:e["결제수단"]||"현금",w:e["주차"]||"1주차",d:e["날짜"]||""
+      }));
+    }
+    document.getElementById("st").textContent="🔄 "+new Date().toLocaleTimeString("ko-KR")+" 동기화완료";
+    ui();
+  }catch(e){
+    document.getElementById("st").textContent="⚠️ 동기화실패 - 기존데이터 표시중";
+  }
+  btns.forEach(b=>{b.textContent="🔄 노션 데이터 새로고침";b.disabled=false;});
+}
+
+initDD();initTL();ui();
+if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js");
+</script>
 </body>
 </html>
