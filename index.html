@@ -59,9 +59,33 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
     <div style="font-size:17px;font-weight:900;">☀️ TAEYANGene App</div>
     <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">VER 1.2 · 5/3 기준</div>
   </div>
-  <div style="text-align:right;">
-    <div style="font-size:10px;color:#4a6080;">투자+현금</div>
-    <div style="font-size:20px;font-weight:900;color:#4f9cf9;">22.01억</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <select id="month-select" onchange="onMonthChange(this.value)" style="background:#1e3a5f;border:1px solid #4f9cf9;border-radius:8px;color:#4f9cf9;font-size:12px;font-weight:700;padding:5px 8px;font-family:inherit;cursor:pointer;">
+      <option value="2026-05">5월</option>
+      <option value="2026-06">6월</option>
+      <option value="2026-07">7월</option>
+      <option value="2026-08">8월</option>
+      <option value="2026-09">9월</option>
+      <option value="2026-10">10월</option>
+      <option value="2026-11">11월</option>
+      <option value="2026-12">12월</option>
+      <option value="2027-01">27년 1월</option>
+      <option value="2027-02">27년 2월</option>
+      <option value="2027-03">27년 3월</option>
+      <option value="2027-04">27년 4월</option>
+      <option value="2027-05">27년 5월</option>
+      <option value="2027-06">27년 6월</option>
+      <option value="2027-07">27년 7월</option>
+      <option value="2027-08">27년 8월</option>
+      <option value="2027-09">27년 9월</option>
+      <option value="2027-10">27년 10월</option>
+      <option value="2027-11">27년 11월</option>
+      <option value="2027-12">27년 12월</option>
+    </select>
+    <div style="text-align:right;">
+      <div style="font-size:10px;color:#4a6080;">투자+현금</div>
+      <div style="font-size:20px;font-weight:900;color:#4f9cf9;">22.01억</div>
+    </div>
   </div>
 </div>
 
@@ -139,13 +163,13 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
   <!-- 수입/지출 -->
   <div class="card" id="home-cf-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <div class="lbl" style="margin:0;">💸 5월 수입/지출</div>
+      <div class="lbl" style="margin:0;">💸 <span id="cf-month-lbl">5월</span> 수입/지출</div>
       <span style="font-size:11px;font-weight:700;" id="cf-status">-</span>
     </div>
     <div class="g3" style="margin-bottom:12px;">
-      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">수입</div><div style="font-size:15px;font-weight:900;color:#34d399;" id="i0">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 1,146만</div></div>
-      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">현금지출</div><div style="font-size:15px;font-weight:900;color:#f87171;" id="i1">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 560만</div></div>
-      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">순저축</div><div style="font-size:15px;font-weight:900;" id="i2">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;">계획 586만</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">수입</div><div style="font-size:15px;font-weight:900;color:#34d399;" id="i0">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;" id="plan-inc-lbl">계획 1,146만</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">현금지출</div><div style="font-size:15px;font-weight:900;color:#f87171;" id="i1">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;" id="plan-exp-lbl">계획 560만</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">순저축</div><div style="font-size:15px;font-weight:900;" id="i2">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;" id="plan-sv-lbl">계획 586만</div></div>
     </div>
     <div class="g2" style="margin-bottom:10px;">
       <div class="box" style="border-color:#4f9cf933;"><div style="font-size:12px;font-weight:700;color:#4f9cf9;margin-bottom:4px;">🏠 공동</div><div style="font-size:11px;" id="c0">-</div></div>
@@ -300,7 +324,7 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 <!-- ━━━ CF분석 ━━━ -->
 <div class="sec" id="s2">
   <div class="card" style="border:1px solid #34d39933;">
-    <div class="lbl" style="color:#34d399;">✅ 5월 결산 (노션 데이터)</div>
+    <div class="lbl" style="color:#34d399;">✅ <span id="cf-result-lbl">5월</span> 결산 (노션 데이터)</div>
     <div class="g3">
       <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제수입</div><div style="font-size:14px;font-weight:900;color:#34d399;" id="ci">-</div></div>
       <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제지출</div><div style="font-size:14px;font-weight:900;color:#f87171;" id="ce">-</div></div>
@@ -655,6 +679,19 @@ function ui(){
   document.getElementById("i2").textContent=f(s.sv);
   document.getElementById("i2").style.color=s.sv>=planSv?"#4f9cf9":"#f87171";
   var ok=s.sv>=planSv;
+  // 계획 수치 라벨 업데이트
+  var curPlan=CF[CUR_MONTH]||CF["2026-05"];
+  var pil=document.getElementById("plan-inc-lbl");
+  var pel=document.getElementById("plan-exp-lbl");
+  var psl=document.getElementById("plan-sv-lbl");
+  if(pil)pil.textContent="계획 "+f(curPlan.i);
+  if(pel)pel.textContent="계획 "+f(curPlan.e);
+  if(psl)psl.textContent="계획 "+f(curPlan.i-curPlan.e);
+  var mLabel=CUR_MONTH.startsWith("2027")?"27년 "+parseInt(CUR_MONTH.slice(5))+"월":parseInt(CUR_MONTH.slice(5))+"월";
+  var cfmlbl=document.getElementById("cf-month-lbl");
+  if(cfmlbl)cfmlbl.textContent=mLabel;
+  var cfrlbl=document.getElementById("cf-result-lbl");
+  if(cfrlbl)cfrlbl.textContent=mLabel;
   document.getElementById("cf-status").textContent=ok?"✅ 저축 정상":"⚠️ 저축 부족";
   document.getElementById("cf-status").style.color=ok?"#34d399":"#f87171";
   document.getElementById("home-cf-card").style.border="1px solid "+(ok?"#1a3050":"#f8717144");
@@ -724,6 +761,13 @@ function ui(){
   document.getElementById("gauge-plan").textContent=Math.round(planExp/10000)+"만";
 
   // STEP 2
+  // STEP1 계획 수치 업데이트
+  var s1inc=document.getElementById("step1-inc");
+  var s1exp=document.getElementById("step1-exp");
+  var s1sv=document.getElementById("step1-sv");
+  if(s1inc)s1inc.textContent=f(curPlan.i);
+  if(s1exp)s1exp.textContent=f(curPlan.e);
+  if(s1sv)s1sv.textContent=f(curPlan.i-curPlan.e);
   document.getElementById("li").textContent=f(s.ti);
   document.getElementById("le").textContent=f(s.ce);
   document.getElementById("lsv").textContent=f(s.sv);
@@ -774,14 +818,14 @@ function initDD(){
 // ━━━ 납부 타임라인 ━━━
 function initTL(){
   var isA=caseType==="A";
-  var 잔금시A=C6+취득세+발코니+C6*2-주담대-은행;
-  var 잔금시B=C6+취득세+발코니-주담대-은행;
+  var 잔금시A=C6+취득세+발코니+C6*2-대출합; // 신용+주담+은행 전체 차감
+  var 잔금시B=C6+취득세+발코니-대출합; // 신용+주담+은행 전체 차감
   var items=[
-    {k:"2026-10",l:"🏠 계약금",amtA:C6,noteA:"6억 납부\n(신용대출 1.98억 별도 실행)",amtB:C6,noteB:"6억 납부\n(신용대출 1.98억 별도 실행)",c:"#4f9cf9"},
+    {k:"2026-10",l:"🏠 계약금",amtA:C6,noteA:"6억 전액 자납",amtB:C6,noteB:"6억 전액 자납",c:"#4f9cf9"},
     {k:"2026-12",l:"💳 중도금 1회차",amtA:0,noteA:"집단대출 실행 현금 무소요 ✅\n이자 월 225만 시작",amtB:C6,noteB:"현금 6억 자납",c:"#5eead4"},
     {k:"2027-04",l:"💳 중도금 2회차",amtA:0,noteA:"집단대출 실행 현금 무소요 ✅\n이자 월 450만으로 증가",amtB:C6,noteB:"현금 6억 자납",c:"#5eead4"},
     {k:"2027-08",l:"💳 중도금 3회차",amtA:C6,noteA:"현금 6억 자납 (공통)",amtB:C6,noteB:"현금 6억 자납 (공통)",c:"#fb923c"},
-    {k:"2027-12",l:"🎉 잔금 & 입주",amtA:잔금시A,noteA:"잔금6억+취득세9,900만+발코니1.2억\n중도금12억 상환\n주담대+은행대출 실행 차감",amtB:잔금시B,noteB:"잔금6억+취득세9,900만+발코니1.2억\n주담대+은행대출 실행 차감",c:"#34d399"},
+    {k:"2027-12",l:"🎉 잔금 & 입주",amtA:잔금시A,noteA:"잔금6억+취득세9,900만+발코니1.2억\n중도금12억 상환\n신용대출1.98억+주담대2억+은행1.5억 실행 차감",amtB:잔금시B,noteB:"잔금6억+취득세9,900만+발코니1.2억\n신용대출1.98억+주담대2억+은행1.5억 실행 차감",c:"#34d399"},
   ];
   document.getElementById("tl").innerHTML=items.map(function(x,i){
     var amt=isA?x.amtA:x.amtB,note=isA?x.noteA:x.noteB;
@@ -790,7 +834,7 @@ function initTL(){
     return '<div class="tl"><div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;"><div class="dot" style="background:'+x.c+';margin-top:3px;"></div>'+ln+'</div><div style="flex:1;padding-bottom:4px;"><div style="font-size:10px;color:#4a6080;">'+x.k+'</div><div style="font-size:13px;font-weight:700;margin-top:1px;">'+x.l+'</div>'+amtHtml+'<div style="font-size:10px;color:#4a6080;margin-top:3px;line-height:1.7;white-space:pre-line;">'+note+'</div></div></div>';
   }).join("");
 
-  var rows=isA?[{l:"계약금 6억",v:C6,c:"#4f9cf9"},{l:"중도금 3회차 자납",v:C6,c:"#fb923c"},{l:"중도금 이자(4.5%)",v:총이자A,c:"#f87171"},{l:"잔금+취득세+발코니",v:C6+취득세+발코니,c:"#5eead4"},{l:"중도금 12억 상환",v:C6*2,c:"#f87171"},{l:"대출 전체 차감",v:-대출합,c:"#34d399"}]:[{l:"계약금 6억",v:C6,c:"#4f9cf9"},{l:"중도금 1+2+3 (각 6억)",v:C6*3,c:"#5eead4"},{l:"잔금+취득세+발코니",v:C6+취득세+발코니,c:"#5eead4"},{l:"대출 전체 차감",v:-대출합,c:"#34d399"}];
+  var rows=isA?[{l:"계약금 6억 (자납)",v:C6,c:"#4f9cf9"},{l:"중도금 3회차 자납",v:C6,c:"#fb923c"},{l:"중도금 이자(4.5%)",v:총이자A,c:"#f87171"},{l:"잔금+취득세+발코니",v:C6+취득세+발코니,c:"#5eead4"},{l:"중도금 12억 상환",v:C6*2,c:"#f87171"},{l:"신용+주담+은행 대출 차감",v:-대출합,c:"#34d399"}]:[{l:"계약금 6억",v:C6,c:"#4f9cf9"},{l:"중도금 1+2+3 (각 6억)",v:C6*3,c:"#5eead4"},{l:"잔금+취득세+발코니",v:C6+취득세+발코니,c:"#5eead4"},{l:"대출 전체 차감",v:-대출합,c:"#34d399"}];
   var 합계=isA?목표A:목표B;
   document.getElementById("tl-summary").innerHTML=
     rows.map(function(x){return '<div class="row"><span style="color:#4a6080;">'+x.l+'</span><span style="color:'+x.c+';font-weight:700;">'+(x.v<0?"-":"+")+f(Math.abs(x.v))+'</span></div>';}).join("")+
@@ -836,6 +880,24 @@ function srTL(r){
   updateTLProfit();
 }
 
+// ━━━ 월 변경 ━━━
+function onMonthChange(month){
+  CUR_MONTH=month;
+  var label=month.startsWith("2027")?
+    "27년 "+parseInt(month.slice(5))+"월":
+    parseInt(month.slice(5))+"월";
+  document.getElementById("st").textContent="VER 1.2 · "+label+" 기준";
+  // 해당 월 계획 수치 업데이트
+  var plan=CF[CUR_MONTH];
+  if(plan){
+    var planSv=plan.i-plan.e;
+    if(document.getElementById("step1-exp")) document.getElementById("step1-exp").textContent=f(plan.e);
+    if(document.getElementById("step1-sv")) document.getElementById("step1-sv").textContent=f(planSv);
+    if(document.getElementById("gauge-plan")) document.getElementById("gauge-plan").textContent=Math.round(plan.e/10000)+"만";
+  }
+  ui();
+}
+
 // ━━━ 노션 동기화 ━━━
 async function syncNotion(){
   try{
@@ -861,6 +923,8 @@ initDD();
 initTL();
 ui();
 syncNotion();
+// 드롭다운 초기값 설정 (현재 월)
+document.getElementById("month-select").value=CUR_MONTH;
 if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js");
 </script>
 </body>
