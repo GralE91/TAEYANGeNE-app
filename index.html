@@ -432,13 +432,13 @@ var 목표A억=목표A/1e8,목표B억=목표B/1e8;
 
 // 노션 데이터
 var EN=[
-  {n:"4월 급여",t:"수입",c:"근한",a:6090240,p:"현금",w:"1주차",d:"2026-04-21",ss:[]},
-  {n:"4월 급여",t:"수입",c:"예진",a:4063620,p:"현금",w:"1주차",d:"2026-04-21",ss:[]},
-  {n:"1주차 생활비 정산",t:"지출",c:"근한",a:85900,p:"현금",w:"1주차",d:"2026-04-26",ss:[]},
-  {n:"1주차 생활비 정산",t:"지출",c:"예진",a:342170,p:"현금",w:"1주차",d:"2026-04-26",ss:[]},
-  {n:"3월 관리비",t:"지출",c:"공동",a:219410,p:"현금",w:"1주차",d:"2026-04-25",ss:[]},
-  {n:"어버이날용돈(할머니할아부지)",t:"지출",c:"공동",a:400000,p:"현금",w:"2주차",d:"2026-05-02",ss:[]},
-  {n:"당근_숀리바이크",t:"수입",c:"공동",a:50000,p:"현금",w:"2주차",d:"2026-05-03",ss:[]}
+  {n:"4월 급여",t:"수입",c:"근한",a:6090240,p:"현금",w:"1주차",d:"2026-04-21",ss:[],url:"https://www.notion.so/3532bce4ac1280db8a24ca4e45a831fb"},
+  {n:"4월 급여",t:"수입",c:"예진",a:4063620,p:"현금",w:"1주차",d:"2026-04-21",ss:[],url:"https://www.notion.so/3532bce4ac12806d9155f21175d14491"},
+  {n:"1주차 생활비 정산",t:"지출",c:"근한",a:85900,p:"현금",w:"1주차",d:"2026-04-26",ss:["notionfile"],url:"https://www.notion.so/3532bce4ac1280ec9867df9f44e7bbff"},
+  {n:"1주차 생활비 정산",t:"지출",c:"예진",a:342170,p:"현금",w:"1주차",d:"2026-04-26",ss:["notionfile"],url:"https://www.notion.so/3532bce4ac12801db4bef3fbcf3cbf4b"},
+  {n:"3월 관리비",t:"지출",c:"공동",a:219410,p:"현금",w:"1주차",d:"2026-04-25",ss:[],url:"https://www.notion.so/3532bce4ac12805b96a7c4dfa60896ab"},
+  {n:"어버이날용돈(할머니할아부지)",t:"지출",c:"공동",a:400000,p:"현금",w:"2주차",d:"2026-05-02",ss:[],url:"https://www.notion.so/3542bce4ac12809bb18bf129914ab4a7"},
+  {n:"당근_숀리바이크",t:"수입",c:"공동",a:50000,p:"현금",w:"2주차",d:"2026-05-03",ss:[],url:"https://www.notion.so/3552bce4ac12803aab1dcaa428a24125"}
 ];
 var ACTUAL_SV={};
 var sliderRate=Math.round(현재수익률); // 현재 수익률로 초기화 (33)
@@ -708,8 +708,18 @@ function ui(){
   document.getElementById("ec").textContent="("+(EN.length+1)+"건)";
 
   var allEN=[{n:"월세(고정)",t:"지출",c:"공동",a:월세,p:"현금",w:"이번달",d:"15일 고정",ss:[]}].concat(EN);
-  document.getElementById("el").innerHTML=allEN.map(function(e){
-    var ssBtn=e.ss&&e.ss.length>0?'<button class="ssbtn" onclick="showSS(\''+encodeURIComponent(e.n)+'\',\''+encodeURIComponent(JSON.stringify(e.ss))+'\')">📷</button>':"";
+  var elContainer=document.getElementById("el");
+  elContainer.innerHTML=allEN.map(function(e,idx){
+    var isJeongsan=(e.n.indexOf("정산")>-1||e.n.indexOf("생활비")>-1);
+    var hasSS=e.ss&&e.ss.length>0;
+    var hasUrl=e.url&&e.url.length>0;
+    var ssBtnHtml="";
+    if(hasSS&&hasUrl){
+      ssBtnHtml='<button class="ssbtn" data-idx="'+idx+'" data-type="ss">📷 스샷</button>';
+    }else if(isJeongsan&&hasUrl){
+      ssBtnHtml='<button class="ssbtn" data-idx="'+idx+'" data-type="nofile" style="opacity:0.5;background:#1a3050;border-color:#4a6080;color:#4a6080;">📷 없음</button>';
+    }
+    var ssBtn=ssBtnHtml;
     return '<div class="er"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">'+
       '<span style="font-size:16px;flex-shrink:0;">'+(emo[e.c]||"📦")+'</span>'+
       '<div style="min-width:0;overflow:hidden;"><div style="font-size:12px;font-weight:600;color:'+(col[e.c]||"#f1f5f9")+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+e.n+'</div>'+
@@ -762,6 +772,23 @@ function ui(){
   document.getElementById("gauge-plan").textContent=Math.round(planExp/10000)+"만";
 
   // STEP 2
+  // 스샷 버튼 이벤트 위임
+  elContainer.onclick=function(ev){
+    var btn=ev.target.closest("button[data-idx]");
+    if(!btn)return;
+    var idx=parseInt(btn.getAttribute("data-idx"));
+    var type=btn.getAttribute("data-type");
+    var e=allEN[idx];
+    if(type==="ss"&&e&&e.url){
+      // 노션 페이지로 이동 (스샷 확인)
+      window.open(e.url,"_blank");
+    }else if(type==="nofile"&&e&&e.url){
+      if(confirm("아직 스샷이 없어요 😊\n노션에서 스샷을 첨부하러 갈까요?")){
+        window.open(e.url,"_blank");
+      }
+    }
+  };
+
   // STEP1 계획 수치 업데이트
   var s1inc=document.getElementById("step1-inc");
   var s1exp=document.getElementById("step1-exp");
@@ -846,12 +873,26 @@ function initTL(){
 }
 
 // ━━━ 스샷 모달 ━━━
-function showSS(title,encodedUrls){
-  var urls=JSON.parse(decodeURIComponent(encodedUrls));
-  document.getElementById("modal-title").textContent=decodeURIComponent(title)+" 스샷";
-  if(!urls||!urls.length){document.getElementById("modal-content").innerHTML='<div style="color:#4a6080;">스샷 없음</div>';return;}
-  document.getElementById("modal-content").innerHTML=urls.map(function(u){return '<img class="modal-img" src="'+u+'"/>';}).join("");
-  document.getElementById("modal").classList.add("on");
+function showSS(title,urls){
+  try{
+    if(typeof urls==="string") urls=JSON.parse(decodeURIComponent(urls));
+    var t=typeof title==="string"?title:"";
+    document.getElementById("modal-title").textContent=t+" 📷 스샷";
+    var mc=document.getElementById("modal-content");
+    if(!urls||!urls.length){
+      mc.innerHTML='<div style="text-align:center;padding:20px;"><div style="font-size:40px;margin-bottom:12px;">📷</div><div style="color:#4a6080;font-size:13px;">아직 스샷이 없어요</div><div style="color:#4a6080;font-size:11px;margin-top:6px;">노션에서 스샷 필드에 이미지를 첨부해주세요!</div></div>';
+    }else{
+      var imgs="";
+      for(var i=0;i<urls.length;i++){
+        imgs+='<img src="'+urls[i]+'" style="max-width:100%;border-radius:10px;display:block;margin-bottom:8px;"/>';
+      }
+      imgs+='<div style="font-size:10px;color:#4a6080;margin-top:8px;text-align:center;">노션에서 업로드한 스샷 ('+urls.length+'장)</div>';
+      mc.innerHTML=imgs;
+    }
+    document.getElementById("modal").classList.add("on");
+  }catch(err){
+    alert("스샷을 불러오는 중 오류가 발생했어요");
+  }
 }
 function closeModal(){document.getElementById("modal").classList.remove("on");}
 
