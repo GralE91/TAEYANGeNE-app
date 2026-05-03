@@ -91,8 +91,8 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
       <option value="2027-12">27년 12월</option>
     </select>
     <div style="text-align:right;">
-      <div style="font-size:10px;color:#4a6080;">투자+현금</div>
-      <div style="font-size:20px;font-weight:900;color:#4f9cf9;">22.01억</div>
+      <div style="font-size:10px;color:#4a6080;" id="hd-label">투자+현금 (5/3)</div>
+      <div style="font-size:20px;font-weight:900;color:#4f9cf9;" id="hd-value">22.01억</div>
     </div>
   </div>
 </div>
@@ -114,7 +114,7 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 <!-- ━━━ 홈 ━━━ -->
 <div class="sec on" id="s0">
   <div class="card">
-    <div class="lbl">📊 자산 현황 · 5/3</div>
+    <div class="lbl">📊 자산 현황 · <span id="asset-date-lbl">5/3</span></div>
     <div class="g3">
       <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자자산</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;">19.61억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 11.55억<br>예진 8.06억</div></div>
       <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">현금자산</div><div style="font-size:15px;font-weight:900;color:#34d399;">2.40억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 0.99억<br>예진 1.41억</div></div>
@@ -343,7 +343,10 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
     </div>
   </div>
   <div class="card">
-    <div class="lbl">📊 CF 계획 전체</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div class="lbl" style="margin:0;">📊 CF 계획 전체</div>
+      <div style="font-size:9px;color:#fbbf24;">⏳ = 결산 예정</div>
+    </div>
     <div style="overflow-x:auto;">
       <table class="cft">
         <thead><tr>
@@ -429,6 +432,26 @@ var CF={
 };
 var CUR_MONTH="2026-05";
 
+// 오늘 기준 활성화된 가계경제 월 (전월21일~당월20일)
+function getActiveMonth(){
+  var today=new Date();
+  var y=today.getFullYear();
+  var m=today.getMonth()+1; // 1-12
+  var d=today.getDate();
+  // 21일 이후면 다음 달 가계경제
+  if(d>=21){
+    m+=1;
+    if(m>12){m=1;y+=1;}
+  }
+  return y+"-"+String(m).padStart(2,"0");
+}
+var ACTIVE_MONTH=getActiveMonth(); // 예: "2026-05"
+
+// 해당 월이 결산 가능한지 (현재 월 또는 과거)
+function isMonthClosed(monthKey){
+  return monthKey<=ACTIVE_MONTH;
+}
+
 // 주간 자산 추이 (총자산)
 var WK=[
   {d:"1/11",v:16.53},{d:"1/18",v:17.36},{d:"1/25",v:18.23},
@@ -447,15 +470,27 @@ var EN=[
   {n:"4월 급여",t:"수입",c:"예진",a:4063620,p:"현금",w:"1주차",d:"2026-04-21",ss:[],url:"https://www.notion.so/3532bce4ac12806d9155f21175d14491"},
   {n:"1주차 생활비 정산",t:"지출",c:"근한",a:85900,p:"현금",w:"1주차",d:"2026-04-26",ss:["notionfile"],url:"https://www.notion.so/3532bce4ac1280ec9867df9f44e7bbff"},
   {n:"1주차 생활비 정산",t:"지출",c:"예진",a:342170,p:"현금",w:"1주차",d:"2026-04-26",ss:["notionfile"],url:"https://www.notion.so/3532bce4ac12801db4bef3fbcf3cbf4b"},
-  {n:"3월 관리비",t:"지출",c:"공동",a:219410,p:"현금",w:"1주차",d:"2026-04-25",ss:[],url:"https://www.notion.so/3532bce4ac12805b96a7c4dfa60896ab"},
   {n:"어버이날용돈(할머니할아부지)",t:"지출",c:"공동",a:400000,p:"현금",w:"2주차",d:"2026-05-02",ss:[],url:"https://www.notion.so/3542bce4ac12809bb18bf129914ab4a7"},
-  {n:"당근_숀리바이크",t:"수입",c:"공동",a:50000,p:"현금",w:"2주차",d:"2026-05-03",ss:[],url:"https://www.notion.so/3552bce4ac12803aab1dcaa428a24125"}
+  {n:"당근_숀리바이크",t:"수입",c:"공동",a:50000,p:"현금",w:"2주차",d:"2026-05-03",ss:[],url:"https://www.notion.so/3552bce4ac12803aab1dcaa428a24125"},
+  {n:"2주차 생활비 정산",t:"지출",c:"예진",a:30000,p:"현금",w:"2주차",d:"2026-05-20",ss:["notionfile"],url:"https://www.notion.so/3552bce4ac128033af66deb43d29288d"},
+  {n:"2주차 생활비 정산",t:"지출",c:"근한",a:90370,p:"현금",w:"2주차",d:"2026-05-20",ss:["notionfile"],url:"https://www.notion.so/3552bce4ac1280ebb566c40af392d744"}
 ];
 // LocalStorage에서 결산 데이터 복원
 var ACTUAL_SV={};
 try{
   var saved=localStorage.getItem("TAEYANGene_ACTUAL_SV");
-  if(saved)ACTUAL_SV=JSON.parse(saved);
+  if(saved){
+    ACTUAL_SV=JSON.parse(saved);
+    // 미래 월 데이터 자동 정리 (이전 버전에서 잘못 저장된 것 제거)
+    var activeM=(function(){
+      var t=new Date(),y=t.getFullYear(),m=t.getMonth()+1,d=t.getDate();
+      if(d>=21){m+=1;if(m>12){m=1;y+=1;}}
+      return y+"-"+String(m).padStart(2,"0");
+    })();
+    Object.keys(ACTUAL_SV).forEach(function(k){
+      if(k>activeM)delete ACTUAL_SV[k];
+    });
+  }
 }catch(err){console.warn("결산 복원 실패",err);}
 
 // 결산 저장 함수
@@ -712,8 +747,11 @@ function ui(){
   var s=calc();
   var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
   var svDiff=s.sv-planSv;
-  ACTUAL_SV[CUR_MONTH]=s.sv;
-  saveActualSV();
+  // 활성화된 월(현재 또는 과거)일 때만 실적 저장
+  if(isMonthClosed(CUR_MONTH)){
+    ACTUAL_SV[CUR_MONTH]=s.sv;
+    saveActualSV();
+  }
 
   // 홈
   document.getElementById("i0").textContent=f(s.ti);
@@ -721,6 +759,16 @@ function ui(){
   document.getElementById("i2").textContent=f(s.sv);
   document.getElementById("i2").style.color=s.sv>=planSv?"#4f9cf9":"#f87171";
   var ok=s.sv>=planSv;
+  // 자산 현황 라벨 업데이트
+  var assetLbl=document.getElementById("asset-date-lbl");
+  if(assetLbl){
+    if(CUR_MONTH==="2026-05"){
+      assetLbl.textContent="5/3 (현재)";
+    }else{
+      assetLbl.textContent=mLabel+" 예상";
+    }
+  }
+  
   // 계획 수치 라벨 업데이트
   var curPlan=CF[CUR_MONTH]||CF["2026-05"];
   var pil=document.getElementById("plan-inc-lbl");
@@ -746,9 +794,11 @@ function ui(){
   document.getElementById("c2i").textContent=s.ct.예진.i>0?"+"+f(s.ct.예진.i):"";
   document.getElementById("c2e").textContent=s.ct.예진.c>0?"-"+f(s.ct.예진.c):"";
   document.getElementById("c3").textContent=(s.ct.태양.i>0||s.ct.태양.c>0)?"입력있음":"미입력";
-  document.getElementById("ec").textContent="("+(EN.length+1)+"건)";
 
-  var allEN=[{n:"월세(고정)",t:"지출",c:"공동",a:월세,p:"현금",w:"이번달",d:"15일 고정",ss:[]}].concat(EN);
+  // 현재 월에 해당하는 데이터만 표시
+  var filteredEN=EN.filter(function(e){return isInMonth(e.d,CUR_MONTH);});
+  var allEN=[{n:"월세(고정)",t:"지출",c:"공동",a:월세,p:"현금",w:"이번달",d:"15일 고정",ss:[]}].concat(filteredEN);
+  document.getElementById("ec").textContent="("+(filteredEN.length+1)+"건)";
   var elContainer=document.getElementById("el");
   elContainer.innerHTML=allEN.map(function(e,idx){
     var isJeongsan=(e.n.indexOf("정산")>-1||e.n.indexOf("생활비")>-1);
@@ -777,15 +827,25 @@ function ui(){
   var tb="",totalPlanSv=0,totalActSv_local=0;
   Object.keys(CF).forEach(function(k){
     var v=CF[k],sv=v.i-v.e,cur=k===CUR_MONTH;
-    var actSv=ACTUAL_SV[k]!=null?ACTUAL_SV[k]:null;
+    var isClosed=isMonthClosed(k); // 현재 또는 과거 월
+    // 미래 월은 실적/차이 표시 안 함
+    var actSv=isClosed&&ACTUAL_SV[k]!=null?ACTUAL_SV[k]:null;
     var df=actSv!==null?actSv-sv:null;
-    totalPlanSv+=sv;totalActSv_local+=actSv!==null?actSv:sv;
-    tb+='<tr style="background:'+(cur?"#1a305044":"transparent")+';border-bottom:1px solid #1a305022;">'+
+    totalPlanSv+=sv;
+    // 합계 계산: 활성화된 월은 실적값(없으면 계획값), 미래 월은 계획값
+    totalActSv_local+=actSv!==null?actSv:sv;
+    
+    var rowOpacity=isClosed?"1":"0.5"; // 미래 월은 흐리게
+    var actText=isClosed?(actSv!==null?f(actSv):"-"):"⏳";
+    var diffText=isClosed?(df===null?"-":(df>=0?"+":"")+f(Math.abs(df))):"예정";
+    var diffColor=isClosed?(df===null?"#4a6080":df>=0?"#34d399":"#f87171"):"#4a6080";
+    
+    tb+='<tr style="background:'+(cur?"#1a305044":"transparent")+';border-bottom:1px solid #1a305022;opacity:'+rowOpacity+';">'+
       '<td style="padding:6px 4px;color:'+(cur?"#4f9cf9":"#4a6080")+';font-weight:'+(cur?700:400)+';text-align:left;">'+k.slice(2)+'</td>'+
       '<td style="color:#34d399;">'+f(v.i)+'</td><td style="color:#f87171;">'+f(v.e)+'</td>'+
       '<td style="color:#4f9cf9;font-weight:700;">'+f(sv)+'</td>'+
-      '<td style="color:#34d399;">'+(actSv!==null?f(actSv):"-")+'</td>'+
-      '<td style="font-weight:700;color:'+(df===null?"#4a6080":df>=0?"#34d399":"#f87171")+'">'+(df===null?"-":(df>=0?"+":"")+f(Math.abs(df)))+'</td></tr>';
+      '<td style="color:'+(isClosed?"#34d399":"#4a6080")+';">'+actText+'</td>'+
+      '<td style="font-weight:700;color:'+diffColor+';font-size:'+(isClosed?"10px":"9px")+';">'+diffText+'</td></tr>';
   });
   document.getElementById("cftb").innerHTML=tb;
   totalActSv=totalActSv_local; // 전역 업데이트
@@ -796,10 +856,11 @@ function ui(){
     '<td></td><td></td>'+
     '<td style="color:#4f9cf9;font-weight:900;">'+f(totalPlanSv)+'</td>'+
     '<td style="color:#5eead4;font-weight:900;">'+f(totalActSv)+'</td>'+
-    '<td style="font-weight:900;color:'+(diffTotal>=0?"#34d399":"#f87171")+'">'+(diffTotal>=0?"+":"")+f(diffTotal)+'</td></tr>'+
+    '<td style="font-weight:900;color:'+(diffTotal>=0?"#34d399":"#f87171")+';font-size:10px;">'+(diffTotal>=0?"+":"")+f(diffTotal)+'</td></tr>'+
     '<tr style="background:#0a1020;">'+
-    '<td colspan="3" style="padding:6px 4px;font-size:9px;color:#4a6080;text-align:left;">💡 현자산+예상저축</td>'+
-    '<td colspan="3" style="padding:6px 4px;font-size:11px;font-weight:900;color:#5eead4;text-align:right;">'+f(현자산+totalActSv)+'</td></tr>';
+    '<td colspan="2" style="padding:6px 4px;font-size:9px;color:#4a6080;text-align:left;">💡 현자산+예상저축</td>'+
+    '<td colspan="2" style="padding:6px 4px;font-size:9px;color:#fbbf24;text-align:left;">⏳ 미래 = 계획값</td>'+
+    '<td colspan="2" style="padding:6px 4px;font-size:11px;font-weight:900;color:#5eead4;text-align:right;">'+f(현자산+totalActSv)+'</td></tr>';
 
   // 게이지
   var planExp=CF[CUR_MONTH].e;
@@ -1003,6 +1064,29 @@ function onMonthChange(month){
     "27년 "+parseInt(month.slice(5))+"월":
     parseInt(month.slice(5))+"월";
   document.getElementById("st").textContent="VER 1.2 · "+label+" 기준";
+  
+  // 헤더 라벨 업데이트
+  var hdLabel=document.getElementById("hd-label");
+  var hdValue=document.getElementById("hd-value");
+  if(month==="2026-05"){
+    hdLabel.textContent="투자+현금 (5/3)";
+    hdValue.textContent="22.01억";
+    hdValue.style.color="#4f9cf9";
+  }else{
+    // 다른 월은 예상 자산 표시 (현자산 + 누적 저축액)
+    var cumSv=0;
+    var monthOrder=Object.keys(CF);
+    var curIdx=monthOrder.indexOf(month);
+    for(var i=0;i<=curIdx;i++){
+      var mk=monthOrder[i];
+      cumSv+=ACTUAL_SV[mk]!=null?ACTUAL_SV[mk]:(CF[mk].i-CF[mk].e);
+    }
+    var expectedAsset=현자산+cumSv;
+    hdLabel.textContent="예상 ("+label+")";
+    hdValue.textContent=f(expectedAsset);
+    hdValue.style.color="#5eead4";
+  }
+  
   toast("📅 "+label+" 데이터로 전환했어요","success",1500);
   ui();
 }
