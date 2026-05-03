@@ -81,8 +81,8 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
   <div class="card">
     <div class="lbl">📊 자산 현황 · 5/3</div>
     <div class="g3">
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자자산</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;">18.64억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 11.34억<br>예진 7.29억</div></div>
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">현금자산</div><div style="font-size:15px;font-weight:900;color:#34d399;">3.38억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.20억<br>예진 2.18억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자자산</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;">19.61억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 11.55억<br>예진 8.06억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">현금자산</div><div style="font-size:15px;font-weight:900;color:#34d399;">2.40억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 0.99억<br>예진 1.41억</div></div>
       <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">+퇴직연금</div><div style="font-size:15px;font-weight:900;color:#5eead4;">2.04억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.10억<br>예진 0.94억</div></div>
     </div>
   </div>
@@ -371,7 +371,7 @@ var 총필요=C6*5+취득세+발코니;
 var 목표A=총필요+총이자A-대출합,목표B=총필요-대출합;
 
 // 자산 (5/3 기준)
-var 투자자산=1863619029,현금자산=337618838;
+var 투자자산=1961367489,현금자산=239870378;
 var 현자산=투자자산+현금자산;
 var 월세=1660000;
 
@@ -418,6 +418,7 @@ var EN=[
 var ACTUAL_SV={};
 var sliderRate=Math.round(현재수익률); // 현재 수익률로 초기화 (33)
 var caseType="A",tlRate=0.10;
+var totalActSv=0; // CF 실저축 합산 (전역)
 
 // ━━━ 유틸 ━━━
 function f(n){
@@ -586,15 +587,15 @@ function onSlider(val){
 function updateSimulation(){
   var s=calc();
   var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
-  var planSvTotal=calcPlanSvTotal();
   var 목표=caseType==="A"?목표A:목표B;
 
   // 예상투자자산 (슬라이더 기반)
   var expInvest=calcExpectedInvest(sliderRate);
-  // 순예정저축 = 현금자산 + CF저축합 (투자 성장분 제외)
-  var pureSave=현금자산+planSvTotal;
-  // 최종 예상자산 = 예상투자자산 + 순예정저축
-  var finalAsset=expInvest+pureSave;
+  // 순예정저축 = CF 실저축 합산 (CF분석 맨 아래 합계와 동일)
+  // 결산된 달은 실제값, 미결산 달은 계획값
+  var pureSave=totalActSv;
+  // 최종 예상자산 = 예상투자자산 + 현금자산(현재) + CF저축합산
+  var finalAsset=expInvest+현금자산+pureSave;
   var status=finalAsset-목표;
 
   document.getElementById("sim-case").textContent=caseType;
@@ -684,12 +685,12 @@ function ui(){
   document.getElementById("ci").textContent=f(s.ti);
   document.getElementById("ce").textContent=f(s.ce+s.ge);
   document.getElementById("cs").textContent=f(s.sv);
-  var tb="",totalPlanSv=0,totalActSv=0;
+  var tb="",totalPlanSv=0,totalActSv_local=0;
   Object.keys(CF).forEach(function(k){
     var v=CF[k],sv=v.i-v.e,cur=k===CUR_MONTH;
     var actSv=ACTUAL_SV[k]!=null?ACTUAL_SV[k]:null;
     var df=actSv!==null?actSv-sv:null;
-    totalPlanSv+=sv;totalActSv+=actSv!==null?actSv:sv;
+    totalPlanSv+=sv;totalActSv_local+=actSv!==null?actSv:sv;
     tb+='<tr style="background:'+(cur?"#1a305044":"transparent")+';border-bottom:1px solid #1a305022;">'+
       '<td style="padding:6px 4px;color:'+(cur?"#4f9cf9":"#4a6080")+';font-weight:'+(cur?700:400)+';text-align:left;">'+k.slice(2)+'</td>'+
       '<td style="color:#34d399;">'+f(v.i)+'</td><td style="color:#f87171;">'+f(v.e)+'</td>'+
@@ -698,6 +699,7 @@ function ui(){
       '<td style="font-weight:700;color:'+(df===null?"#4a6080":df>=0?"#34d399":"#f87171")+'">'+(df===null?"-":(df>=0?"+":"")+f(Math.abs(df)))+'</td></tr>';
   });
   document.getElementById("cftb").innerHTML=tb;
+  totalActSv=totalActSv_local; // 전역 업데이트
   var diffTotal=totalActSv-totalPlanSv;
   document.getElementById("cf-foot").innerHTML=
     '<tr style="border-top:2px solid #1a3050;background:#0d1929;">'+
