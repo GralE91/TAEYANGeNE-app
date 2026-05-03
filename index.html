@@ -275,7 +275,7 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
             <div style="font-size:9px;color:#4a6080;">선택 수익률</div>
           </div>
         </div>
-        <input type="range" class="slider" id="rate-slider" min="0" max="100" value="33" step="1" oninput="onSlider(this.value)"/>
+        <input type="range" class="slider" id="rate-slider" min="0" max="100" value="33" step="1" oninput="onSlider(this.value)" data-init="true"/>
         <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:#4a6080;">
           <span>0%</span>
           <span>25%</span>
@@ -430,27 +430,35 @@ var CF={
   "2027-09":{i:8737700,e:4000000},"2027-10":{i:6982340,e:4000000},
   "2027-11":{i:5515300,e:4000000},"2027-12":{i:4753865,e:4000000}
 };
-var CUR_MONTH="2026-05";
-
 // 오늘 기준 활성화된 가계경제 월 (전월21일~당월20일)
 function getActiveMonth(){
   var today=new Date();
   var y=today.getFullYear();
-  var m=today.getMonth()+1; // 1-12
+  var m=today.getMonth()+1;
   var d=today.getDate();
-  // 21일 이후면 다음 달 가계경제
   if(d>=21){
     m+=1;
     if(m>12){m=1;y+=1;}
   }
   return y+"-"+String(m).padStart(2,"0");
 }
-var ACTIVE_MONTH=getActiveMonth(); // 예: "2026-05"
+var ACTIVE_MONTH=getActiveMonth();
 
 // 해당 월이 결산 가능한지 (현재 월 또는 과거)
 function isMonthClosed(monthKey){
   return monthKey<=ACTIVE_MONTH;
 }
+
+// CUR_MONTH 자동 결정: ACTIVE_MONTH가 CF 범위 안이면 ACTIVE_MONTH 사용, 아니면 마지막 CF 월
+var CUR_MONTH=(function(){
+  if(typeof CF==="undefined")return"2026-05"; // CF 정의 전이면 안전 기본값
+  var cfKeys=Object.keys(CF);
+  if(CF[ACTIVE_MONTH])return ACTIVE_MONTH;
+  // 입주 후(2027-12-21~) → 마지막 월 사용
+  if(ACTIVE_MONTH>cfKeys[cfKeys.length-1])return cfKeys[cfKeys.length-1];
+  // ACTIVE_MONTH보다 이전이지만 CF에 없으면 첫 월
+  return cfKeys[0];
+})();
 
 // 주간 자산 추이 (총자산)
 var WK=[
@@ -499,8 +507,19 @@ function saveActualSV(){
     localStorage.setItem("TAEYANGene_ACTUAL_SV",JSON.stringify(ACTUAL_SV));
   }catch(err){console.warn("결산 저장 실패",err);}
 }
-var sliderRate=Math.round(현재수익률); // 현재 수익률로 초기화 (33)
-var caseType="A",tlRate=0.10;
+// 슬라이더 값 복원 (없으면 현재 수익률로 초기화)
+var sliderRate=(function(){
+  try{
+    var s=localStorage.getItem("TAEYANGene_sliderRate");
+    if(s!==null){var v=parseInt(s);if(!isNaN(v)&&v>=0&&v<=100)return v;}
+  }catch(e){}
+  return Math.round(현재수익률);
+})();
+var caseType=(function(){
+  try{var s=localStorage.getItem("TAEYANGene_caseType");if(s==="A"||s==="B")return s;}catch(e){}
+  return"A";
+})();
+var tlRate=0.10;
 var totalActSv=0; // CF 실저축 합산 (전역)
 
 // ━━━ 유틸 ━━━
@@ -676,7 +695,7 @@ function drawRateChart(){
 // ━━━ 슬라이더 업데이트 ━━━
 function onSlider(val){
   sliderRate=parseInt(val);
-  // 슬라이더 그라데이션 업데이트
+  try{localStorage.setItem("TAEYANGene_sliderRate",sliderRate);}catch(e){}
   var slider=document.getElementById("rate-slider");
   slider.style.background='linear-gradient(to right,#4f9cf9 0%,#4f9cf9 '+val+'%,#1a3050 '+val+'%,#1a3050 100%)';
   document.getElementById("slider-val").textContent=val+"%";
@@ -685,6 +704,7 @@ function onSlider(val){
 }
 
 function updateSimulation(){
+  if(!CF[CUR_MONTH])return; // 안전장치
   var s=calc();
   var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
   var 목표=caseType==="A"?목표A:목표B;
@@ -744,6 +764,12 @@ function updateSimulation(){
 
 // ━━━ 메인 UI ━━━
 function ui(){
+  // 안전장치: CF[CUR_MONTH]가 없으면 첫 월로 폴백
+  if(!CF[CUR_MONTH]){
+    var keys=Object.keys(CF);
+    CUR_MONTH=keys[0];
+    var ms=document.getElementById("month-select");if(ms)ms.value=CUR_MONTH;
+  }
   var s=calc();
   var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
   var svDiff=s.sv-planSv;
@@ -1039,6 +1065,7 @@ function gt(n,btn){
 }
 function setCase(c){
   caseType=c;
+  try{localStorage.setItem("TAEYANGene_caseType",c);}catch(e){}
   ["A","B"].forEach(function(x){
     var b1=document.getElementById("btn"+x),b2=document.getElementById("tl"+x);
     if(b1)b1.className=x===c?"rbtn on":"rbtn";
@@ -1121,14 +1148,56 @@ async function syncNotion(){
 }
 
 // ━━━ 초기화 ━━━
+// 저장된 슬라이더 값 적용
+(function(){
+  var slider=document.getElementById("rate-slider");
+  if(slider){
+    slider.value=sliderRate;
+    slider.style.background='linear-gradient(to right,#4f9cf9 0%,#4f9cf9 '+sliderRate+'%,#1a3050 '+sliderRate+'%,#1a3050 100%)';
+    var sv=document.getElementById("slider-val");if(sv)sv.textContent=sliderRate+"%";
+    var s4r=document.getElementById("step4-rate");if(s4r)s4r.textContent=sliderRate;
+  }
+})();
+// 저장된 Case 적용
+(function(){
+  ["A","B"].forEach(function(x){
+    var b1=document.getElementById("btn"+x),b2=document.getElementById("tl"+x);
+    if(b1)b1.className=x===caseType?"rbtn on":"rbtn";
+    if(b2)b2.className=x===caseType?"rbtn on":"rbtn";
+  });
+})();
+
 drawChart();
 drawRateChart();
 initDD();
 initTL();
 ui();
 syncNotion();
-// 드롭다운 초기값 설정 (현재 월)
+
+// 드롭다운 초기값 설정 (자동 결정된 CUR_MONTH)
 document.getElementById("month-select").value=CUR_MONTH;
+
+// 초기 헤더 라벨 설정 (5월이 아니면 동적 라벨)
+if(CUR_MONTH!=="2026-05"){
+  // onMonthChange와 동일한 헤더 업데이트 로직
+  var label=CUR_MONTH.startsWith("2027")?"27년 "+parseInt(CUR_MONTH.slice(5))+"월":parseInt(CUR_MONTH.slice(5))+"월";
+  document.getElementById("st").textContent="VER 1.2 · "+label+" 활성";
+  var hdLabel=document.getElementById("hd-label");
+  var hdValue=document.getElementById("hd-value");
+  if(hdLabel&&hdValue){
+    var cumSv=0;
+    var monthOrder=Object.keys(CF);
+    var curIdx=monthOrder.indexOf(CUR_MONTH);
+    for(var i=0;i<=curIdx;i++){
+      var mk=monthOrder[i];
+      cumSv+=ACTUAL_SV[mk]!=null?ACTUAL_SV[mk]:(CF[mk].i-CF[mk].e);
+    }
+    var expectedAsset=현자산+cumSv;
+    hdLabel.textContent="예상 ("+label+")";
+    hdValue.textContent=f(expectedAsset);
+    hdValue.style.color="#5eead4";
+  }
+}
 if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js");
 </script>
 </body>
