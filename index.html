@@ -49,6 +49,14 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 .modal-close{position:absolute;top:12px;right:16px;background:none;border:none;color:#4a6080;font-size:22px;cursor:pointer;}
 .modal-img{max-width:100%;border-radius:10px;display:block;margin-bottom:8px;}
 .ssbtn{background:#1e3a5f;border:1px solid #4f9cf9;border-radius:6px;color:#4f9cf9;font-size:10px;padding:3px 8px;cursor:pointer;font-family:inherit;margin-left:6px;flex-shrink:0;}
+/* 토스트 */
+.toast-wrap{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;}
+.toast{background:#0d1929;border:1px solid #4f9cf9;border-radius:12px;padding:11px 18px;color:#f1f5f9;font-size:13px;box-shadow:0 4px 16px #000a;min-width:240px;max-width:90vw;text-align:center;line-height:1.5;animation:toastIn .25s ease;pointer-events:auto;}
+.toast.success{border-color:#34d399;}.toast.warn{border-color:#fbbf24;}.toast.error{border-color:#f87171;}
+.toast .toast-actions{display:flex;gap:8px;margin-top:10px;justify-content:center;}
+.toast .toast-btn{background:#1e3a5f;border:1px solid #4f9cf9;color:#4f9cf9;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+.toast .toast-btn.cancel{background:#060c18;border-color:#4a6080;color:#4a6080;}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet"/>
 </head>
@@ -88,6 +96,9 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
     </div>
   </div>
 </div>
+
+<!-- 토스트 컨테이너 -->
+<div class="toast-wrap" id="toast-wrap"></div>
 
 <!-- 스샷 모달 -->
 <div class="modal" id="modal" onclick="closeModal()">
@@ -440,7 +451,19 @@ var EN=[
   {n:"어버이날용돈(할머니할아부지)",t:"지출",c:"공동",a:400000,p:"현금",w:"2주차",d:"2026-05-02",ss:[],url:"https://www.notion.so/3542bce4ac12809bb18bf129914ab4a7"},
   {n:"당근_숀리바이크",t:"수입",c:"공동",a:50000,p:"현금",w:"2주차",d:"2026-05-03",ss:[],url:"https://www.notion.so/3552bce4ac12803aab1dcaa428a24125"}
 ];
+// LocalStorage에서 결산 데이터 복원
 var ACTUAL_SV={};
+try{
+  var saved=localStorage.getItem("TAEYANGene_ACTUAL_SV");
+  if(saved)ACTUAL_SV=JSON.parse(saved);
+}catch(err){console.warn("결산 복원 실패",err);}
+
+// 결산 저장 함수
+function saveActualSV(){
+  try{
+    localStorage.setItem("TAEYANGene_ACTUAL_SV",JSON.stringify(ACTUAL_SV));
+  }catch(err){console.warn("결산 저장 실패",err);}
+}
 var sliderRate=Math.round(현재수익률); // 현재 수익률로 초기화 (33)
 var caseType="A",tlRate=0.10;
 var totalActSv=0; // CF 실저축 합산 (전역)
@@ -459,14 +482,31 @@ function fStatus(n){
   return n<0?"△"+str:"+"+str;
 }
 
+// 날짜가 해당 월의 가계경제 기간(전월21일~당월20일)에 속하는지 확인
+function isInMonth(dateStr, monthKey){
+  if(!dateStr||!monthKey)return false;
+  try{
+    // monthKey: "2026-05" → 시작: 2026-04-21, 종료: 2026-05-20
+    var y=parseInt(monthKey.slice(0,4));
+    var m=parseInt(monthKey.slice(5));
+    var prevY=m===1?y-1:y;
+    var prevM=m===1?12:m-1;
+    var startStr=prevY+"-"+String(prevM).padStart(2,"0")+"-21";
+    var endStr=y+"-"+String(m).padStart(2,"0")+"-20";
+    return dateStr>=startStr&&dateStr<=endStr;
+  }catch(err){return false;}
+}
+
 function calc(){
   var ti=0,ce=0,ge=0;
   var ct={공동:{i:0,c:0},근한:{i:0,c:0},예진:{i:0,c:0},태양:{i:0,c:0}};
-  EN.forEach(function(e){
+  // CUR_MONTH 범위에 속하는 데이터만 합산
+  EN.filter(function(e){return isInMonth(e.d,CUR_MONTH);}).forEach(function(e){
     if(e.t==="수입"){ti+=e.a;if(ct[e.c])ct[e.c].i+=e.a;}
     else if(e.p==="현금"){ce+=e.a;if(ct[e.c])ct[e.c].c+=e.a;}
     else ge+=e.a;
   });
+  // 월세는 매월 자동 추가
   ce+=월세;ct.공동.c+=월세;
   return{ti:ti,ce:ce,ge:ge,sv:ti-ce,ct:ct};
 }
@@ -673,6 +713,7 @@ function ui(){
   var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
   var svDiff=s.sv-planSv;
   ACTUAL_SV[CUR_MONTH]=s.sv;
+  saveActualSV();
 
   // 홈
   document.getElementById("i0").textContent=f(s.ti);
@@ -783,9 +824,9 @@ function ui(){
       // 노션 페이지로 이동 (스샷 확인)
       window.open(e.url,"_blank");
     }else if(type==="nofile"&&e&&e.url){
-      if(confirm("아직 스샷이 없어요 😊\n노션에서 스샷을 첨부하러 갈까요?")){
+      toastConfirm("아직 스샷이 없어요 😊\n노션에서 스샷을 첨부하러 갈까요?",function(){
         window.open(e.url,"_blank");
-      }
+      });
     }
   };
 
@@ -872,6 +913,38 @@ function initTL(){
   document.getElementById("tlB").className=caseType==="B"?"rbtn on":"rbtn";
 }
 
+// ━━━ 토스트 ━━━
+function toast(msg,type,duration){
+  type=type||"info";duration=duration||2500;
+  var wrap=document.getElementById("toast-wrap");
+  var t=document.createElement("div");
+  t.className="toast "+type;
+  t.innerHTML=msg.replace(/\n/g,"<br>");
+  wrap.appendChild(t);
+  setTimeout(function(){
+    t.style.opacity="0";t.style.transition="opacity .3s";
+    setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);
+  },duration);
+}
+
+function toastConfirm(msg,onConfirm,onCancel){
+  var wrap=document.getElementById("toast-wrap");
+  var t=document.createElement("div");
+  t.className="toast warn";
+  t.innerHTML=msg.replace(/\n/g,"<br>")+
+    '<div class="toast-actions"><button class="toast-btn cancel" data-act="cancel">취소</button>'+
+    '<button class="toast-btn" data-act="ok">확인</button></div>';
+  wrap.appendChild(t);
+  t.onclick=function(ev){
+    var btn=ev.target.closest("button[data-act]");
+    if(!btn)return;
+    var act=btn.getAttribute("data-act");
+    t.parentNode.removeChild(t);
+    if(act==="ok"&&onConfirm)onConfirm();
+    else if(act==="cancel"&&onCancel)onCancel();
+  };
+}
+
 // ━━━ 스샷 모달 ━━━
 function showSS(title,urls){
   try{
@@ -891,7 +964,7 @@ function showSS(title,urls){
     }
     document.getElementById("modal").classList.add("on");
   }catch(err){
-    alert("스샷을 불러오는 중 오류가 발생했어요");
+    toast("스샷을 불러오는 중 오류가 발생했어요","error");
   }
 }
 function closeModal(){document.getElementById("modal").classList.remove("on");}
@@ -924,19 +997,13 @@ function srTL(r){
 
 // ━━━ 월 변경 ━━━
 function onMonthChange(month){
+  if(!CF[month]){toast("해당 월 데이터가 없어요","error");return;}
   CUR_MONTH=month;
   var label=month.startsWith("2027")?
     "27년 "+parseInt(month.slice(5))+"월":
     parseInt(month.slice(5))+"월";
   document.getElementById("st").textContent="VER 1.2 · "+label+" 기준";
-  // 해당 월 계획 수치 업데이트
-  var plan=CF[CUR_MONTH];
-  if(plan){
-    var planSv=plan.i-plan.e;
-    if(document.getElementById("step1-exp")) document.getElementById("step1-exp").textContent=f(plan.e);
-    if(document.getElementById("step1-sv")) document.getElementById("step1-sv").textContent=f(planSv);
-    if(document.getElementById("gauge-plan")) document.getElementById("gauge-plan").textContent=Math.round(plan.e/10000)+"만";
-  }
+  toast("📅 "+label+" 데이터로 전환했어요","success",1500);
   ui();
 }
 
@@ -944,17 +1011,28 @@ function onMonthChange(month){
 async function syncNotion(){
   try{
     var res=await fetch("/api/notion");
-    if(!res.ok)throw new Error();
+    if(!res.ok)throw new Error("API 응답 실패");
     var data=await res.json();
     if(data.entries&&data.entries.length>0){
       EN=data.entries.map(function(e){
-        return{n:e["내용"]||"",t:e["유형"]||"지출",c:e["카테고리"]||"공동",a:e["금액"]||0,p:e["결제수단"]||"현금",w:e["주차"]||"1주차",d:e["날짜"]||"",ss:e["스샷"]||[]};
+        return{
+          n:e["내용"]||"",
+          t:e["유형"]||"지출",
+          c:e["카테고리"]||"공동",
+          a:e["금액"]||0,
+          p:e["결제수단"]||"현금",
+          w:e["주차"]||"1주차",
+          d:e["날짜"]||"",
+          ss:e["스샷"]||[],
+          url:e["url"]||""
+        };
       });
     }
     document.getElementById("st").textContent="VER 1.2 · 🔄 "+new Date().toLocaleTimeString("ko-KR");
     ui();
-  }catch(e){
-    document.getElementById("st").textContent="VER 1.2 · 5/3 기준";
+  }catch(err){
+    // API 미설정 또는 실패 시 하드코딩 데이터 유지
+    document.getElementById("st").textContent="VER 1.2 · 5/3 기준 (오프라인)";
   }
 }
 
