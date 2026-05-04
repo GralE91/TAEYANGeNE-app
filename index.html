@@ -84,6 +84,7 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
   <div>
     <div style="font-size:17px;font-weight:900;">☀️ TAEYANGene App</div>
     <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">VER 1.2 · 5/3 기준</div>
+    <div style="font-size:10px;margin-top:1px;" id="sync-st"></div>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <select id="month-select" onchange="onMonthChange(this.value)" style="background:#1e3a5f;border:1px solid #4f9cf9;border-radius:8px;color:#4f9cf9;font-size:12px;font-weight:700;padding:5px 8px;font-family:inherit;cursor:pointer;max-width:120px;">
@@ -1181,18 +1182,27 @@ async function syncNotion(){
       });
       // 마지막 업데이트 시간 표시
       var upd=data["마지막업데이트"]||"";
-      stEl.textContent="VER 1.2 · 🔄 노션 연동 "+upd.slice(5,16);
-      stEl.style.color="#34d399";
+      stEl.textContent="VER 1.2 · "+upd.slice(0,10);
+      stEl.style.color="#4a6080";
+      var syncEl=document.getElementById("sync-st");
+      if(syncEl){
+        syncEl.textContent="🔄 노션 "+upd.slice(5,16)+" ("+data.count+"건)";
+        syncEl.style.color="#34d399";
+      }
     }else{
-      stEl.textContent="VER 1.2 · ⚠️ 노션 데이터 없음";
-      stEl.style.color="#fbbf24";
+      stEl.textContent="VER 1.2";
+      stEl.style.color="#4a6080";
+      var syncEl3=document.getElementById("sync-st");
+      if(syncEl3){syncEl3.textContent="⚠️ 노션 데이터 없음";syncEl3.style.color="#fbbf24";}
     }
     ui();
   }catch(err){
     // API 실패시 하드코딩 데이터 유지 + 상태 표시
     console.warn("노션 동기화 실패:",err.message);
-    stEl.textContent="VER 1.2 · 📦 오프라인 모드";
+    stEl.textContent="VER 1.2";
     stEl.style.color="#4a6080";
+    var syncEl2=document.getElementById("sync-st");
+    if(syncEl2){syncEl2.textContent="📦 오프라인 모드";syncEl2.style.color="#4a6080";}
     ui(); // 하드코딩 데이터라도 보여주기
   }
 }
