@@ -1,6 +1,5 @@
-// api/notion.js - TAEYANGene 자동화 서버
+// api/notion.js - TAEYANGene 자동화 서버 v2
 // 노션 DB에서 데이터 읽어서 실시간 반환
-// 근한씨가 노션에 입력하면 → 앱이 자동으로 최신 데이터 표시!
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -8,16 +7,17 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  // 캐시 설정 (5분 캐시 - Vercel 무료 호출 절약!)
+  // 5분 캐시
   res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
 
   try {
     const NOTION_TOKEN = process.env.NOTION_TOKEN;
-    if (!NOTION_TOKEN) throw new Error('NOTION_TOKEN 환경변수 없음');
+    if (!NOTION_TOKEN) {
+      return res.status(500).json({ error: 'NOTION_TOKEN 환경변수 없음' });
+    }
 
     const DB_ID = 'a690c47841a948eb9920307ea905db88';
 
-    // 노션 API 직접 호출 (MCP 없이! 더 빠르고 안정적!)
     const response = await fetch(`https://api.notion.com/v1/databases/${DB_ID}/query`, {
       method: 'POST',
       headers: {
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errText = await response.text();
-      throw new Error(`노션 API 오류: ${response.status} - ${errText}`);
+      return res.status(500).json({ error: `노션 API 오류: ${response.status}`, detail: errText });
     }
 
     const data = await response.json();
@@ -42,27 +42,27 @@ export default async function handler(req, res) {
     for (const page of data.results) {
       const props = page.properties;
 
-      // 각 필드 파싱
+      // 스키마에 맞게 정확히 파싱
       const 내용 = props['내용']?.title?.[0]?.plain_text || '';
       const 유형 = props['유형']?.select?.name || '지출';
       const 카테고리 = props['카테고리']?.select?.name || '공동';
       const 금액 = props['금액']?.number || 0;
       const 결제수단 = props['결제수단']?.select?.name || '현금';
       const 주차 = props['주차']?.select?.name || '1주차';
+      // 날짜: date 타입 - start 필드
       const 날짜 = props['날짜']?.date?.start || '';
       const 메모 = props['메모']?.rich_text?.[0]?.plain_text || '';
-      const url = page.url || '';
-
-      // 스샷 파일 있는지 확인
+      // 스샷: file 타입
       const ssFiles = props['스샷']?.files || [];
       const ss = ssFiles.length > 0 ? ['notionfile'] : [];
+      const url = page.url || '';
 
-      if (!내용) continue; // 빈 항목 스킵
+      if (!내용) continue;
 
       entries.push({ 내용, 유형, 카테고리, 금액, 결제수단, 주차, 날짜, 메모, ss, url });
     }
 
-    // 집계 계산
+    // 집계
     let 총수입 = 0, 현금지출 = 0, 현금외지출 = 0;
     const 카테고리별 = {
       공동: { 수입: 0, 현금: 0, 현금외: 0 },
@@ -86,12 +86,14 @@ export default async function handler(req, res) {
     }
 
     const now = new Date();
-    const 마지막업데이트 = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    const pad = n => String(n).padStart(2, '0');
+    const 마지막업데이트 = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
     return res.status(200).json({
       entries,
       집계: { 총수입, 현금지출, 현금외지출, 순저축: 총수입 - 현금지출, 카테고리별 },
-      마지막업데이트
+      마지막업데이트,
+      count: entries.length
     });
 
   } catch (error) {
