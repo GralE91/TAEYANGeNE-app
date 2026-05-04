@@ -540,6 +540,7 @@ var caseType=(function(){
   return"A";
 })();
 var tlRate=0.10;
+var syncFailCount=0; // 노션 동기화 연속 실패 카운터
 var totalActSv=0; // CF 실저축 합산 (전역)
 
 // ━━━ 유틸 ━━━
@@ -808,8 +809,8 @@ function ui(){
   var s=calc();
   var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
   var svDiff=s.sv-planSv;
-  // 활성화된 월(현재 또는 과거)일 때만 실적 저장
-  if(isMonthClosed(CUR_MONTH)){
+  // 활성화된 월이고 CF 범위 안일 때만 실적 저장
+  if(isMonthClosed(CUR_MONTH)&&CF[CUR_MONTH]){
     ACTUAL_SV[CUR_MONTH]=s.sv;
     saveActualSV();
   }
@@ -1184,6 +1185,7 @@ async function syncNotion(){
       var upd=data["마지막업데이트"]||"";
       stEl.textContent="VER 1.2 · "+upd.slice(0,10);
       stEl.style.color="#4a6080";
+      syncFailCount=0; // 성공 시 카운터 리셋
       var syncEl=document.getElementById("sync-st");
       if(syncEl){
         syncEl.textContent="🔄 노션 "+upd.slice(5,16)+" ("+data.count+"건)";
@@ -1197,20 +1199,40 @@ async function syncNotion(){
     }
     ui();
   }catch(err){
-    // API 실패시 하드코딩 데이터 유지 + 상태 표시
     console.warn("노션 동기화 실패:",err.message);
+    syncFailCount++;
     stEl.textContent="VER 1.2";
     stEl.style.color="#4a6080";
     var syncEl2=document.getElementById("sync-st");
-    if(syncEl2){syncEl2.textContent="📦 오프라인 모드";syncEl2.style.color="#4a6080";}
-    ui(); // 하드코딩 데이터라도 보여주기
+    if(syncEl2){
+      if(syncFailCount>=3){
+        syncEl2.textContent="⚠️ 노션 연결 불안정 ("+syncFailCount+"회 실패)";
+        syncEl2.style.color="#fbbf24";
+      }else{
+        syncEl2.textContent="📦 오프라인 모드";
+        syncEl2.style.color="#4a6080";
+      }
+    }
+    ui();
   }
 }
 
-// 자동 주기적 동기화 (5분마다)
+// 자동 주기적 동기화 (5분마다, 페이지가 보일 때만)
+var lastSyncTime=Date.now();
 setInterval(function(){
+  // 페이지가 안 보이거나(다른 탭) 스크롤 중이면 스킵
+  if(document.hidden)return;
   syncNotion();
+  lastSyncTime=Date.now();
 }, 5 * 60 * 1000);
+
+// 페이지가 다시 보일 때 마지막 동기화로부터 5분 이상 지났으면 즉시 동기화
+document.addEventListener("visibilitychange",function(){
+  if(!document.hidden&&Date.now()-lastSyncTime>5*60*1000){
+    syncNotion();
+    lastSyncTime=Date.now();
+  }
+});
 
 // ━━━ 초기화 ━━━
 // 윈도우 리사이즈 시 차트 재렌더링 (태블릿/노트북 대응)
@@ -1261,8 +1283,13 @@ requestAnimationFrame(function(){
 // 드롭다운 초기값 설정 (자동 결정된 CUR_MONTH)
 document.getElementById("month-select").value=CUR_MONTH;
 
-// 초기 헤더 라벨 설정 (5월이 아니면 동적 라벨)
+// 초기 헤더 라벨 설정 + 자동 월 전환 토스트
 if(CUR_MONTH!=="2026-05"){
+  // 자동 전환 안내 토스트
+  setTimeout(function(){
+    var label=CUR_MONTH.startsWith("2027")?"27년 "+parseInt(CUR_MONTH.slice(5))+"월":parseInt(CUR_MONTH.slice(5))+"월";
+    toast("📅 "+label+"이 자동 활성화됐어요!\n노션에 입력하면 바로 반영돼요","success",3500);
+  },800);
   // onMonthChange와 동일한 헤더 업데이트 로직
   var label=CUR_MONTH.startsWith("2027")?"27년 "+parseInt(CUR_MONTH.slice(5))+"월":parseInt(CUR_MONTH.slice(5))+"월";
   document.getElementById("st").textContent="VER 1.2 · "+label+" 활성";
