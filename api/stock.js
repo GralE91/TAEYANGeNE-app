@@ -1,41 +1,43 @@
 // api/stock.js - 한국투자증권 OpenAPI 실시간 주가 조회
-// 모든 종목 자동 합산 → 실시간 자산 반환
+// 종목 중복 제거 + 합산 최적화
 
-// 보유 종목 (5/10 기준)
+// 보유 종목 (5/10 기준) - 같은 종목코드는 자동 합산
 const HOLDINGS = {
-  // 근한 보유
   근한: [
     { code: "000660", name: "SK하이닉스", shares: 35 },
+    { code: "000660", name: "SK하이닉스(2)", shares: 254 },
     { code: "005380", name: "현대차", shares: 142 },
+    { code: "005380", name: "현대차(2)", shares: 214 },
     { code: "005385", name: "현대차우", shares: 77 },
     { code: "013700", name: "까뮤이앤씨", shares: 5189 },
+    { code: "013700", name: "까뮤이앤씨(2)", shares: 3952 },
     { code: "069500", name: "KODEX200", shares: 211 },
     { code: "267250", name: "HD현대", shares: 281 },
     { code: "457480", name: "ACE테슬라밸류체인액티브", shares: 3078 },
-    { code: "000660", name: "SK하이닉스(2)", shares: 254 },
-    { code: "013700", name: "까뮤이앤씨(2)", shares: 3952 },
+    { code: "457480", name: "ACE테슬라(2)", shares: 922 },
     { code: "475960", name: "토모큐브", shares: 498 },
     { code: "005935", name: "삼성전자우", shares: 1000 },
-    { code: "005380", name: "현대차(2)", shares: 214 },
-    { code: "457480", name: "ACE테슬라(2)", shares: 922 },
     { code: "396500", name: "TIGER반도체TOP10", shares: 1062 },
     { code: "196170", name: "알테오젠", shares: 100 },
     { code: "483340", name: "ACE구글밸류체인액티브", shares: 1500 },
     { code: "0180V0", name: "ACE미국우주테크", shares: 1000 },
     { code: "237350", name: "KODEX코스피100", shares: 32 }
   ],
-  // 예진 보유
   예진: [
     { code: "267250", name: "HD현대", shares: 130 },
     { code: "005380", name: "현대차", shares: 196 },
+    { code: "005380", name: "현대차(2)", shares: 163 },
     { code: "005935", name: "삼성전자우", shares: 570 },
     { code: "0126Z0", name: "삼성에피스홀딩스", shares: 15 },
     { code: "091160", name: "KODEX반도체", shares: 570 },
     { code: "207940", name: "삼성바이오로직스", shares: 94 },
     { code: "237350", name: "KODEX코스피100", shares: 700 },
+    { code: "237350", name: "KODEX코스피100(2)", shares: 120 },
     { code: "455890", name: "RISE머니마켓엑티브", shares: 1117 },
     { code: "483340", name: "ACE구글밸류체인액티브", shares: 100 },
+    { code: "483340", name: "ACE구글(2)", shares: 500 },
     { code: "457480", name: "ACE테슬라밸류체인액티브", shares: 1280 },
+    { code: "457480", name: "ACE테슬라(2)", shares: 1000 },
     { code: "0015B0", name: "Koact미국나스닥성장기업액티브", shares: 300 },
     { code: "035420", name: "NAVER", shares: 10 },
     { code: "005490", name: "POSCO홀딩스", shares: 10 },
@@ -44,24 +46,17 @@ const HOLDINGS = {
     { code: "005930", name: "삼성전자", shares: 60 },
     { code: "102970", name: "KODEX증권", shares: 160 },
     { code: "279570", name: "케이뱅크", shares: 103 },
-    { code: "005380", name: "현대차(2)", shares: 163 },
-    { code: "237350", name: "KODEX코스피100(2)", shares: 120 },
-    { code: "457480", name: "ACE테슬라(2)", shares: 1000 },
-    { code: "483340", name: "ACE구글(2)", shares: 500 },
     { code: "442580", name: "PLUS글로벌HBM반도체", shares: 65 },
     { code: "0180V0", name: "ACE미국우주테크액티브", shares: 60 },
     { code: "068270", name: "셀트리온", shares: 4 }
   ]
 };
 
-// 토큰 캐싱 (24시간)
 let cachedToken = null;
 let tokenExpiry = 0;
 
 async function getAccessToken(appKey, appSecret, isVirtual) {
-  if (cachedToken && Date.now() < tokenExpiry) {
-    return cachedToken;
-  }
+  if (cachedToken && Date.now() < tokenExpiry) return cachedToken;
 
   const baseUrl = isVirtual
     ? 'https://openapivts.koreainvestment.com:29443'
@@ -84,7 +79,7 @@ async function getAccessToken(appKey, appSecret, isVirtual) {
 
   const data = await res.json();
   cachedToken = data.access_token;
-  tokenExpiry = Date.now() + (23 * 60 * 60 * 1000); // 23시간
+  tokenExpiry = Date.now() + (23 * 60 * 60 * 1000);
   return cachedToken;
 }
 
@@ -92,9 +87,6 @@ async function getStockPrice(code, token, appKey, appSecret, isVirtual) {
   const baseUrl = isVirtual
     ? 'https://openapivts.koreainvestment.com:29443'
     : 'https://openapi.koreainvestment.com:9443';
-
-  // 모의투자/실전 모두 동일 TR_ID
-  const trId = 'FHKST01010100';
 
   const url = `${baseUrl}/uapi/domestic-stock/v1/quotations/inquire-price?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=${code}`;
 
@@ -104,21 +96,15 @@ async function getStockPrice(code, token, appKey, appSecret, isVirtual) {
       'Authorization': `Bearer ${token}`,
       'appkey': appKey,
       'appsecret': appSecret,
-      'tr_id': trId,
+      'tr_id': 'FHKST01010100',
       'Content-Type': 'application/json'
     }
   });
 
-  if (!res.ok) {
-    return null; // 일부 종목 실패해도 다른 종목 진행
-  }
-
+  if (!res.ok) return null;
   const data = await res.json();
-  if (data.rt_cd !== '0') {
-    return null;
-  }
-
-  return parseInt(data.output?.stck_prpr || 0); // 현재가
+  if (data.rt_cd !== '0') return null;
+  return parseInt(data.output?.stck_prpr || 0);
 }
 
 export default async function handler(req, res) {
@@ -126,46 +112,59 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
-
-  // 캐시 (10분 - API 호출 절약)
   res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=1200');
 
   try {
     const APP_KEY = process.env.KIS_APP_KEY;
     const APP_SECRET = process.env.KIS_APP_SECRET;
-    const IS_VIRTUAL = true; // 모의투자
+    const IS_VIRTUAL = true;
 
     if (!APP_KEY || !APP_SECRET) {
       return res.status(500).json({ error: 'KIS_APP_KEY/SECRET 환경변수 없음' });
     }
 
-    // 1. 토큰 발급
     const token = await getAccessToken(APP_KEY, APP_SECRET, IS_VIRTUAL);
 
-    // 2. 종목별 가격 조회 (병렬 처리, 단 너무 많으면 rate limit)
-    const results = { 근한: { 종목: [], 합계: 0, 실패: 0 }, 예진: { 종목: [], 합계: 0, 실패: 0 } };
+    // 1단계: 모든 고유 종목코드 추출 → 한번만 조회
+    const allStocks = [...HOLDINGS.근한, ...HOLDINGS.예진];
+    const uniqueCodes = [...new Set(allStocks.map(s => s.code))];
+
+    // 2단계: 종목별 가격 캐싱 객체
+    const priceCache = {};
+    const failedCodes = [];
+
+    for (const code of uniqueCodes) {
+      try {
+        const price = await getStockPrice(code, token, APP_KEY, APP_SECRET, IS_VIRTUAL);
+        if (price === null || price === 0) {
+          failedCodes.push(code);
+          priceCache[code] = 0;
+        } else {
+          priceCache[code] = price;
+        }
+        await new Promise(r => setTimeout(r, 60)); // Rate limit
+      } catch (e) {
+        failedCodes.push(code);
+        priceCache[code] = 0;
+      }
+    }
+
+    // 3단계: 캐싱된 가격으로 합산
+    const results = {
+      근한: { 종목: [], 합계: 0, 실패: 0 },
+      예진: { 종목: [], 합계: 0, 실패: 0 }
+    };
 
     for (const owner of ['근한', '예진']) {
       for (const stock of HOLDINGS[owner]) {
-        try {
-          const price = await getStockPrice(stock.code, token, APP_KEY, APP_SECRET, IS_VIRTUAL);
-          if (price === null || price === 0) {
-            results[owner].실패++;
-            results[owner].종목.push({
-              ...stock, price: 0, value: 0, error: '조회실패'
-            });
-          } else {
-            const value = price * stock.shares;
-            results[owner].합계 += value;
-            results[owner].종목.push({ ...stock, price, value });
-          }
-          // Rate limit 방지 (모의투자 1초 20건)
-          await new Promise(r => setTimeout(r, 60));
-        } catch (e) {
+        const price = priceCache[stock.code];
+        if (price === 0) {
           results[owner].실패++;
-          results[owner].종목.push({
-            ...stock, price: 0, value: 0, error: e.message
-          });
+          results[owner].종목.push({ ...stock, price: 0, value: 0, error: '조회실패' });
+        } else {
+          const value = price * stock.shares;
+          results[owner].합계 += value;
+          results[owner].종목.push({ ...stock, price, value });
         }
       }
     }
@@ -180,7 +179,9 @@ export default async function handler(req, res) {
       예진: results.예진,
       총합,
       시간,
-      isVirtual: IS_VIRTUAL
+      isVirtual: IS_VIRTUAL,
+      조회종목수: uniqueCodes.length,
+      실패종목: failedCodes
     });
 
   } catch (error) {
