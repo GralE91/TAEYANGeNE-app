@@ -1,68 +1,1315 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <meta name="theme-color" content="#060c18"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="TAEYANGene"/>
-  <title>☀️ TAEYANGene App</title>
-  <link rel="manifest" href="/manifest.json"/>
-  <link rel="apple-touch-icon" href="/icon-192.png"/>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #060c18; color: #f1f5f9; font-family: 'Noto Sans KR', sans-serif; }
-    #root { min-height: 100vh; }
-    /* 로딩 화면 */
-    #loading {
-      position: fixed; inset: 0; background: #060c18;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      z-index: 9999;
-    }
-    #loading .sun { font-size: 60px; animation: spin 3s linear infinite; }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    #loading p { margin-top: 20px; color: #4a6080; font-size: 14px; }
-  </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#060c18"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="TAEYANGene"/>
+<title>TAEYANGene App v1.2</title>
+<link rel="manifest" href="/manifest.json"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-height:100vh;padding-bottom:80px;-webkit-font-smoothing:antialiased;}
+.hd{background:linear-gradient(135deg,#090f1e,#0f1e38);border-bottom:1px solid #1a3050;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+@media(min-width:600px){.hd{padding:16px 24px;}.hd .hd-title{font-size:20px !important;}}
+/* 반응형 컨테이너 */
+.ct{padding:14px;max-width:480px;margin:0 auto;width:100%;}
+@media(min-width:600px){.ct{max-width:600px;padding:20px;}}
+@media(min-width:900px){.ct{max-width:720px;padding:24px;}}
+.card{background:#0d1929;border-radius:18px;padding:16px;border:1px solid #1a3050;margin-bottom:12px;}
+.lbl{font-size:11px;color:#64748b;font-weight:600;margin-bottom:8px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.box{background:#060c18;border-radius:12px;padding:11px 10px;border:1px solid #1a3050;}
+.sec{display:none;}.sec.on{display:block;}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#090f1e;border-top:1px solid #1a3050;display:flex;z-index:200;}
+.tb{flex:1;padding:9px 2px 11px;background:none;border:none;border-top:2px solid transparent;color:#4a6080;cursor:pointer;font-family:inherit;transition:color .2s;}
+.tb.on{border-top-color:#4f9cf9;color:#4f9cf9;}
+@media(min-width:600px){
+  .tabs{max-width:600px;left:50%;transform:translateX(-50%);border-radius:16px 16px 0 0;border-left:1px solid #1a3050;border-right:1px solid #1a3050;}
+  .tb{padding:12px 4px 14px;font-size:13px;}
+}
+@media(min-width:900px){
+  .tabs{max-width:720px;}
+  .tb div:first-child{font-size:20px;}
+  .tb div:last-child{font-size:10px;}
+}
+.pb{height:8px;border-radius:6px;background:#060c18;overflow:hidden;border:1px solid #1a3050;margin-top:4px;}
+.pf{height:100%;border-radius:6px;transition:width .8s;}
+.rbtn{background:#060c18;border:1px solid #1a3050;border-radius:10px;padding:9px;color:#4a6080;font-family:inherit;cursor:pointer;font-size:12px;min-height:40px;touch-action:manipulation;}
+.rbtn.on{background:#1e3a5f;border-color:#4f9cf9;color:#4f9cf9;font-weight:800;}
+@media(min-width:600px){.rbtn{min-height:44px;font-size:13px;padding:10px;}}
+.er{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1a305022;}
+.tl{display:flex;gap:14px;margin-bottom:16px;}
+.dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.ln{width:2px;flex:1;background:#1a3050;margin-top:4px;}
+.dcard{background:#060c18;border-radius:12px;padding:12px;text-align:center;border:1px solid transparent;}
+.cft{width:100%;font-size:10px;border-collapse:collapse;white-space:nowrap;}
+.cft th{padding:6px 4px;color:#4a6080;font-size:9px;text-align:right;border-bottom:1px solid #1a3050;}
+.cft td{padding:6px 4px;text-align:right;}
+.row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #1a305033;font-size:11px;}
+/* 슬라이더 */
+.slider-wrap{padding:12px;background:#060c18;border-radius:12px;border:1px solid #1a3050;}
+.slider{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:linear-gradient(to right,#4f9cf9 0%,#4f9cf9 33%,#1a3050 33%,#1a3050 100%);outline:none;cursor:pointer;touch-action:pan-y;}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#4f9cf9;border:3px solid #f1f5f9;box-shadow:0 0 10px #4f9cf966;cursor:pointer;}
+.slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#4f9cf9;border:3px solid #f1f5f9;cursor:pointer;}
+@media(min-width:600px){.slider::-webkit-slider-thumb{width:28px;height:28px;}}
+/* 스코어보드 */
+.scen-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1a305022;}
+/* 스샷 모달 */
+.modal{display:none;position:fixed;inset:0;background:#000a;z-index:999;align-items:center;justify-content:center;padding:16px;}
+.modal.on{display:flex;}
+.modal-inner{background:#0d1929;border-radius:18px;padding:20px;max-width:min(90vw,560px);max-height:85vh;overflow:auto;position:relative;width:100%;}
+.modal-close{position:absolute;top:12px;right:16px;background:none;border:none;color:#4a6080;font-size:22px;cursor:pointer;padding:4px;min-width:32px;min-height:32px;}
+.modal-img{max-width:100%;border-radius:10px;display:block;margin-bottom:8px;}
+@media(min-width:600px){.modal-inner{padding:28px;border-radius:24px;}}
+.ssbtn{background:#1e3a5f;border:1px solid #4f9cf9;border-radius:6px;color:#4f9cf9;font-size:10px;padding:3px 8px;cursor:pointer;font-family:inherit;margin-left:6px;flex-shrink:0;}
+/* 토스트 */
+.toast-wrap{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;}
+.toast{background:#0d1929;border:1px solid #4f9cf9;border-radius:12px;padding:11px 18px;color:#f1f5f9;font-size:13px;box-shadow:0 4px 16px #000a;min-width:240px;max-width:90vw;text-align:center;line-height:1.5;animation:toastIn .25s ease;pointer-events:auto;}
+.toast.success{border-color:#34d399;}.toast.warn{border-color:#fbbf24;}.toast.error{border-color:#f87171;}
+.toast .toast-actions{display:flex;gap:8px;margin-top:10px;justify-content:center;}
+.toast .toast-btn{background:#1e3a5f;border:1px solid #4f9cf9;color:#4f9cf9;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+.toast .toast-btn.cancel{background:#060c18;border-color:#4a6080;color:#4a6080;}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet"/>
 </head>
 <body>
-  <!-- 로딩 화면 -->
-  <div id="loading">
-    <div class="sun">☀️</div>
-    <p>TAEYANGene App 로딩 중...</p>
+<noscript><div style="padding:40px;text-align:center;color:#f87171;font-size:16px;">JavaScript가 비활성화되어 있어요. 브라우저 설정에서 JavaScript를 활성화해주세요!</div></noscript>
+
+<div class="hd">
+  <div>
+    <div style="font-size:17px;font-weight:900;">☀️ TAEYANGene App</div>
+    <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">VER 1.2 · 5/10 기준</div>
+    <div style="font-size:10px;margin-top:1px;" id="sync-st"></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <select id="month-select" onchange="onMonthChange(this.value)" style="background:#1e3a5f;border:1px solid #4f9cf9;border-radius:8px;color:#4f9cf9;font-size:12px;font-weight:700;padding:5px 8px;font-family:inherit;cursor:pointer;max-width:120px;">
+      <option value="2026-05">5월</option>
+      <option value="2026-06">6월</option>
+      <option value="2026-07">7월</option>
+      <option value="2026-08">8월</option>
+      <option value="2026-09">9월</option>
+      <option value="2026-10">10월</option>
+      <option value="2026-11">11월</option>
+      <option value="2026-12">12월</option>
+      <option value="2027-01">27년 1월</option>
+      <option value="2027-02">27년 2월</option>
+      <option value="2027-03">27년 3월</option>
+      <option value="2027-04">27년 4월</option>
+      <option value="2027-05">27년 5월</option>
+      <option value="2027-06">27년 6월</option>
+      <option value="2027-07">27년 7월</option>
+      <option value="2027-08">27년 8월</option>
+      <option value="2027-09">27년 9월</option>
+      <option value="2027-10">27년 10월</option>
+      <option value="2027-11">27년 11월</option>
+      <option value="2027-12">27년 12월</option>
+    </select>
+    <div style="text-align:right;">
+      <div style="font-size:10px;color:#4a6080;" id="hd-label">투자+현금 (5/10)</div>
+      <div style="font-size:20px;font-weight:900;color:#4f9cf9;" id="hd-value">23.00억</div>
+    </div>
+  </div>
+</div>
+
+<!-- 토스트 컨테이너 -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- 스샷 모달 -->
+<div class="modal" id="modal" onclick="closeModal()">
+  <div class="modal-inner" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px;" id="modal-title">스샷</div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<div class="ct">
+
+<!-- ━━━ 홈 ━━━ -->
+<div class="sec on" id="s0">
+  <div class="card">
+    <div class="lbl">📊 자산 현황 · <span id="asset-date-lbl">5/10</span></div>
+    <div class="g3">
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자자산</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;" id="invest-total">20.63억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;" id="invest-detail">근한 12.28억<br>예진 8.34억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">현금자산</div><div style="font-size:15px;font-weight:900;color:#34d399;">2.37억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 0.96억<br>예진 1.41억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">+퇴직연금</div><div style="font-size:15px;font-weight:900;color:#5eead4;">2.11억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.13억<br>예진 0.98억</div></div>
+    </div>
   </div>
 
-  <div id="root"></div>
+  <div class="card">
+    <div class="lbl">🎯 반디클 목표 달성률</div>
+    <div class="g2" style="margin-bottom:14px;">
+      <div style="text-align:center;padding:12px;background:#060c18;border-radius:12px;border:1px solid #4f9cf944;">
+        <div style="font-size:10px;color:#4f9cf9;margin-bottom:4px;font-weight:700;">Case A까지</div>
+        <div style="font-size:20px;font-weight:900;color:#4f9cf9;">5.15억</div>
+        <div style="font-size:9px;color:#4a6080;margin-top:2px;">총 27.16억 필요</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:#060c18;border-radius:12px;border:1px solid #fb923c44;">
+        <div style="font-size:10px;color:#fb923c;margin-bottom:4px;font-weight:700;">Case B까지</div>
+        <div style="font-size:20px;font-weight:900;color:#fb923c;">4.70억</div>
+        <div style="font-size:9px;color:#4a6080;margin-top:2px;">총 26.71억 필요</div>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:12px;color:#4a6080;">Case A (27.16억)</span>
+        <span style="font-size:12px;font-weight:700;color:#4f9cf9;">81.0%</span>
+      </div>
+      <div class="pb"><div class="pf" style="width:81%;background:#4f9cf9;"></div></div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:12px;color:#4a6080;">Case B (26.71억)</span>
+        <span style="font-size:12px;font-weight:700;color:#fb923c;">82.4%</span>
+      </div>
+      <div class="pb"><div class="pf" style="width:82.4%;background:#fb923c;"></div></div>
+    </div>
+  </div>
 
-  <!-- React + Babel (JSX 실행용) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <!-- 자산 추이 차트 -->
+  <div class="card" style="padding:18px 10px 14px;">
+    <div class="lbl">📈 주간 자산 추이</div>
+    <div style="width:100%;overflow:hidden;"><svg id="chart" width="320" height="200" style="display:block;margin:0 auto;overflow:visible;max-width:100%;"></svg></div>
+    <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;justify-content:center;" id="chart-legend"></div>
+  </div>
 
-  <script type="text/babel" data-type="module" src="/app.jsx"></script>
+  <!-- 투자자산 수익률 차트 (1/11 기준) [NEW] -->
+  <div class="card" style="padding:18px 10px 14px;">
+    <div class="lbl">📊 투자자산 수익률 추이 (1/11 기준)</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="font-size:11px;color:#4a6080;">기준: 1/11 자산 16.53억</div>
+      <div style="font-size:14px;font-weight:900;color:#34d399;" id="cur-rate">현재 +33.2%</div>
+    </div>
+    <div style="width:100%;overflow:hidden;"><svg id="rate-chart" width="320" height="140" style="display:block;margin:0 auto;overflow:visible;max-width:100%;"></svg></div>
+    <!-- 최근 주간 변화 표 -->
+    <div style="margin-top:10px;" id="rate-table"></div>
+  </div>
 
-  <script>
-    // PWA Service Worker 등록
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js');
+  <!-- 수입/지출 -->
+  <div class="card" id="home-cf-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div class="lbl" style="margin:0;">💸 <span id="cf-month-lbl">5월</span> 수입/지출</div>
+      <span style="font-size:11px;font-weight:700;" id="cf-status">-</span>
+    </div>
+    <div class="g3" style="margin-bottom:12px;">
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">수입</div><div style="font-size:15px;font-weight:900;color:#34d399;" id="i0">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;" id="plan-inc-lbl">계획 1,146만</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">현금지출</div><div style="font-size:15px;font-weight:900;color:#f87171;" id="i1">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;" id="plan-exp-lbl">계획 560만</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:4px;">순저축</div><div style="font-size:15px;font-weight:900;" id="i2">-</div><div style="font-size:9px;color:#4a6080;margin-top:2px;" id="plan-sv-lbl">계획 586만</div></div>
+    </div>
+    <div class="g2" style="margin-bottom:10px;">
+      <div class="box" style="border-color:#4f9cf933;"><div style="font-size:12px;font-weight:700;color:#4f9cf9;margin-bottom:4px;">🏠 공동</div><div style="font-size:11px;" id="c0">-</div></div>
+      <div class="box" style="border-color:#34d39933;"><div style="font-size:12px;font-weight:700;color:#34d399;margin-bottom:4px;">👨 근한</div><div style="font-size:11px;color:#34d399;" id="c1i">-</div><div style="font-size:11px;color:#f87171;" id="c1e">-</div></div>
+      <div class="box" style="border-color:#c084fc33;"><div style="font-size:12px;font-weight:700;color:#c084fc;margin-bottom:4px;">👩 예진</div><div style="font-size:11px;color:#34d399;" id="c2i">-</div><div style="font-size:11px;color:#f87171;" id="c2e">-</div></div>
+      <div class="box" style="border-color:#fbbf2433;"><div style="font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:4px;">☀️ 태양</div><div style="font-size:11px;color:#4a6080;" id="c3">미입력</div></div>
+    </div>
+    <div style="background:#0a1020;border-radius:8px;padding:7px 10px;font-size:10px;color:#4a6080;margin-bottom:10px;">
+      🏠 월세 166만 고정지출 포함 (매월 15일)
+    </div>
+    <div style="border-top:1px solid #1a3050;padding-top:12px;">
+      <div class="lbl">전체 내역 <span id="ec">(-건)</span></div>
+      <div id="el" style="font-size:12px;color:#4a6080;">-</div>
+    </div>
+  </div>
+</div>
+
+<!-- ━━━ 한계소비 ━━━ -->
+<div class="sec" id="s1">
+  <div class="g2" style="gap:6px;margin-bottom:10px;">
+    <button class="rbtn on" onclick="setCase('A')" id="btnA">Case A (중도금대출)</button>
+    <button class="rbtn" onclick="setCase('B')" id="btnB">Case B (전액자납)</button>
+  </div>
+
+  <div class="card" id="lc" style="border:2px solid #34d39922;background:#060f0a;">
+    <div style="font-size:14px;font-weight:900;color:#34d399;margin-bottom:16px;" id="ls">✅ 계획 페이스 OK</div>
+
+    <!-- 게이지 -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:11px;color:#4a6080;margin-bottom:8px;font-weight:600;">현금지출 / 계획지출</div>
+      <svg width="140" height="140" style="display:inline-block;">
+        <circle cx="70" cy="70" r="56" fill="none" stroke="#1a3050" stroke-width="12"/>
+        <circle cx="70" cy="70" r="56" fill="none" id="gauge-arc"
+          stroke="#34d399" stroke-width="12" stroke-dasharray="0 352" stroke-dashoffset="88"
+          stroke-linecap="round" style="transition:stroke-dasharray .8s;transform:rotate(-90deg);transform-origin:70px 70px;"/>
+        <text x="70" y="60" text-anchor="middle" fill="#f1f5f9" font-size="16" font-weight="900" id="gauge-pct">0%</text>
+        <text x="70" y="78" text-anchor="middle" fill="#4a6080" font-size="9" id="gauge-exp">0만</text>
+        <text x="70" y="92" text-anchor="middle" fill="#4a6080" font-size="8">/ 계획</text>
+        <text x="70" y="104" text-anchor="middle" fill="#4a6080" font-size="9" id="gauge-plan">560만</text>
+      </svg>
+    </div>
+
+    <!-- STEP 1 -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">📋 STEP 1. 이번달 계획</div>
+      <div class="g3" style="background:#060c18;border-radius:10px;padding:12px;">
+        <div style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">계획수입</div><div style="font-size:13px;font-weight:800;color:#34d399;">1,146만</div></div>
+        <div style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">계획지출</div><div style="font-size:13px;font-weight:800;color:#f87171;">560만</div></div>
+        <div style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">계획저축</div><div style="font-size:13px;font-weight:800;color:#4f9cf9;">586만</div></div>
+      </div>
+      <div style="font-size:10px;color:#4a6080;margin-top:6px;background:#0a1020;border-radius:6px;padding:5px 8px;">
+        🏠 월세 166만 포함 · 매월 15일 고정지출
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">📊 STEP 2. 실제 현황</div>
+      <div class="g3" style="background:#060c18;border-radius:10px;padding:12px;margin-bottom:8px;">
+        <div style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제수입</div>
+          <div style="font-size:14px;font-weight:900;color:#34d399;" id="li">-</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제지출</div>
+          <div style="font-size:14px;font-weight:900;color:#f87171;" id="le">-</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제저축</div>
+          <div style="font-size:14px;font-weight:900;" id="lsv">-</div>
+        </div>
+      </div>
+      <div style="background:#060c18;border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:#4a6080;">계획 대비 저축</span>
+        <span style="font-size:13px;font-weight:900;" id="sv-diff">-</span>
+      </div>
+    </div>
+
+    <!-- STEP 3: 투자수익률 슬라이더 -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">📈 STEP 3. Case <span id="sim-case">A</span> · 투자수익률 시뮬</div>
+
+      <!-- 슬라이더 -->
+      <div class="slider-wrap" style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div>
+            <div style="font-size:10px;color:#4a6080;">1/11 대비 투자자산 기대 수익률</div>
+            <div style="font-size:11px;color:#4a6080;margin-top:1px;">현재 실적: <span style="color:#34d399;font-weight:700;">+33.2%</span></div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:22px;font-weight:900;color:#4f9cf9;" id="slider-val">33%</div>
+            <div style="font-size:9px;color:#4a6080;">선택 수익률</div>
+          </div>
+        </div>
+        <input type="range" class="slider" id="rate-slider" min="0" max="100" value="33" step="1" oninput="onSlider(this.value)" data-init="true"/>
+        <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:#4a6080;">
+          <span>0%</span>
+          <span>25%</span>
+          <span>50%</span>
+          <span>75%</span>
+          <span>100%</span>
+        </div>
+      </div>
+
+      <!-- 결과 -->
+      <div style="background:#060c18;border-radius:10px;padding:12px;">
+        <div class="g3" style="margin-bottom:10px;">
+          <div style="text-align:center;">
+            <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">총 필요현금</div>
+            <div style="font-size:13px;font-weight:900;" id="sim-total">-</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">예상투자자산</div>
+            <div style="font-size:13px;font-weight:900;color:#4f9cf9;" id="sim-invest">-</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">순예정저축</div>
+            <div style="font-size:13px;font-weight:900;color:#5eead4;" id="sim-save">-</div>
+          </div>
+        </div>
+        <!-- 금액 Status -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:#0d1929;border-radius:8px;">
+          <span style="font-size:12px;font-weight:700;">금액 Status</span>
+          <div style="text-align:right;">
+            <div style="font-size:20px;font-weight:900;" id="sim-status">-</div>
+            <div style="font-size:9px;color:#4a6080;" id="sim-status-sub">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div>
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">🎯 STEP 4. 이번달 한계지출 (수익률 <span id="step4-rate">33</span>% 기준)</div>
+      <div class="g2" style="margin-bottom:10px;">
+        <div class="box" style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">월 한계지출</div>
+          <div style="font-size:20px;font-weight:900;color:#f87171;" id="limit-monthly">-</div>
+          <div style="font-size:9px;color:#4a6080;margin-top:3px;">이 안에서 써야 해요</div>
+        </div>
+        <div class="box" style="text-align:center;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">주간 한계지출</div>
+          <div style="font-size:20px;font-weight:900;color:#fb923c;" id="limit-weekly">-</div>
+          <div style="font-size:9px;color:#4a6080;margin-top:3px;">주당 이 정도면 돼요</div>
+        </div>
+      </div>
+      <div id="lm" style="background:#061208;border-radius:8px;padding:10px 12px;font-size:12px;color:#34d399;line-height:1.8;">계획 페이스로 잘 가고 있어요 👍</div>
+    </div>
+  </div>
+</div>
+
+<!-- ━━━ CF분석 ━━━ -->
+<div class="sec" id="s2">
+  <div class="card" style="border:1px solid #34d39933;">
+    <div class="lbl" style="color:#34d399;">✅ <span id="cf-result-lbl">5월</span> 결산 (노션 데이터)</div>
+    <div class="g3">
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제수입</div><div style="font-size:14px;font-weight:900;color:#34d399;" id="ci">-</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제지출</div><div style="font-size:14px;font-weight:900;color:#f87171;" id="ce">-</div></div>
+      <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제저축</div><div style="font-size:14px;font-weight:900;color:#4f9cf9;" id="cs">-</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div class="lbl" style="margin:0;">📊 CF 계획 전체</div>
+      <div style="font-size:9px;color:#fbbf24;">⏳ = 결산 예정</div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="cft">
+        <thead><tr>
+          <th style="text-align:left;">월</th><th>수입</th><th>지출</th><th>계획저축</th><th>실적저축</th><th>차이</th>
+        </tr></thead>
+        <tbody id="cftb"></tbody>
+        <tfoot id="cf-foot"></tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ━━━ 납부일정 ━━━ -->
+<div class="sec" id="s3">
+  <div class="card">
+    <div class="lbl">📅 주요 D-Day</div>
+    <div class="g2" id="dd"></div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,#061508,#081020);border:1px solid #34d39944;">
+    <div class="lbl" style="color:#34d399;">⚖️ A가 유리한가?</div>
+    <div style="font-size:11px;color:#4a6080;margin-bottom:10px;">중도금 대출 이자 vs 투자 유지 수익 비교</div>
+    <div class="g2" style="gap:6px;margin-bottom:12px;">
+      <button class="rbtn" onclick="srTL(0)" data-r="0">0%</button>
+      <button class="rbtn on" onclick="srTL(0.10)" data-r="0.10">10% ✓</button>
+      <button class="rbtn" onclick="srTL(0.20)" data-r="0.20">20%</button>
+      <button class="rbtn" onclick="srTL(0.30)" data-r="0.30">30%</button>
+    </div>
+    <div class="box" id="pb"></div>
+  </div>
+  <div class="card">
+    <div class="lbl">💰 납부 타임라인</div>
+    <div class="g2" style="gap:6px;margin-bottom:12px;">
+      <button class="rbtn on" onclick="setCase('A')" id="tlA">Case A</button>
+      <button class="rbtn" onclick="setCase('B')" id="tlB">Case B</button>
+    </div>
+    <div id="tl"></div>
+    <div style="margin-top:14px;background:#060c18;border-radius:12px;padding:14px;border:1px solid #1a3050;">
+      <div class="lbl">📊 총 직접 현금 납부</div>
+      <div id="tl-summary"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="tabs">
+  <button class="tb on" onclick="gt(0,this)"><div style="font-size:17px;">🏠</div><div style="font-size:8px;margin-top:1px;">홈</div></button>
+  <button class="tb" onclick="gt(1,this)"><div style="font-size:17px;">🎯</div><div style="font-size:8px;margin-top:1px;">한계소비</div></button>
+  <button class="tb" onclick="gt(2,this)"><div style="font-size:17px;">💸</div><div style="font-size:8px;margin-top:1px;">CF분석</div></button>
+  <button class="tb" onclick="gt(3,this)"><div style="font-size:17px;">📅</div><div style="font-size:8px;margin-top:1px;">납부일정</div></button>
+</div>
+
+<script>
+// ━━━ 반디클 상수 ━━━
+var C6=600000000,취득세=99000000,발코니=120000000;
+var 신용=198000000,주담대=200000000,은행=150000000;
+var 대출합=신용+주담대+은행;
+var 월이자=C6*0.045/12,총이자A=월이자*12+월이자*8;
+var 총필요=C6*5+취득세+발코니;
+var 목표A=총필요+총이자A-대출합,목표B=총필요-대출합;
+
+// 자산 (5/3 기준)
+var 투자자산=2062797895,현금자산=237243371;
+var 현자산=투자자산+현금자산;
+var 월세=1660000;
+
+// 1/11 기준값 (수익률 기준점)
+var 기준자산=1652883707; // 1/11 총자산 (WK[0])
+var 현재수익률=(현자산-기준자산)/기준자산*100; // ≈ 33.2%
+
+// CF 계획
+var CF={
+  "2026-05":{i:11463959,e:5600000},"2026-06":{i:17290121,e:4750000},
+  "2026-07":{i:10367619,e:4000000},"2026-08":{i:9403959,e:4000000},
+  "2026-09":{i:11743113,e:5600000},"2026-10":{i:10087113,e:4000000},
+  "2026-11":{i:8703113,e:4000000},"2026-12":{i:7484778,e:4000000},
+  "2027-01":{i:9699701,e:4000000},"2027-02":{i:9305201,e:5600000},
+  "2027-03":{i:8002081,e:4000000},"2027-04":{i:7883181,e:4000000},
+  "2027-05":{i:10087797,e:5600000},"2027-06":{i:6965528,e:4000000},
+  "2027-07":{i:6865676,e:4000000},"2027-08":{i:8282197,e:5600000},
+  "2027-09":{i:8737700,e:4000000},"2027-10":{i:6982340,e:4000000},
+  "2027-11":{i:5515300,e:4000000},"2027-12":{i:4753865,e:4000000}
+};
+// 오늘 기준 활성화된 가계경제 월 (전월21일~당월20일)
+function getActiveMonth(){
+  var today=new Date();
+  var y=today.getFullYear();
+  var m=today.getMonth()+1;
+  var d=today.getDate();
+  if(d>=21){
+    m+=1;
+    if(m>12){m=1;y+=1;}
+  }
+  return y+"-"+String(m).padStart(2,"0");
+}
+var ACTIVE_MONTH=getActiveMonth();
+
+// 해당 월이 결산 가능한지 (현재 월 또는 과거)
+function isMonthClosed(monthKey){
+  return monthKey<=ACTIVE_MONTH;
+}
+
+// CUR_MONTH 자동 결정: ACTIVE_MONTH가 CF 범위 안이면 ACTIVE_MONTH 사용, 아니면 마지막 CF 월
+var CUR_MONTH=(function(){
+  if(typeof CF==="undefined")return"2026-05"; // CF 정의 전이면 안전 기본값
+  var cfKeys=Object.keys(CF);
+  if(CF[ACTIVE_MONTH])return ACTIVE_MONTH;
+  // 입주 후(2027-12-21~) → 마지막 월 사용
+  if(ACTIVE_MONTH>cfKeys[cfKeys.length-1])return cfKeys[cfKeys.length-1];
+  // ACTIVE_MONTH보다 이전이지만 CF에 없으면 첫 월
+  return cfKeys[0];
+})();
+
+// 주간 자산 추이 (총자산)
+var WK=[
+  {d:"1/11",v:16.53},{d:"1/18",v:17.36},{d:"1/25",v:18.23},
+  {d:"2/1",v:19.18},{d:"2/8",v:18.46},{d:"2/15",v:19.33},
+  {d:"2/22",v:20.13},{d:"3/1",v:21.98},{d:"3/8",v:19.69},
+  {d:"3/15",v:19.49},{d:"3/22",v:20.13},{d:"3/29",v:19.29},
+  {d:"4/5",v:18.69},{d:"4/12",v:19.83},{d:"4/19",v:21.00},
+  {d:"4/26",v:21.50},{d:"5/3",v:22.01},{d:"5/10",v:23.00}
+];
+var 퇴직억=2.11;
+var 목표A억=목표A/1e8,목표B억=목표B/1e8;
+
+// 노션 데이터
+var EN=[
+  {n:"4월 급여",t:"수입",c:"근한",a:6090240,p:"현금",w:"1주차",d:"2026-04-21",ss:[],url:"https://www.notion.so/3532bce4ac1280db8a24ca4e45a831fb"},
+  {n:"4월 급여",t:"수입",c:"예진",a:4063620,p:"현금",w:"1주차",d:"2026-04-21",ss:[],url:"https://www.notion.so/3532bce4ac12806d9155f21175d14491"},
+  {n:"1주차 생활비 정산",t:"지출",c:"근한",a:85900,p:"현금",w:"1주차",d:"2026-04-26",ss:["notionfile"],url:"https://www.notion.so/3532bce4ac1280ec9867df9f44e7bbff"},
+  {n:"1주차 생활비 정산",t:"지출",c:"예진",a:342170,p:"현금",w:"1주차",d:"2026-04-26",ss:["notionfile"],url:"https://www.notion.so/3532bce4ac12801db4bef3fbcf3cbf4b"},
+  {n:"어버이날용돈(할머니할아부지)",t:"지출",c:"공동",a:400000,p:"현금",w:"2주차",d:"2026-05-02",ss:[],url:"https://www.notion.so/3542bce4ac12809bb18bf129914ab4a7"},
+  {n:"당근_숀리바이크",t:"수입",c:"공동",a:50000,p:"현금",w:"2주차",d:"2026-05-03",ss:[],url:"https://www.notion.so/3552bce4ac12803aab1dcaa428a24125"},
+  {n:"4월 급여2",t:"수입",c:"근한",a:1889340,p:"현금",w:"3주차",d:"2026-05-04",ss:[],url:"https://www.notion.so/3552bce4ac1280109dbed0a164ab0816"},
+  {n:"2주차 생활비 정산",t:"지출",c:"예진",a:30000,p:"현금",w:"2주차",d:"2026-05-20",ss:["notionfile"],url:"https://www.notion.so/3552bce4ac128033af66deb43d29288d"},
+  {n:"2주차 생활비 정산",t:"지출",c:"근한",a:90370,p:"현금",w:"2주차",d:"2026-05-20",ss:["notionfile"],url:"https://www.notion.so/3552bce4ac1280ebb566c40af392d744"}
+];
+// LocalStorage에서 결산 데이터 복원
+var ACTUAL_SV={};
+try{
+  var saved=localStorage.getItem("TAEYANGene_ACTUAL_SV");
+  if(saved){
+    ACTUAL_SV=JSON.parse(saved);
+    // 미래 월 데이터 자동 정리 (이전 버전에서 잘못 저장된 것 제거)
+    var activeM=(function(){
+      var t=new Date(),y=t.getFullYear(),m=t.getMonth()+1,d=t.getDate();
+      if(d>=21){m+=1;if(m>12){m=1;y+=1;}}
+      return y+"-"+String(m).padStart(2,"0");
+    })();
+    Object.keys(ACTUAL_SV).forEach(function(k){
+      if(k>activeM)delete ACTUAL_SV[k];
+    });
+  }
+}catch(err){console.warn("결산 복원 실패",err);}
+
+// 결산 저장 함수
+function saveActualSV(){
+  try{
+    localStorage.setItem("TAEYANGene_ACTUAL_SV",JSON.stringify(ACTUAL_SV));
+  }catch(err){console.warn("결산 저장 실패",err);}
+}
+// 슬라이더 값 복원 (없으면 현재 수익률로 초기화)
+var sliderRate=(function(){
+  try{
+    var s=localStorage.getItem("TAEYANGene_sliderRate");
+    if(s!==null){var v=parseInt(s);if(!isNaN(v)&&v>=0&&v<=100)return v;}
+  }catch(e){}
+  return Math.round(현재수익률);
+})();
+var caseType=(function(){
+  try{var s=localStorage.getItem("TAEYANGene_caseType");if(s==="A"||s==="B")return s;}catch(e){}
+  return"A";
+})();
+var tlRate=0.10;
+var syncFailCount=0; // 노션 동기화 연속 실패 카운터
+var totalActSv=0; // CF 실저축 합산 (전역)
+
+// ━━━ 유틸 ━━━
+function f(n){
+  if(n==null||isNaN(n))return"-";
+  var s=n<0,a=Math.abs(n);
+  if(a>=1e8)return(s?"-":"")+(a/1e8).toFixed(2)+"억";
+  if(a>=1e4)return(s?"-":"")+Math.round(a/1e4).toLocaleString()+"만";
+  return(s?"-":"")+Math.round(a).toLocaleString()+"원";
+}
+function fStatus(n){
+  var a=Math.abs(n);
+  var str=(a>=1e8)?(a/1e8).toFixed(2)+"억":(a>=1e4)?Math.round(a/1e4).toLocaleString()+"만":Math.round(a).toLocaleString()+"원";
+  return n<0?"△"+str:"+"+str;
+}
+
+// 날짜가 해당 월의 가계경제 기간(전월21일~당월20일)에 속하는지 확인
+function isInMonth(dateStr, monthKey){
+  if(!dateStr||!monthKey)return false;
+  try{
+    // monthKey: "2026-05" → 시작: 2026-04-21, 종료: 2026-05-20
+    var y=parseInt(monthKey.slice(0,4));
+    var m=parseInt(monthKey.slice(5));
+    var prevY=m===1?y-1:y;
+    var prevM=m===1?12:m-1;
+    var startStr=prevY+"-"+String(prevM).padStart(2,"0")+"-21";
+    var endStr=y+"-"+String(m).padStart(2,"0")+"-20";
+    return dateStr>=startStr&&dateStr<=endStr;
+  }catch(err){return false;}
+}
+
+function calc(){
+  var ti=0,ce=0,ge=0;
+  var ct={공동:{i:0,c:0},근한:{i:0,c:0},예진:{i:0,c:0},태양:{i:0,c:0}};
+  // CUR_MONTH 범위에 속하는 데이터만 합산
+  EN.filter(function(e){return isInMonth(e.d,CUR_MONTH);}).forEach(function(e){
+    if(e.t==="수입"){ti+=e.a;if(ct[e.c])ct[e.c].i+=e.a;}
+    else if(e.p==="현금"){ce+=e.a;if(ct[e.c])ct[e.c].c+=e.a;}
+    else ge+=e.a;
+  });
+  // 월세는 매월 자동 추가
+  ce+=월세;ct.공동.c+=월세;
+  return{ti:ti,ce:ce,ge:ge,sv:ti-ce,ct:ct};
+}
+
+function calcPlanSvTotal(){
+  var total=0;
+  Object.keys(CF).forEach(function(k){
+    total+=ACTUAL_SV[k]!=null?ACTUAL_SV[k]:(CF[k].i-CF[k].e);
+  });
+  return total;
+}
+
+// 슬라이더 기반 예상투자자산 계산
+// 슬라이더값 r% = 1/11 기준 총자산 대비 최종 기대 수익률
+// 예상투자자산 = 기준자산 × (1 + r/100) × (투자자산/현자산) 비율
+// 더 직관적으로: 현재 투자자산이 슬라이더 수익률만큼 추가로 성장한다고 가정
+// 단, 슬라이더=현재수익률(33%)일 때 = 현재 투자자산(18.64억)
+// 슬라이더 r%일 때 예상투자자산 = 투자자산 × (1 + r/100) / (1 + 현재수익률/100)
+function calcExpectedInvest(r){
+  return 투자자산*(1+r/100)/(1+현재수익률/100);
+}
+
+// ━━━ 주간 자산 차트 ━━━
+function drawChart(){
+  var svg=document.getElementById("chart");
+  var parent=svg.parentElement;
+  var parentW=parent?parent.getBoundingClientRect().width||parent.offsetWidth:0;
+  var ctW=document.querySelector(".ct")?document.querySelector(".ct").offsetWidth:0;
+  var W=Math.min(Math.max(parentW||ctW||window.innerWidth||320,280),680);
+  svg.setAttribute("width",W);
+  svg.setAttribute("height",Math.round(W*0.6));
+  svg.setAttribute("viewBox","0 0 "+W+" "+Math.round(W*0.6));
+  var H=Math.round(W*0.6),PL=36,PR=40,PT=16,PB=24;
+  var IW=W-PL-PR,IH=H-PT-PB,n=WK.length;
+  var v1=WK.map(function(d){return d.v;});
+  var v2=WK.map(function(d){return d.v+퇴직억;});
+  var allV=v1.concat(v2,[목표A억,목표B억]);
+  var minV=Math.floor(Math.min.apply(null,allV)-1);
+  var maxV=Math.ceil(Math.max.apply(null,allV)+1);
+  function X(i){return PL+(i/(n-1))*IW;}
+  function Y(v){return PT+IH-((v-minV)/(maxV-minV))*IH;}
+  function mkPath(arr){return arr.map(function(v,i){return(i===0?"M":"L")+X(i).toFixed(1)+","+Y(v).toFixed(1);}).join(" ");}
+  var html="";
+  var step=Math.ceil((maxV-minV)/6);
+  for(var v=Math.ceil(minV);v<=maxV;v+=step){
+    html+='<line x1="'+PL+'" y1="'+Y(v).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(v).toFixed(1)+'" stroke="#1a3050" stroke-width="0.5" stroke-dasharray="3,5"/>';
+    html+='<text x="'+(PL-5)+'" y="'+(Y(v)+4).toFixed(1)+'" fill="#4a6080" font-size="8" text-anchor="end">'+v+'억</text>';
+  }
+  html+='<line x1="'+PL+'" y1="'+Y(목표A억).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(목표A억).toFixed(1)+'" stroke="#4f9cf9" stroke-width="1.5" stroke-dasharray="7,4" opacity="0.9"/>';
+  html+='<text x="'+(PL+IW+4)+'" y="'+(Y(목표A억)+4).toFixed(1)+'" fill="#4f9cf9" font-size="9" font-weight="700">A</text>';
+  html+='<line x1="'+PL+'" y1="'+Y(목표B억).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(목표B억).toFixed(1)+'" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="7,4" opacity="0.9"/>';
+  html+='<text x="'+(PL+IW+4)+'" y="'+(Y(목표B억)+4).toFixed(1)+'" fill="#fb923c" font-size="9" font-weight="700">B</text>';
+  var lx=X(n-1),btmY=PT+IH;
+  html+='<path d="'+mkPath(v1)+' L'+lx.toFixed(1)+','+btmY+' L'+X(0).toFixed(1)+','+btmY+' Z" fill="#4f9cf9" opacity="0.07"/>';
+  html+='<path d="'+mkPath(v2)+'" fill="none" stroke="#5eead4" stroke-width="2.2"/>';
+  html+='<path d="'+mkPath(v1)+'" fill="none" stroke="#4f9cf9" stroke-width="3"/>';
+  var ly1=Y(WK[n-1].v),ly2=Y(WK[n-1].v+퇴직억);
+  html+='<circle cx="'+lx.toFixed(1)+'" cy="'+ly2.toFixed(1)+'" r="4" fill="#5eead4" stroke="#0d1929" stroke-width="2"/>';
+  html+='<circle cx="'+lx.toFixed(1)+'" cy="'+ly1.toFixed(1)+'" r="5" fill="#4f9cf9" stroke="#0d1929" stroke-width="2"/>';
+  html+='<text x="'+(lx-5).toFixed(1)+'" y="'+(ly1-10).toFixed(1)+'" fill="#4f9cf9" font-size="10" font-weight="800" text-anchor="end">'+WK[n-1].v+'억</text>';
+  html+='<text x="'+(lx-5).toFixed(1)+'" y="'+(ly2-10).toFixed(1)+'" fill="#5eead4" font-size="9" text-anchor="end">'+(WK[n-1].v+퇴직억).toFixed(2)+'억</text>';
+  WK.forEach(function(d,i){if(i%4===0||i===n-1)html+='<text x="'+X(i).toFixed(1)+'" y="'+H+'" fill="#4a6080" font-size="8" text-anchor="middle">'+d.d+'</text>';});
+  svg.innerHTML=html;
+  var leg=[{c:"#4f9cf9",l:"투자+현금",thick:true},{c:"#5eead4",l:"+퇴직"},{c:"#4f9cf9",l:"목표A",dash:true},{c:"#fb923c",l:"목표B",dash:true}];
+  document.getElementById("chart-legend").innerHTML=leg.map(function(x){
+    return '<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#4a6080;"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="'+x.c+'" stroke-width="'+(x.thick?3:2)+'" stroke-dasharray="'+(x.dash?"6,3":"none")+'"/></svg>'+x.l+'</div>';
+  }).join("");
+}
+
+// ━━━ 투자자산 수익률 차트 (1/11 기준) ━━━
+function drawRateChart(){
+  var base=WK[0].v;
+  var rates=WK.map(function(d){return(d.v-base)/base*100;});
+  var curRate=(현자산/1e8-base)/base*100;
+  document.getElementById("cur-rate").textContent="현재 +"+curRate.toFixed(1)+"%";
+
+  var svg=document.getElementById("rate-chart");
+  var parent=svg.parentElement;
+  var parentW=parent?parent.getBoundingClientRect().width||parent.offsetWidth:0;
+  var ctW=document.querySelector(".ct")?document.querySelector(".ct").offsetWidth:0;
+  var W=Math.min(Math.max(parentW||ctW||window.innerWidth||320,280),680);
+  svg.setAttribute("width",W);
+  svg.setAttribute("height",Math.round(W*0.42));
+  svg.setAttribute("viewBox","0 0 "+W+" "+Math.round(W*0.42));
+  var H=Math.round(W*0.42),PL=36,PR=24,PT=14,PB=24;
+  var IW=W-PL-PR,IH=H-PT-PB,n=WK.length;
+  var minR=Math.min.apply(null,rates)-2;
+  var maxR=Math.max.apply(null,rates)+3;
+  function X(i){return PL+(i/(n-1))*IW;}
+  function Y(r){return PT+IH-((r-minR)/(maxR-minR))*IH;}
+
+  var html="";
+  // 0% 기준선
+  html+='<line x1="'+PL+'" y1="'+Y(0).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(0).toFixed(1)+'" stroke="#4a6080" stroke-width="1" stroke-dasharray="4,4"/>';
+  html+='<text x="'+(PL-5)+'" y="'+(Y(0)+4).toFixed(1)+'" fill="#4a6080" font-size="8" text-anchor="end">0%</text>';
+
+  // 눈금
+  var rStep=10;
+  for(var r=Math.ceil(minR/rStep)*rStep;r<=maxR;r+=rStep){
+    if(r===0)continue;
+    html+='<line x1="'+PL+'" y1="'+Y(r).toFixed(1)+'" x2="'+(PL+IW)+'" y2="'+Y(r).toFixed(1)+'" stroke="#1a3050" stroke-width="0.5" stroke-dasharray="2,4"/>';
+    html+='<text x="'+(PL-5)+'" y="'+(Y(r)+4).toFixed(1)+'" fill="#4a6080" font-size="8" text-anchor="end">'+r+'%</text>';
+  }
+
+  // 막대 그래프
+  var barW=Math.max(4,(IW/n)-2);
+  rates.forEach(function(r,i){
+    var x=X(i)-barW/2;
+    var y0=Y(0),y1=Y(r);
+    var barH=Math.abs(y1-y0);
+    var isPos=r>=0;
+    var isLast=(i===n-1);
+    var c=isLast?"#fbbf24":(isPos?"#34d399":"#f87171");
+    html+='<rect x="'+x.toFixed(1)+'" y="'+(isPos?y1:y0).toFixed(1)+'" width="'+barW+'" height="'+barH.toFixed(1)+'" fill="'+c+'" opacity="0.8" rx="2"/>';
+    // 라벨 (마지막 + 일부)
+    if(isLast||i===0){
+      html+='<text x="'+X(i).toFixed(1)+'" y="'+(isPos?y1-3:y1+10).toFixed(1)+'" fill="'+c+'" font-size="8" text-anchor="middle" font-weight="700">'+(r>=0?"+":"")+r.toFixed(1)+'%</text>';
+    }
+  });
+
+  // X축
+  WK.forEach(function(d,i){
+    if(i===0||i%4===0||i===n-1)html+='<text x="'+X(i).toFixed(1)+'" y="'+H+'" fill="#4a6080" font-size="8" text-anchor="middle">'+d.d+'</text>';
+  });
+
+  svg.innerHTML=html;
+
+  // 최근 4주 변화 표
+  var recent=WK.slice(-4);
+  var tableHtml='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;">';
+  recent.forEach(function(d,i){
+    var prevV=i>0?recent[i-1].v:WK[WK.length-5].v;
+    var weekChg=(d.v-prevV)/prevV*100;
+    var fromBase=(d.v-base)/base*100;
+    var isLast=(i===recent.length-1);
+    tableHtml+='<div style="background:#060c18;border-radius:8px;padding:7px;text-align:center;border:1px solid '+(isLast?"#fbbf2444":"#1a3050")+'">';
+    tableHtml+='<div style="font-size:9px;color:#4a6080;margin-bottom:2px;">'+d.d+'</div>';
+    tableHtml+='<div style="font-size:11px;font-weight:900;color:'+(fromBase>=0?"#34d399":"#f87171")+';">'+(fromBase>=0?"+":"")+fromBase.toFixed(1)+'%</div>';
+    tableHtml+='<div style="font-size:9px;color:'+(weekChg>=0?"#34d399":"#f87171")+';margin-top:1px;">'+(weekChg>=0?"▲":"▼")+Math.abs(weekChg).toFixed(1)+'%</div>';
+    tableHtml+='</div>';
+  });
+  tableHtml+='</div><div style="font-size:9px;color:#4a6080;margin-top:6px;text-align:center;">상단: 1/11 기준 누적 / 하단: 전주 대비</div>';
+  document.getElementById("rate-table").innerHTML=tableHtml;
+}
+
+// ━━━ 슬라이더 업데이트 ━━━
+function onSlider(val){
+  sliderRate=parseInt(val);
+  try{localStorage.setItem("TAEYANGene_sliderRate",sliderRate);}catch(e){}
+  var slider=document.getElementById("rate-slider");
+  slider.style.background='linear-gradient(to right,#4f9cf9 0%,#4f9cf9 '+val+'%,#1a3050 '+val+'%,#1a3050 100%)';
+  document.getElementById("slider-val").textContent=val+"%";
+  document.getElementById("step4-rate").textContent=val;
+  updateSimulation();
+}
+
+function updateSimulation(){
+  if(!CF[CUR_MONTH])return; // 안전장치
+  var s=calc();
+  var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
+  var 목표=caseType==="A"?목표A:목표B;
+
+  // 예상투자자산 (슬라이더 기반)
+  var expInvest=calcExpectedInvest(sliderRate);
+  // 순예정저축 = CF 실저축 합산 (CF분석 맨 아래 합계와 동일)
+  // 결산된 달은 실제값, 미결산 달은 계획값
+  var pureSave=totalActSv;
+  // 최종 예상자산 = 예상투자자산 + 현금자산(현재) + CF저축합산
+  var finalAsset=expInvest+현금자산+pureSave;
+  var status=finalAsset-목표;
+
+  document.getElementById("sim-case").textContent=caseType;
+  document.getElementById("sim-total").textContent=f(목표);
+  document.getElementById("sim-total").style.color=caseType==="A"?"#4f9cf9":"#fb923c";
+  document.getElementById("sim-invest").textContent=f(expInvest);
+  document.getElementById("sim-save").textContent=f(pureSave);
+
+  var statusEl=document.getElementById("sim-status");
+  statusEl.textContent=fStatus(status);
+  statusEl.style.color=status>=0?"#4f9cf9":"#f87171";
+  document.getElementById("sim-status-sub").textContent=status>=0?"예상자산 "+f(finalAsset)+" — 여유 있어요 ✅":"예상자산 "+f(finalAsset)+" — 부족해요";
+
+  // STEP4 한계지출
+  var planExp=CF[CUR_MONTH].e;
+  var limitMonthly=planExp;
+  if(status<0){
+    var remainMonths=Object.keys(CF).filter(function(k){return ACTUAL_SV[k]==null;}).length;
+    var extraSave=remainMonths>0?Math.ceil(Math.abs(status)/remainMonths):0;
+    limitMonthly=Math.max(0,planExp-extraSave);
+  }
+  document.getElementById("limit-monthly").textContent=f(limitMonthly);
+  document.getElementById("limit-weekly").textContent=f(Math.round(limitMonthly/5));
+
+  // 결론
+  var ok=s.sv>=planSv;
+  var svDiff=s.sv-planSv;
+  if(ok){
+    document.getElementById("ls").textContent="✅ 계획 페이스 OK";
+    document.getElementById("ls").style.color="#34d399";
+    document.getElementById("lc").style.border="2px solid #34d39922";
+    document.getElementById("lc").style.background="#060f0a";
+    document.getElementById("lm").style.color="#34d399";
+    document.getElementById("lm").style.background="#061208";
+    document.getElementById("lm").innerHTML=f(Math.abs(svDiff))+(svDiff>=0?" 더 저축했어요 👍":" 저축 살짝 부족해요")+"<br>→ "+sliderRate+"% 수익률 시 "+f(Math.abs(status))+(status>=0?" 여유 예상":"" + " 부족 예상");
+  }else{
+    document.getElementById("ls").textContent="⚠️ 저축 부족";
+    document.getElementById("ls").style.color="#f87171";
+    document.getElementById("lc").style.border="2px solid #f8717122";
+    document.getElementById("lc").style.background="#120606";
+    document.getElementById("lm").style.color="#f87171";
+    document.getElementById("lm").style.background="#1a0808";
+    document.getElementById("lm").innerHTML="저축 <strong>"+f(Math.abs(svDiff))+"</strong> 부족<br>→ 월 한계지출: <strong>"+f(limitMonthly)+"</strong><br>→ 주간 한계지출: <strong>"+f(Math.round(limitMonthly/5))+"</strong>";
+  }
+}
+
+// ━━━ 메인 UI ━━━
+function ui(){
+  try{
+  // 안전장치: CF[CUR_MONTH]가 없으면 첫 월로 폴백
+  if(!CF[CUR_MONTH]){
+    var keys=Object.keys(CF);
+    CUR_MONTH=keys[0];
+    var ms=document.getElementById("month-select");if(ms)ms.value=CUR_MONTH;
+  }
+  var s=calc();
+  var planSv=CF[CUR_MONTH].i-CF[CUR_MONTH].e;
+  var svDiff=s.sv-planSv;
+  // 활성화된 월이고 CF 범위 안일 때만 실적 저장
+  if(isMonthClosed(CUR_MONTH)&&CF[CUR_MONTH]){
+    ACTUAL_SV[CUR_MONTH]=s.sv;
+    saveActualSV();
+  }
+
+  // 홈
+  document.getElementById("i0").textContent=f(s.ti);
+  document.getElementById("i1").textContent=f(s.ce);
+  document.getElementById("i2").textContent=f(s.sv);
+  document.getElementById("i2").style.color=s.sv>=planSv?"#4f9cf9":"#f87171";
+  var ok=s.sv>=planSv;
+  // 자산 현황 라벨 업데이트
+  var assetLbl=document.getElementById("asset-date-lbl");
+  if(assetLbl){
+    if(CUR_MONTH==="2026-05"){
+      assetLbl.textContent="5/10 (현재)";
+    }else{
+      assetLbl.textContent=mLabel+" 예상";
+    }
+  }
+  
+  // 계획 수치 라벨 업데이트
+  var curPlan=CF[CUR_MONTH]||CF["2026-05"];
+  var pil=document.getElementById("plan-inc-lbl");
+  var pel=document.getElementById("plan-exp-lbl");
+  var psl=document.getElementById("plan-sv-lbl");
+  if(pil)pil.textContent="계획 "+f(curPlan.i);
+  if(pel)pel.textContent="계획 "+f(curPlan.e);
+  if(psl)psl.textContent="계획 "+f(curPlan.i-curPlan.e);
+  var mLabel=CUR_MONTH.startsWith("2027")?"27년 "+parseInt(CUR_MONTH.slice(5))+"월":parseInt(CUR_MONTH.slice(5))+"월";
+  var cfmlbl=document.getElementById("cf-month-lbl");
+  if(cfmlbl)cfmlbl.textContent=mLabel;
+  var cfrlbl=document.getElementById("cf-result-lbl");
+  if(cfrlbl)cfrlbl.textContent=mLabel;
+  document.getElementById("cf-status").textContent=ok?"✅ 저축 정상":"⚠️ 저축 부족";
+  document.getElementById("cf-status").style.color=ok?"#34d399":"#f87171";
+  document.getElementById("home-cf-card").style.border="1px solid "+(ok?"#1a3050":"#f8717144");
+
+  var emo={공동:"🏠",근한:"👨",예진:"👩",태양:"☀️"};
+  var col={공동:"#4f9cf9",근한:"#34d399",예진:"#c084fc",태양:"#fbbf24"};
+  document.getElementById("c0").innerHTML='<span style="color:#f87171;">'+(s.ct.공동.c>0?"-"+f(s.ct.공동.c):"없음")+'</span>';
+  document.getElementById("c1i").textContent=s.ct.근한.i>0?"+"+f(s.ct.근한.i):"";
+  document.getElementById("c1e").textContent=s.ct.근한.c>0?"-"+f(s.ct.근한.c):"";
+  document.getElementById("c2i").textContent=s.ct.예진.i>0?"+"+f(s.ct.예진.i):"";
+  document.getElementById("c2e").textContent=s.ct.예진.c>0?"-"+f(s.ct.예진.c):"";
+  document.getElementById("c3").textContent=(s.ct.태양.i>0||s.ct.태양.c>0)?"입력있음":"미입력";
+
+  // 현재 월에 해당하는 데이터만 표시
+  var filteredEN=EN.filter(function(e){return isInMonth(e.d,CUR_MONTH);});
+  var allEN=[{n:"월세(고정)",t:"지출",c:"공동",a:월세,p:"현금",w:"이번달",d:"15일 고정",ss:[]}].concat(filteredEN);
+  document.getElementById("ec").textContent="("+(filteredEN.length+1)+"건)";
+  var elContainer=document.getElementById("el");
+  elContainer.innerHTML=allEN.map(function(e,idx){
+    var isJeongsan=(e.n.indexOf("정산")>-1||e.n.indexOf("생활비")>-1);
+    var hasSS=e.ss&&e.ss.length>0;
+    var hasUrl=e.url&&e.url.length>0;
+    var ssBtnHtml="";
+    if(hasSS&&hasUrl){
+      ssBtnHtml='<button class="ssbtn" data-idx="'+idx+'" data-type="ss">📷 스샷</button>';
+    }else if(isJeongsan&&hasUrl){
+      ssBtnHtml='<button class="ssbtn" data-idx="'+idx+'" data-type="nofile" style="opacity:0.5;background:#1a3050;border-color:#4a6080;color:#4a6080;">📷 없음</button>';
+    }
+    var ssBtn=ssBtnHtml;
+    return '<div class="er"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">'+
+      '<span style="font-size:16px;flex-shrink:0;">'+(emo[e.c]||"📦")+'</span>'+
+      '<div style="min-width:0;overflow:hidden;"><div style="font-size:12px;font-weight:600;color:'+(col[e.c]||"#f1f5f9")+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+e.n+'</div>'+
+      '<div style="font-size:10px;color:#4a6080;">'+e.w+' · '+e.d+'</div></div></div>'+
+      '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">'+
+      '<span style="font-size:12px;font-weight:700;color:'+(e.t==="수입"?"#34d399":e.p==="현금"?"#f87171":"#5eead4")+';">'+(e.t==="수입"?"+":"-")+f(e.a)+'</span>'+
+      ssBtn+'</div></div>';
+  }).join("");
+
+  // CF
+  document.getElementById("ci").textContent=f(s.ti);
+  document.getElementById("ce").textContent=f(s.ce+s.ge);
+  document.getElementById("cs").textContent=f(s.sv);
+  var tb="",totalPlanSv=0,totalActSv_local=0;
+  Object.keys(CF).forEach(function(k){
+    var v=CF[k],sv=v.i-v.e,cur=k===CUR_MONTH;
+    var isClosed=isMonthClosed(k); // 현재 또는 과거 월
+    // 미래 월은 실적/차이 표시 안 함
+    var actSv=isClosed&&ACTUAL_SV[k]!=null?ACTUAL_SV[k]:null;
+    var df=actSv!==null?actSv-sv:null;
+    totalPlanSv+=sv;
+    // 합계 계산: 활성화된 월은 실적값(없으면 계획값), 미래 월은 계획값
+    totalActSv_local+=actSv!==null?actSv:sv;
+    
+    var rowOpacity=isClosed?"1":"0.5"; // 미래 월은 흐리게
+    var actText=isClosed?(actSv!==null?f(actSv):"-"):"⏳";
+    var diffText=isClosed?(df===null?"-":(df>=0?"+":"")+f(Math.abs(df))):"예정";
+    var diffColor=isClosed?(df===null?"#4a6080":df>=0?"#34d399":"#f87171"):"#4a6080";
+    
+    tb+='<tr style="background:'+(cur?"#1a305044":"transparent")+';border-bottom:1px solid #1a305022;opacity:'+rowOpacity+';">'+
+      '<td style="padding:6px 4px;color:'+(cur?"#4f9cf9":"#4a6080")+';font-weight:'+(cur?700:400)+';text-align:left;">'+k.slice(2)+'</td>'+
+      '<td style="color:#34d399;">'+f(v.i)+'</td><td style="color:#f87171;">'+f(v.e)+'</td>'+
+      '<td style="color:#4f9cf9;font-weight:700;">'+f(sv)+'</td>'+
+      '<td style="color:'+(isClosed?"#34d399":"#4a6080")+';">'+actText+'</td>'+
+      '<td style="font-weight:700;color:'+diffColor+';font-size:'+(isClosed?"10px":"9px")+';">'+diffText+'</td></tr>';
+  });
+  document.getElementById("cftb").innerHTML=tb;
+  totalActSv=totalActSv_local; // 전역 업데이트
+  var diffTotal=totalActSv-totalPlanSv;
+  document.getElementById("cf-foot").innerHTML=
+    '<tr style="border-top:2px solid #1a3050;background:#0d1929;">'+
+    '<td style="padding:7px 4px;font-weight:800;color:#f1f5f9;text-align:left;">합계</td>'+
+    '<td></td><td></td>'+
+    '<td style="color:#4f9cf9;font-weight:900;">'+f(totalPlanSv)+'</td>'+
+    '<td style="color:#5eead4;font-weight:900;">'+f(totalActSv)+'</td>'+
+    '<td style="font-weight:900;color:'+(diffTotal>=0?"#34d399":"#f87171")+';font-size:10px;">'+(diffTotal>=0?"+":"")+f(diffTotal)+'</td></tr>'+
+    '<tr style="background:#0a1020;">'+
+    '<td colspan="2" style="padding:6px 4px;font-size:9px;color:#4a6080;text-align:left;">💡 현자산+예상저축</td>'+
+    '<td colspan="2" style="padding:6px 4px;font-size:9px;color:#fbbf24;text-align:left;">⏳ 미래 = 계획값</td>'+
+    '<td colspan="2" style="padding:6px 4px;font-size:11px;font-weight:900;color:#5eead4;text-align:right;">'+f(현자산+totalActSv)+'</td></tr>';
+
+  // 게이지
+  var planExp=CF[CUR_MONTH].e;
+  var pctVal=Math.min(150,s.ce/planExp*100);
+  var circ=2*Math.PI*56,dash=circ*Math.min(100,pctVal)/100;
+  var arc=document.getElementById("gauge-arc");
+  arc.setAttribute("stroke-dasharray",dash.toFixed(1)+" "+(circ-dash).toFixed(1));
+  arc.setAttribute("stroke",ok?"#34d399":"#f87171");
+  document.getElementById("gauge-pct").textContent=Math.round(pctVal)+"%";
+  document.getElementById("gauge-exp").textContent=Math.round(s.ce/10000)+"만";
+  document.getElementById("gauge-plan").textContent=Math.round(planExp/10000)+"만";
+
+  // STEP 2
+  // 스샷 버튼 이벤트 위임
+  elContainer.onclick=function(ev){
+    var btn=ev.target.closest("button[data-idx]");
+    if(!btn)return;
+    var idx=parseInt(btn.getAttribute("data-idx"));
+    var type=btn.getAttribute("data-type");
+    var e=allEN[idx];
+    if(type==="ss"&&e&&e.url){
+      // 노션 페이지로 이동 (스샷 확인)
+      window.open(e.url,"_blank");
+    }else if(type==="nofile"&&e&&e.url){
+      toastConfirm("아직 스샷이 없어요 😊\n노션에서 스샷을 첨부하러 갈까요?",function(){
+        window.open(e.url,"_blank");
       });
     }
+  };
 
-    // 로딩 화면 제거 (앱 로드 후)
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const loading = document.getElementById('loading');
-        if (loading) {
-          loading.style.opacity = '0';
-          loading.style.transition = 'opacity 0.5s';
-          setTimeout(() => loading.remove(), 500);
-        }
-      }, 1500);
-    });
-  </script>
+  // STEP1 계획 수치 업데이트
+  var s1inc=document.getElementById("step1-inc");
+  var s1exp=document.getElementById("step1-exp");
+  var s1sv=document.getElementById("step1-sv");
+  if(s1inc)s1inc.textContent=f(curPlan.i);
+  if(s1exp)s1exp.textContent=f(curPlan.e);
+  if(s1sv)s1sv.textContent=f(curPlan.i-curPlan.e);
+  document.getElementById("li").textContent=f(s.ti);
+  document.getElementById("le").textContent=f(s.ce);
+  document.getElementById("lsv").textContent=f(s.sv);
+  document.getElementById("lsv").style.color=s.sv>=planSv?"#4f9cf9":"#f87171";
+  var svEl=document.getElementById("sv-diff");
+  svEl.textContent=(svDiff>=0?"+":"")+f(svDiff)+" (계획 "+f(planSv)+")";
+  svEl.style.color=svDiff>=0?"#4f9cf9":"#f87171";
+
+  // 슬라이더 초기 설정
+  document.getElementById("slider-val").textContent=sliderRate+"%";
+  document.getElementById("step4-rate").textContent=sliderRate;
+  updateSimulation();
+
+  // TL 투자수익 vs 이자
+  updateTLProfit();
+  }catch(err){
+    console.error("ui 오류:",err);
+  }
+}
+
+function updateTLProfit(){
+  var mr=tlRate/12;
+  var p1=C6*(Math.pow(1+mr,12)-1);
+  var p2=C6*(Math.pow(1+mr,8)-1);
+  var nt=p1+p2-총이자A;
+  document.getElementById("pb").innerHTML=
+    '<div class="row"><span style="color:#4a6080;">중도금1(6억×12개월) 투자수익</span><span style="color:#34d399;font-weight:700;">+'+f(p1)+'</span></div>'+
+    '<div class="row"><span style="color:#4a6080;">중도금2(6억×8개월) 투자수익</span><span style="color:#34d399;font-weight:700;">+'+f(p2)+'</span></div>'+
+    '<div class="row"><span style="color:#4a6080;">중도금 이자 (연4.5%)</span><span style="color:#f87171;font-weight:700;">-'+f(총이자A)+'</span></div>'+
+    '<div style="display:flex;justify-content:space-between;padding-top:10px;align-items:center;">'+
+    '<span style="font-size:13px;font-weight:800;">A가 B보다 버는 돈</span>'+
+    '<span style="font-size:18px;font-weight:900;color:'+(nt>0?"#34d399":"#f87171")+';">'+(nt>0?"+":"")+f(nt)+'</span></div>'+
+    '<div style="font-size:11px;color:'+(nt>0?"#34d399":"#f87171")+';margin-top:6px;">'+(nt>0?"✅ "+Math.round(tlRate*100)+"% 수익률이면 A가 유리!":"❌ B가 유리")+'</div>';
+}
+
+// ━━━ D-Day ━━━
+function initDD(){
+  var td=new Date(2026,4,3);
+  var items=[
+    {l:"☀️ 태양이 탄생",d:new Date(2026,5,3),c:"#fbbf24"},
+    {l:"🏠 계약금 납부",d:new Date(2026,9,1),c:"#4f9cf9"},
+    {l:"💳 중도금1",d:new Date(2026,11,1),c:"#5eead4"},
+    {l:"🎉 잔금&입주",d:new Date(2027,11,1),c:"#34d399"},
+  ];
+  document.getElementById("dd").innerHTML=items.map(function(x){
+    var dy=Math.ceil((x.d-td)/86400000);
+    return '<div class="dcard" style="border-color:'+x.c+'33;"><div style="font-size:11px;color:#4a6080;margin-bottom:4px;">'+x.l+'</div><div style="font-size:20px;font-weight:900;color:'+x.c+';">'+(dy>0?"D-"+dy:"D-Day")+'</div><div style="font-size:10px;color:#4a6080;margin-top:2px;">'+x.d.toISOString().slice(0,10)+'</div></div>';
+  }).join("");
+}
+
+// ━━━ 납부 타임라인 ━━━
+function initTL(){
+  var isA=caseType==="A";
+  var 잔금시A=C6+취득세+발코니+C6*2-대출합; // 신용+주담+은행 전체 차감
+  var 잔금시B=C6+취득세+발코니-대출합; // 신용+주담+은행 전체 차감
+  var items=[
+    {k:"2026-10",l:"🏠 계약금",amtA:C6,noteA:"6억 전액 자납",amtB:C6,noteB:"6억 전액 자납",c:"#4f9cf9"},
+    {k:"2026-12",l:"💳 중도금 1회차",amtA:0,noteA:"집단대출 실행 현금 무소요 ✅\n이자 월 225만 시작",amtB:C6,noteB:"현금 6억 자납",c:"#5eead4"},
+    {k:"2027-04",l:"💳 중도금 2회차",amtA:0,noteA:"집단대출 실행 현금 무소요 ✅\n이자 월 450만으로 증가",amtB:C6,noteB:"현금 6억 자납",c:"#5eead4"},
+    {k:"2027-08",l:"💳 중도금 3회차",amtA:C6,noteA:"현금 6억 자납 (공통)",amtB:C6,noteB:"현금 6억 자납 (공통)",c:"#fb923c"},
+    {k:"2027-12",l:"🎉 잔금 & 입주",amtA:잔금시A,noteA:"잔금6억+취득세9,900만+발코니1.2억\n중도금12억 상환\n신용대출1.98억+주담대2억+은행1.5억 실행 차감",amtB:잔금시B,noteB:"잔금6억+취득세9,900만+발코니1.2억\n신용대출1.98억+주담대2억+은행1.5억 실행 차감",c:"#34d399"},
+  ];
+  document.getElementById("tl").innerHTML=items.map(function(x,i){
+    var amt=isA?x.amtA:x.amtB,note=isA?x.noteA:x.noteB;
+    var ln=i<items.length-1?'<div class="ln"></div>':"";
+    var amtHtml=amt>0?'<div style="font-size:12px;color:#f87171;margin-top:2px;font-weight:700;">납부 '+f(amt)+'</div>':'<div style="font-size:12px;color:#5eead4;margin-top:2px;font-weight:700;">현금 무소요 ✅</div>';
+    return '<div class="tl"><div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;"><div class="dot" style="background:'+x.c+';margin-top:3px;"></div>'+ln+'</div><div style="flex:1;padding-bottom:4px;"><div style="font-size:10px;color:#4a6080;">'+x.k+'</div><div style="font-size:13px;font-weight:700;margin-top:1px;">'+x.l+'</div>'+amtHtml+'<div style="font-size:10px;color:#4a6080;margin-top:3px;line-height:1.7;white-space:pre-line;">'+note+'</div></div></div>';
+  }).join("");
+
+  var rows=isA?[{l:"계약금 6억 (자납)",v:C6,c:"#4f9cf9"},{l:"중도금 3회차 자납",v:C6,c:"#fb923c"},{l:"중도금 이자(4.5%)",v:총이자A,c:"#f87171"},{l:"잔금+취득세+발코니",v:C6+취득세+발코니,c:"#5eead4"},{l:"중도금 12억 상환",v:C6*2,c:"#f87171"},{l:"신용+주담+은행 대출 차감",v:-대출합,c:"#34d399"}]:[{l:"계약금 6억",v:C6,c:"#4f9cf9"},{l:"중도금 1+2+3 (각 6억)",v:C6*3,c:"#5eead4"},{l:"잔금+취득세+발코니",v:C6+취득세+발코니,c:"#5eead4"},{l:"대출 전체 차감",v:-대출합,c:"#34d399"}];
+  var 합계=isA?목표A:목표B;
+  document.getElementById("tl-summary").innerHTML=
+    rows.map(function(x){return '<div class="row"><span style="color:#4a6080;">'+x.l+'</span><span style="color:'+x.c+';font-weight:700;">'+(x.v<0?"-":"+")+f(Math.abs(x.v))+'</span></div>';}).join("")+
+    '<div style="display:flex;justify-content:space-between;padding-top:8px;font-size:13px;font-weight:900;"><span>총 직접 현금</span><span style="color:'+(isA?"#4f9cf9":"#fb923c")+';">'+f(합계)+'</span></div>';
+
+  document.getElementById("tlA").className=caseType==="A"?"rbtn on":"rbtn";
+  document.getElementById("tlB").className=caseType==="B"?"rbtn on":"rbtn";
+}
+
+// ━━━ 토스트 ━━━
+function toast(msg,type,duration){
+  type=type||"info";duration=duration||2500;
+  var wrap=document.getElementById("toast-wrap");
+  var t=document.createElement("div");
+  t.className="toast "+type;
+  t.innerHTML=msg.replace(/\n/g,"<br>");
+  wrap.appendChild(t);
+  setTimeout(function(){
+    t.style.opacity="0";t.style.transition="opacity .3s";
+    setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},300);
+  },duration);
+}
+
+function toastConfirm(msg,onConfirm,onCancel){
+  var wrap=document.getElementById("toast-wrap");
+  var t=document.createElement("div");
+  t.className="toast warn";
+  t.innerHTML=msg.replace(/\n/g,"<br>")+
+    '<div class="toast-actions"><button class="toast-btn cancel" data-act="cancel">취소</button>'+
+    '<button class="toast-btn" data-act="ok">확인</button></div>';
+  wrap.appendChild(t);
+  t.onclick=function(ev){
+    var btn=ev.target.closest("button[data-act]");
+    if(!btn)return;
+    var act=btn.getAttribute("data-act");
+    t.parentNode.removeChild(t);
+    if(act==="ok"&&onConfirm)onConfirm();
+    else if(act==="cancel"&&onCancel)onCancel();
+  };
+}
+
+// ━━━ 스샷 모달 ━━━
+function showSS(title,urls){
+  try{
+    if(typeof urls==="string") urls=JSON.parse(decodeURIComponent(urls));
+    var t=typeof title==="string"?title:"";
+    document.getElementById("modal-title").textContent=t+" 📷 스샷";
+    var mc=document.getElementById("modal-content");
+    if(!urls||!urls.length){
+      mc.innerHTML='<div style="text-align:center;padding:20px;"><div style="font-size:40px;margin-bottom:12px;">📷</div><div style="color:#4a6080;font-size:13px;">아직 스샷이 없어요</div><div style="color:#4a6080;font-size:11px;margin-top:6px;">노션에서 스샷 필드에 이미지를 첨부해주세요!</div></div>';
+    }else{
+      var imgs="";
+      for(var i=0;i<urls.length;i++){
+        imgs+='<img src="'+urls[i]+'" style="max-width:100%;border-radius:10px;display:block;margin-bottom:8px;"/>';
+      }
+      imgs+='<div style="font-size:10px;color:#4a6080;margin-top:8px;text-align:center;">노션에서 업로드한 스샷 ('+urls.length+'장)</div>';
+      mc.innerHTML=imgs;
+    }
+    document.getElementById("modal").classList.add("on");
+  }catch(err){
+    toast("스샷을 불러오는 중 오류가 발생했어요","error");
+  }
+}
+function closeModal(){document.getElementById("modal").classList.remove("on");}
+
+// ━━━ 탭/케이스/수익률 ━━━
+function gt(n,btn){
+  document.querySelectorAll(".sec").forEach(function(s){s.classList.remove("on");});
+  document.querySelectorAll(".tb").forEach(function(b){b.classList.remove("on");});
+  document.getElementById("s"+n).classList.add("on");
+  btn.classList.add("on");
+}
+function setCase(c){
+  caseType=c;
+  try{localStorage.setItem("TAEYANGene_caseType",c);}catch(e){}
+  ["A","B"].forEach(function(x){
+    var b1=document.getElementById("btn"+x),b2=document.getElementById("tl"+x);
+    if(b1)b1.className=x===c?"rbtn on":"rbtn";
+    if(b2)b2.className=x===c?"rbtn on":"rbtn";
+  });
+  updateSimulation();initTL();
+}
+function srTL(r){
+  tlRate=r;
+  document.querySelectorAll(".rbtn[data-r]").forEach(function(b){
+    var br=parseFloat(b.getAttribute("data-r"));
+    if(Math.abs(br-r)<0.001){b.classList.add("on");b.textContent=(r*100)+"% ✓";}
+    else{b.classList.remove("on");b.textContent=(br*100)+"%";}
+  });
+  updateTLProfit();
+}
+
+// ━━━ 월 변경 ━━━
+function onMonthChange(month){
+  if(!CF[month]){toast("해당 월 데이터가 없어요","error");return;}
+  CUR_MONTH=month;
+  var label=month.startsWith("2027")?
+    "27년 "+parseInt(month.slice(5))+"월":
+    parseInt(month.slice(5))+"월";
+  document.getElementById("st").textContent="VER 1.2 · "+label+" 기준";
+  
+  // 헤더 라벨 업데이트
+  var hdLabel=document.getElementById("hd-label");
+  var hdValue=document.getElementById("hd-value");
+  if(month==="2026-05"){
+    hdLabel.textContent="투자+현금 (5/10)";
+    hdValue.textContent="23.00억";
+    hdValue.style.color="#4f9cf9";
+  }else{
+    // 다른 월은 예상 자산 표시 (현자산 + 누적 저축액)
+    var cumSv=0;
+    var monthOrder=Object.keys(CF);
+    var curIdx=monthOrder.indexOf(month);
+    for(var i=0;i<=curIdx;i++){
+      var mk=monthOrder[i];
+      cumSv+=ACTUAL_SV[mk]!=null?ACTUAL_SV[mk]:(CF[mk].i-CF[mk].e);
+    }
+    var expectedAsset=현자산+cumSv;
+    hdLabel.textContent="예상 ("+label+")";
+    hdValue.textContent=f(expectedAsset);
+    hdValue.style.color="#5eead4";
+  }
+  
+  toast("📅 "+label+" 데이터로 전환했어요","success",1500);
+  ui();
+}
+
+// ━━━ 노션 동기화 ━━━
+async function syncNotion(){
+  var stEl=document.getElementById("st");
+  try{
+    var res=await fetch("/api/notion");
+    if(!res.ok)throw new Error("API "+res.status);
+    var data=await res.json();
+    if(data.error)throw new Error(data.error);
+
+    if(data.entries&&data.entries.length>0){
+      // 노션 데이터로 EN 완전 교체 (삭제/추가 모두 자동 반영!)
+      EN=data.entries.map(function(e){
+        return{
+          n:e["내용"]||"",
+          t:e["유형"]||"지출",
+          c:e["카테고리"]||"공동",
+          a:e["금액"]||0,
+          p:e["결제수단"]||"현금",
+          w:e["주차"]||"1주차",
+          d:e["날짜"]||"",
+          ss:e["ss"]||[],
+          url:e["url"]||""
+        };
+      });
+      // 마지막 업데이트 시간 표시
+      var upd=data["마지막업데이트"]||"";
+      stEl.textContent="VER 1.2 · "+upd.slice(0,10);
+      stEl.style.color="#4a6080";
+      syncFailCount=0; // 성공 시 카운터 리셋
+      var syncEl=document.getElementById("sync-st");
+      if(syncEl){
+        syncEl.textContent="🔄 노션 "+upd.slice(5,16)+" ("+data.count+"건)";
+        syncEl.style.color="#34d399";
+      }
+    }else{
+      stEl.textContent="VER 1.2";
+      stEl.style.color="#4a6080";
+      var syncEl3=document.getElementById("sync-st");
+      if(syncEl3){syncEl3.textContent="⚠️ 노션 데이터 없음";syncEl3.style.color="#fbbf24";}
+    }
+    ui();
+  }catch(err){
+    console.warn("노션 동기화 실패:",err.message);
+    syncFailCount++;
+    stEl.textContent="VER 1.2";
+    stEl.style.color="#4a6080";
+    var syncEl2=document.getElementById("sync-st");
+    if(syncEl2){
+      if(syncFailCount>=3){
+        syncEl2.textContent="⚠️ 노션 연결 불안정 ("+syncFailCount+"회 실패)";
+        syncEl2.style.color="#fbbf24";
+      }else{
+        syncEl2.textContent="📦 오프라인 모드";
+        syncEl2.style.color="#4a6080";
+      }
+    }
+    ui();
+  }
+}
+
+// 자동 주기적 동기화 (5분마다, 페이지가 보일 때만)
+var lastSyncTime=Date.now();
+setInterval(function(){
+  // 페이지가 안 보이거나(다른 탭) 스크롤 중이면 스킵
+  if(document.hidden)return;
+  syncNotion();
+  lastSyncTime=Date.now();
+}, 5 * 60 * 1000);
+
+// 페이지가 다시 보일 때 마지막 동기화로부터 5분 이상 지났으면 즉시 동기화
+document.addEventListener("visibilitychange",function(){
+  if(!document.hidden&&Date.now()-lastSyncTime>5*60*1000){
+    syncNotion();
+    lastSyncTime=Date.now();
+  }
+});
+
+// ━━━ 초기화 ━━━
+// 윈도우 리사이즈 시 차트 재렌더링 (태블릿/노트북 대응)
+var resizeTimer;
+window.addEventListener("resize",function(){
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(function(){
+    drawChart();
+    drawRateChart();
+  },200);
+});
+// 화면 방향 전환 대응 (태블릿)
+window.addEventListener("orientationchange",function(){
+  setTimeout(function(){drawChart();drawRateChart();},300);
+});
+
+// 저장된 슬라이더 값 적용
+(function(){
+  var slider=document.getElementById("rate-slider");
+  if(slider){
+    slider.value=sliderRate;
+    slider.style.background='linear-gradient(to right,#4f9cf9 0%,#4f9cf9 '+sliderRate+'%,#1a3050 '+sliderRate+'%,#1a3050 100%)';
+    var sv=document.getElementById("slider-val");if(sv)sv.textContent=sliderRate+"%";
+    var s4r=document.getElementById("step4-rate");if(s4r)s4r.textContent=sliderRate;
+  }
+})();
+// 저장된 Case 적용
+(function(){
+  ["A","B"].forEach(function(x){
+    var b1=document.getElementById("btn"+x),b2=document.getElementById("tl"+x);
+    if(b1)b1.className=x===caseType?"rbtn on":"rbtn";
+    if(b2)b2.className=x===caseType?"rbtn on":"rbtn";
+  });
+})();
+
+// DOM 완전 렌더링 후 차트 그리기 (태블릿 검은화면 방지)
+requestAnimationFrame(function(){
+  setTimeout(function(){
+    drawChart();
+    drawRateChart();
+    initDD();
+    initTL();
+    ui();
+    syncNotion();
+  },50);
+});
+
+// 드롭다운 초기값 설정 (자동 결정된 CUR_MONTH)
+document.getElementById("month-select").value=CUR_MONTH;
+
+// 초기 헤더 라벨 설정 + 자동 월 전환 토스트
+if(CUR_MONTH!=="2026-05"){
+  // 자동 전환 안내 토스트
+  setTimeout(function(){
+    var label=CUR_MONTH.startsWith("2027")?"27년 "+parseInt(CUR_MONTH.slice(5))+"월":parseInt(CUR_MONTH.slice(5))+"월";
+    toast("📅 "+label+"이 자동 활성화됐어요!\n노션에 입력하면 바로 반영돼요","success",3500);
+  },800);
+  // onMonthChange와 동일한 헤더 업데이트 로직
+  var label=CUR_MONTH.startsWith("2027")?"27년 "+parseInt(CUR_MONTH.slice(5))+"월":parseInt(CUR_MONTH.slice(5))+"월";
+  document.getElementById("st").textContent="VER 1.2 · "+label+" 활성";
+  var hdLabel=document.getElementById("hd-label");
+  var hdValue=document.getElementById("hd-value");
+  if(hdLabel&&hdValue){
+    var cumSv=0;
+    var monthOrder=Object.keys(CF);
+    var curIdx=monthOrder.indexOf(CUR_MONTH);
+    for(var i=0;i<=curIdx;i++){
+      var mk=monthOrder[i];
+      cumSv+=ACTUAL_SV[mk]!=null?ACTUAL_SV[mk]:(CF[mk].i-CF[mk].e);
+    }
+    var expectedAsset=현자산+cumSv;
+    hdLabel.textContent="예상 ("+label+")";
+    hdValue.textContent=f(expectedAsset);
+    hdValue.style.color="#5eead4";
+  }
+}
+if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js");
+</script>
 </body>
 </html>
