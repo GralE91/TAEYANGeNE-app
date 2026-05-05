@@ -110,7 +110,10 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
       <option value="2027-12">27년 12월</option>
     </select>
     <div style="text-align:right;">
-      <div style="font-size:10px;color:#4a6080;" id="hd-label">투자+현금 (5/10)</div>
+      <div style="font-size:10px;color:#4a6080;display:flex;align-items:center;justify-content:flex-end;gap:6px;" id="hd-label">
+        <span>투자+현금 (5/10)</span>
+        <button id="refresh-stock-btn" onclick="refreshStock()" style="background:#1e3a5f;border:1px solid #4f9cf9;border-radius:6px;color:#4f9cf9;font-size:10px;padding:2px 8px;cursor:pointer;font-family:inherit;">🔄</button>
+      </div>
       <div style="font-size:20px;font-weight:900;color:#4f9cf9;" id="hd-value">23.00억</div>
     </div>
   </div>
@@ -1214,6 +1217,64 @@ async function syncNotion(){
       }
     }
     ui();
+  }
+}
+
+// ━━━ 한투 실시간 주가 갱신 ━━━
+async function refreshStock(){
+  var btn=document.getElementById("refresh-stock-btn");
+  var hdValue=document.getElementById("hd-value");
+  var hdLabel=document.getElementById("hd-label");
+  if(!btn)return;
+
+  btn.disabled=true;
+  btn.innerHTML="⏳";
+  toast("📊 실시간 주가 조회 중...\n(약 30초 소요)","info",3000);
+
+  try{
+    var res=await fetch("/api/stock");
+    if(!res.ok)throw new Error("API "+res.status);
+    var data=await res.json();
+    if(data.error)throw new Error(data.error);
+
+    // 투자자산만 업데이트 (현금자산 + 퇴직연금은 제외)
+    var newInvest=data.총합;
+    var 근한투자=data.근한.합계;
+    var 예진투자=data.예진.합계;
+
+    // 전역 변수 업데이트
+    투자자산=newInvest;
+    현자산=투자자산+현금자산;
+
+    // 홈 자산 카드 업데이트
+    var 투자카드=document.querySelector(".g3 .box:nth-child(1) div:nth-child(2)");
+    if(투자카드)투자카드.textContent=(newInvest/1e8).toFixed(2)+"억";
+    var 투자상세=document.querySelector(".g3 .box:nth-child(1) div:nth-child(3)");
+    if(투자상세)투자상세.innerHTML="근한 "+(근한투자/1e8).toFixed(2)+"억<br>예진 "+(예진투자/1e8).toFixed(2)+"억";
+
+    // 헤더 자산 업데이트
+    hdValue.textContent=(현자산/1e8).toFixed(2)+"억";
+    hdLabel.querySelector("span").textContent="투자+현금 (실시간)";
+
+    // 실패 종목 카운트
+    var 실패=data.근한.실패+data.예진.실패;
+    if(실패>0){
+      toast("⚠️ "+실패+"개 종목 조회 실패\n총합 "+(newInvest/1e8).toFixed(2)+"억","warn",4000);
+    }else{
+      toast("✅ 실시간 자산 "+(newInvest/1e8).toFixed(2)+"억\n"+data.시간.slice(5,16),"success",3000);
+    }
+
+    // UI 재렌더링
+    ui();
+    drawChart();
+    drawRateChart();
+
+  }catch(err){
+    console.error("주가 조회 실패:",err);
+    toast("❌ 실시간 주가 조회 실패\n"+err.message,"error",4000);
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML="🔄";
   }
 }
 
