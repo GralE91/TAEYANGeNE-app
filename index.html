@@ -133,7 +133,10 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 <!-- ━━━ 홈 ━━━ -->
 <div class="sec on" id="s0">
   <div class="card">
-    <div class="lbl">📊 자산 현황 · <span id="asset-date-lbl">5/10</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div class="lbl" style="margin:0;">📊 자산 현황 · <span id="asset-date-lbl">5/10</span></div>
+      <button id="refresh-stock-btn" onclick="refreshStock()" style="background:#1e3a5f;border:1px solid #4f9cf9;border-radius:8px;color:#4f9cf9;font-size:10px;padding:4px 10px;cursor:pointer;font-family:inherit;font-weight:700;">🔄 실시간</button>
+    </div>
     <div class="g3">
       <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자자산</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;" id="invest-total">20.63억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;" id="invest-detail">근한 12.28억<br>예진 8.34억</div></div>
       <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">현금자산</div><div style="font-size:15px;font-weight:900;color:#34d399;">2.37억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 0.96억<br>예진 1.41억</div></div>
@@ -1214,6 +1217,85 @@ async function syncNotion(){
       }
     }
     ui();
+  }
+}
+
+// ━━━ 한투 실시간 주가 갱신 (모든 UI 동기화!) ━━━
+async function refreshStock(){
+  var btn=document.getElementById("refresh-stock-btn");
+  if(!btn||btn.disabled)return;
+
+  btn.disabled=true;
+  btn.style.opacity="0.5";
+  var origText=btn.innerHTML;
+  btn.innerHTML="⏳ 조회중";
+  toast("📊 실시간 주가 조회 중...\n약 5~10초 소요","info",3500);
+
+  try{
+    var res=await fetch("/api/stock");
+    if(!res.ok){
+      var errData=await res.json().catch(function(){return{};});
+      throw new Error(errData.error||"API "+res.status);
+    }
+    var data=await res.json();
+    if(data.error)throw new Error(data.error);
+
+    var newInvest=data.총합||0;
+    var 근한투자=(data.근한&&data.근한.합계)||0;
+    var 예진투자=(data.예진&&data.예진.합계)||0;
+
+    if(newInvest===0)throw new Error("주가 조회 결과 0원");
+
+    // 1. 전역 자산 변수 업데이트
+    투자자산=newInvest;
+    현자산=투자자산+현금자산;
+
+    // 2. 홈 자산 카드 업데이트
+    var iv=document.getElementById("invest-total");
+    if(iv)iv.textContent=(newInvest/1e8).toFixed(2)+"억";
+    var idEl=document.getElementById("invest-detail");
+    if(idEl)idEl.innerHTML="근한 "+(근한투자/1e8).toFixed(2)+"억<br>예진 "+(예진투자/1e8).toFixed(2)+"억";
+
+    // 3. 자산 라벨 업데이트
+    var alLbl=document.getElementById("asset-date-lbl");
+    if(alLbl)alLbl.textContent=data.시간.slice(5,16)+" 실시간";
+
+    // 4. 헤더도 업데이트 (CUR_MONTH가 5월일 때만)
+    if(CUR_MONTH==="2026-05"){
+      var hdValue=document.getElementById("hd-value");
+      var hdLabel=document.getElementById("hd-label");
+      if(hdValue)hdValue.textContent=(현자산/1e8).toFixed(2)+"억";
+      if(hdLabel)hdLabel.textContent="투자+현금 (실시간)";
+    }
+
+    // 5. WK 배열 마지막 값 업데이트 (5/10)
+    if(WK.length>0){
+      WK[WK.length-1].v=parseFloat((현자산/1e8).toFixed(2));
+    }
+
+    // 6. 모든 차트/UI 재렌더링
+    drawChart();
+    drawRateChart();
+    ui();
+    initTL();
+    updateSimulation();
+
+    // 7. 결과 토스트
+    var 실패=(data.근한&&data.근한.실패||0)+(data.예진&&data.예진.실패||0);
+    var 시간표시=data.시간.slice(5,16);
+    if(실패>0){
+      toast("✅ 자산 "+(newInvest/1e8).toFixed(2)+"억\n⚠️ "+실패+"개 ETF 미지원 (모의투자)","warn",5000);
+    }else{
+      toast("✅ 실시간 자산 "+(newInvest/1e8).toFixed(2)+"억\n📈 모든 차트 업데이트 완료!","success",3500);
+    }
+
+  }catch(err){
+    console.error("주가 조회 실패:",err);
+    toast("❌ 주가 조회 실패\n"+err.message,"error",5000);
+  }finally{
+    btn.disabled=false;
+    btn.style.opacity="1";
+    btn.innerHTML=origText;
   }
 }
 
