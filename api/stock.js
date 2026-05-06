@@ -1,7 +1,7 @@
-// api/stock.js - 한국투자증권 OpenAPI 실시간 주가 조회
-// 종목 중복 제거 + 합산 최적화
+// api/stock.js - 한투 OpenAPI 실시간 주가 조회 (모의투자)
+// ETF 호환성 처리 + 폴백값 적용
 
-// 보유 종목 (5/10 기준) - 같은 종목코드는 자동 합산
+// 보유 종목 (5/10 기준)
 const HOLDINGS = {
   근한: [
     { code: "000660", name: "SK하이닉스", shares: 35 },
@@ -52,12 +52,27 @@ const HOLDINGS = {
   ]
 };
 
+// 조회 실패 시 폴백 평균가 (5/10 엑셀 기준 평단가)
+// 모의투자에서 안되는 종목은 이 값으로 자동 합산
+const FALLBACK_PRICES = {
+  "0180V0": 12500,  // ACE미국우주테크액티브
+  "0126Z0": 95000,  // 삼성에피스홀딩스
+  "0015B0": 14000,  // Koact미국나스닥성장기업액티브
+  "475960": 15000,  // 토모큐브
+  "475050": 9000,   // ACEKPOP포커스
+  "455890": 10100,  // RISE머니마켓
+  "442580": 11500,  // PLUS글로벌HBM반도체
+  "457480": 12000,  // ACE테슬라
+  "483340": 11500,  // ACE구글
+  "279570": 13500,  // 케이뱅크
+  "0126Z0": 95000   // 삼성에피스홀딩스
+};
+
 let cachedToken = null;
 let tokenExpiry = 0;
 
 async function getAccessToken(appKey, appSecret, isVirtual) {
   if (cachedToken && Date.now() < tokenExpiry) return cachedToken;
-
   const baseUrl = isVirtual
     ? 'https://openapivts.koreainvestment.com:29443'
     : 'https://openapi.koreainvestment.com:9443';
@@ -71,12 +86,10 @@ async function getAccessToken(appKey, appSecret, isVirtual) {
       appsecret: appSecret
     })
   });
-
   if (!res.ok) {
     const errText = await res.text();
     throw new Error(`토큰 발급 실패: ${res.status} - ${errText}`);
   }
-
   const data = await res.json();
   cachedToken = data.access_token;
   tokenExpiry = Date.now() + (23 * 60 * 60 * 1000);
@@ -87,7 +100,6 @@ async function getStockPrice(code, token, appKey, appSecret, isVirtual) {
   const baseUrl = isVirtual
     ? 'https://openapivts.koreainvestment.com:29443'
     : 'https://openapi.koreainvestment.com:9443';
-
   const url = `${baseUrl}/uapi/domestic-stock/v1/quotations/inquire-price?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=${code}`;
 
   const res = await fetch(url, {
@@ -100,7 +112,6 @@ async function getStockPrice(code, token, appKey, appSecret, isVirtual) {
       'Content-Type': 'application/json'
     }
   });
-
   if (!res.ok) return null;
   const data = await res.json();
   if (data.rt_cd !== '0') return null;
@@ -125,34 +136,45 @@ export default async function handler(req, res) {
 
     const token = await getAccessToken(APP_KEY, APP_SECRET, IS_VIRTUAL);
 
-    // 1단계: 모든 고유 종목코드 추출 → 한번만 조회
+    // 고유 종목코드만 조회 (중복 제거)
     const allStocks = [...HOLDINGS.근한, ...HOLDINGS.예진];
     const uniqueCodes = [...new Set(allStocks.map(s => s.code))];
 
-    // 2단계: 종목별 가격 캐싱 객체
     const priceCache = {};
     const failedCodes = [];
+    const fallbackUsed = [];
 
     for (const code of uniqueCodes) {
       try {
         const price = await getStockPrice(code, token, APP_KEY, APP_SECRET, IS_VIRTUAL);
         if (price === null || price === 0) {
-          failedCodes.push(code);
-          priceCache[code] = 0;
+          // 폴백 가격 사용
+          if (FALLBACK_PRICES[code]) {
+            priceCache[code] = FALLBACK_PRICES[code];
+            fallbackUsed.push(code);
+          } else {
+            priceCache[code] = 0;
+            failedCodes.push(code);
+          }
         } else {
           priceCache[code] = price;
         }
-        await new Promise(r => setTimeout(r, 60)); // Rate limit
+        await new Promise(r => setTimeout(r, 60));
       } catch (e) {
-        failedCodes.push(code);
-        priceCache[code] = 0;
+        if (FALLBACK_PRICES[code]) {
+          priceCache[code] = FALLBACK_PRICES[code];
+          fallbackUsed.push(code);
+        } else {
+          priceCache[code] = 0;
+          failedCodes.push(code);
+        }
       }
     }
 
-    // 3단계: 캐싱된 가격으로 합산
+    // 합산
     const results = {
-      근한: { 종목: [], 합계: 0, 실패: 0 },
-      예진: { 종목: [], 합계: 0, 실패: 0 }
+      근한: { 종목: [], 합계: 0, 실패: 0, 폴백: 0 },
+      예진: { 종목: [], 합계: 0, 실패: 0, 폴백: 0 }
     };
 
     for (const owner of ['근한', '예진']) {
@@ -164,7 +186,12 @@ export default async function handler(req, res) {
         } else {
           const value = price * stock.shares;
           results[owner].합계 += value;
-          results[owner].종목.push({ ...stock, price, value });
+          if (fallbackUsed.includes(stock.code)) {
+            results[owner].폴백++;
+            results[owner].종목.push({ ...stock, price, value, fallback: true });
+          } else {
+            results[owner].종목.push({ ...stock, price, value });
+          }
         }
       }
     }
@@ -181,7 +208,8 @@ export default async function handler(req, res) {
       시간,
       isVirtual: IS_VIRTUAL,
       조회종목수: uniqueCodes.length,
-      실패종목: failedCodes
+      실패종목: failedCodes,
+      폴백사용: fallbackUsed
     });
 
   } catch (error) {
