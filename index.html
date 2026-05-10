@@ -83,7 +83,7 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 <div class="hd">
   <div>
     <div style="font-size:17px;font-weight:900;">☀️ TAEYANGene App</div>
-    <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">VER 1.2 · 5/10 기준</div>
+    <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">VER 1.3 · 5/10 기준</div>
     <div style="font-size:10px;margin-top:1px;" id="sync-st"></div>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
@@ -353,6 +353,111 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 
 <!-- ━━━ CF분석 ━━━ -->
 <div class="sec" id="s2">
+
+  <!-- 핵심 통계 KPI 카드 -->
+  <div class="card">
+    <div class="lbl">📊 핵심 지표 (1/11~5/10, <span id="ana-weeks">18</span>주)</div>
+    <div class="g4" style="gap:6px;">
+      <div class="box" style="padding:9px 7px;text-align:center;">
+        <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">CAGR</div>
+        <div style="font-size:13px;font-weight:900;color:#34d399;" id="kpi-cagr">+210%</div>
+        <div style="font-size:8px;color:#4a6080;margin-top:2px;">연환산</div>
+      </div>
+      <div class="box" style="padding:9px 7px;text-align:center;">
+        <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">변동성</div>
+        <div style="font-size:13px;font-weight:900;color:#fbbf24;" id="kpi-vol">5.2%</div>
+        <div style="font-size:8px;color:#4a6080;margin-top:2px;">σ(주)</div>
+      </div>
+      <div class="box" style="padding:9px 7px;text-align:center;">
+        <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">샤프</div>
+        <div style="font-size:13px;font-weight:900;color:#5eead4;" id="kpi-sharpe">3.17</div>
+        <div style="font-size:8px;color:#4a6080;margin-top:2px;">위험조정</div>
+      </div>
+      <div class="box" style="padding:9px 7px;text-align:center;">
+        <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">MDD</div>
+        <div style="font-size:13px;font-weight:900;color:#f87171;" id="kpi-mdd">-15.0%</div>
+        <div style="font-size:8px;color:#4a6080;margin-top:2px;">최대낙폭</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 자산 구성 도넛 -->
+  <div class="card">
+    <div class="lbl">🍩 자산 구성 분석</div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="flex:0 0 140px;display:flex;justify-content:center;">
+        <svg id="donut-asset" width="140" height="140" viewBox="0 0 140 140"></svg>
+      </div>
+      <div style="flex:1;min-width:140px;font-size:11px;line-height:1.9;">
+        <div id="donut-asset-legend"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 카테고리별 지출 도넛 -->
+  <div class="card">
+    <div class="lbl">📁 5월 카테고리별 지출 (<span id="cat-total">0</span>만)</div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="flex:0 0 140px;display:flex;justify-content:center;">
+        <svg id="donut-cat" width="140" height="140" viewBox="0 0 140 140"></svg>
+      </div>
+      <div style="flex:1;min-width:140px;font-size:11px;line-height:1.9;">
+        <div id="donut-cat-legend"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5월 분석: 계획 vs 실제 -->
+  <div class="card">
+    <div class="lbl">⚖️ 5월 계획 vs 실제 (<span id="ana-month-lbl">5월</span>)</div>
+    <div id="plan-vs-actual"></div>
+    <div id="plan-analysis" style="margin-top:10px;padding:10px;background:#060c18;border-radius:10px;font-size:11px;line-height:1.7;color:#cbd5e1;"></div>
+  </div>
+
+  <!-- 주차별 흐름 -->
+  <div class="card">
+    <div class="lbl">📆 주차별 현금흐름</div>
+    <div style="width:100%;overflow:hidden;">
+      <svg id="bar-week" width="320" height="180" style="display:block;margin:0 auto;max-width:100%;"></svg>
+    </div>
+    <div id="week-summary" style="margin-top:8px;font-size:10px;color:#4a6080;text-align:center;"></div>
+  </div>
+
+  <!-- 주간 수익률 분포 (히스토그램) -->
+  <div class="card">
+    <div class="lbl">📉 주간 수익률 분포 (정규성 확인)</div>
+    <div style="width:100%;overflow:hidden;">
+      <svg id="histogram" width="320" height="160" style="display:block;margin:0 auto;max-width:100%;"></svg>
+    </div>
+    <div id="histo-stats" style="margin-top:8px;font-size:10px;color:#4a6080;text-align:center;"></div>
+  </div>
+
+  <!-- CF 누적 자산 곡선 -->
+  <div class="card">
+    <div class="lbl">📈 입주까지 자산 곡선 예측</div>
+    <div style="width:100%;overflow:hidden;">
+      <svg id="cumchart" width="320" height="200" style="display:block;margin:0 auto;max-width:100%;"></svg>
+    </div>
+    <div id="cumchart-summary" style="margin-top:8px;font-size:10px;color:#4a6080;text-align:center;line-height:1.7;"></div>
+  </div>
+
+  <!-- 가족 자산 비중 -->
+  <div class="card">
+    <div class="lbl">👨‍👩‍👧 가족별 자산 분포</div>
+    <div style="width:100%;overflow:hidden;">
+      <svg id="family-bar" width="320" height="160" style="display:block;margin:0 auto;max-width:100%;"></svg>
+    </div>
+  </div>
+
+  <!-- 소비 인사이트 (AI 분석) -->
+  <div class="card">
+    <div class="lbl">🧠 이번달 소비 인사이트</div>
+    <div id="insight-box" style="font-size:12px;line-height:1.8;color:#cbd5e1;"></div>
+  </div>
+
+</div>
+
+<div class="sec" id="s3">
   <div class="card" style="border:1px solid #34d39933;">
     <div class="lbl" style="color:#34d399;">✅ <span id="cf-result-lbl">5월</span> 결산 (노션 데이터)</div>
     <div class="g3">
@@ -379,7 +484,7 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 </div>
 
 <!-- ━━━ 납부일정 ━━━ -->
-<div class="sec" id="s3">
+<div class="sec" id="s4">
   <div class="card">
     <div class="lbl">📅 주요 D-Day</div>
     <div class="g2" id="dd"></div>
@@ -414,8 +519,9 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 <div class="tabs">
   <button class="tb on" onclick="gt(0,this)"><div style="font-size:17px;">🏠</div><div style="font-size:8px;margin-top:1px;">홈</div></button>
   <button class="tb" onclick="gt(1,this)"><div style="font-size:17px;">🎯</div><div style="font-size:8px;margin-top:1px;">한계소비</div></button>
-  <button class="tb" onclick="gt(2,this)"><div style="font-size:17px;">💸</div><div style="font-size:8px;margin-top:1px;">CF분석</div></button>
-  <button class="tb" onclick="gt(3,this)"><div style="font-size:17px;">📅</div><div style="font-size:8px;margin-top:1px;">납부일정</div></button>
+  <button class="tb" onclick="gt(2,this)"><div style="font-size:17px;">📊</div><div style="font-size:8px;margin-top:1px;">분석</div></button>
+  <button class="tb" onclick="gt(3,this)"><div style="font-size:17px;">💸</div><div style="font-size:8px;margin-top:1px;">CF분석</div></button>
+  <button class="tb" onclick="gt(4,this)"><div style="font-size:17px;">📅</div><div style="font-size:8px;margin-top:1px;">납부일정</div></button>
 </div>
 
 <script>
@@ -500,6 +606,12 @@ var EN=[
   {n:"어버이날용돈(할머니할아부지)",t:"지출",c:"공동",a:400000,p:"현금",w:"2주차",d:"2026-05-02",ss:[],url:"https://www.notion.so/3542bce4ac12809bb18bf129914ab4a7"},
   {n:"당근_숀리바이크",t:"수입",c:"공동",a:50000,p:"현금",w:"2주차",d:"2026-05-03",ss:[],url:"https://www.notion.so/3552bce4ac12803aab1dcaa428a24125"},
   {n:"4월 급여2",t:"수입",c:"근한",a:1889340,p:"현금",w:"3주차",d:"2026-05-04",ss:[],url:"https://www.notion.so/3552bce4ac1280109dbed0a164ab0816"},
+  {n:"당근, 로또",t:"수입",c:"공동",a:154000,p:"현금",w:"2주차",d:"2026-05-04",ss:[],url:"https://www.notion.so/3552bce4ac12807b9e57e028bb3d6b49"},
+  {n:"어버이날용돈(양가)",t:"지출",c:"공동",a:1000000,p:"현금",w:"3주차",d:"2026-05-09",ss:[],url:"https://www.notion.so/35c2bce4ac12800f974be82ba0ecd02e"},
+  {n:"용돈",t:"수입",c:"공동",a:400000,p:"현금",w:"3주차",d:"2026-05-09",ss:[],url:"https://www.notion.so/35c2bce4ac1280959111de00e34ad6ba"},
+  {n:"3주차 생활비 정산",t:"지출",c:"예진",a:343571,p:"현금",w:"3주차",d:"2026-05-10",ss:["notionfile"],url:"https://www.notion.so/35c2bce4ac1280cb8e37faaf1bb302e7"},
+  {n:"3주차 생활비 정산",t:"지출",c:"근한",a:254800,p:"현금",w:"3주차",d:"2026-05-10",ss:["notionfile"],url:"https://www.notion.so/35c2bce4ac1280f983dad50bccf9d555"},
+  {n:"당근_흰색의자2개",t:"수입",c:"공동",a:15000,p:"현금",w:"3주차",d:"2026-05-10",ss:[],url:"https://www.notion.so/35c2bce4ac12804da585c401a7a1393e"},
   {n:"2주차 생활비 정산",t:"지출",c:"예진",a:30000,p:"현금",w:"2주차",d:"2026-05-20",ss:["notionfile"],url:"https://www.notion.so/3552bce4ac128033af66deb43d29288d"},
   {n:"2주차 생활비 정산",t:"지출",c:"근한",a:90370,p:"현금",w:"2주차",d:"2026-05-20",ss:["notionfile"],url:"https://www.notion.so/3552bce4ac1280ebb566c40af392d744"}
 ];
@@ -794,6 +906,380 @@ function updateSimulation(){
     document.getElementById("lm").style.color="#f87171";
     document.getElementById("lm").style.background="#1a0808";
     document.getElementById("lm").innerHTML="저축 <strong>"+f(Math.abs(svDiff))+"</strong> 부족<br>→ 월 한계지출: <strong>"+f(limitMonthly)+"</strong><br>→ 주간 한계지출: <strong>"+f(Math.round(limitMonthly/5))+"</strong>";
+  }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 📊 분석 탭 시각화 함수들 (VER 1.3 신규)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+function _mean(arr){var s=0;for(var i=0;i<arr.length;i++)s+=arr[i];return s/arr.length;}
+function _std(arr){var m=_mean(arr),s=0;for(var i=0;i<arr.length;i++)s+=(arr[i]-m)*(arr[i]-m);return Math.sqrt(s/(arr.length-1));}
+
+function updateKPI(){
+  if(WK.length<2)return;
+  var rets=[];
+  for(var i=1;i<WK.length;i++)rets.push((WK[i].v-WK[i-1].v)/WK[i-1].v*100);
+  var meanR=_mean(rets),stdR=_std(rets);
+  var weeks=WK.length-1;
+  var totalRet=(WK[WK.length-1].v/WK[0].v);
+  var cagr=(Math.pow(totalRet,52/weeks)-1)*100;
+  var peak=WK[0].v,mdd=0;
+  for(var j=0;j<WK.length;j++){
+    if(WK[j].v>peak)peak=WK[j].v;
+    var dd=(WK[j].v-peak)/peak*100;
+    if(dd<mdd)mdd=dd;
+  }
+  var sharpe=stdR>0?((meanR*52-3)/(stdR*Math.sqrt(52))):0;
+  document.getElementById("ana-weeks").textContent=WK.length;
+  document.getElementById("kpi-cagr").textContent=(cagr>=0?"+":"")+cagr.toFixed(0)+"%";
+  document.getElementById("kpi-vol").textContent=stdR.toFixed(1)+"%";
+  document.getElementById("kpi-sharpe").textContent=sharpe.toFixed(2);
+  document.getElementById("kpi-mdd").textContent=mdd.toFixed(1)+"%";
+}
+
+function drawDonut(svgId,data,colors){
+  var svg=document.getElementById(svgId);
+  if(!svg)return;
+  svg.innerHTML="";
+  var total=0;for(var i=0;i<data.length;i++)total+=data[i].value;
+  if(total===0)return;
+  var cx=70,cy=70,r=55,ir=35;
+  var startAngle=-Math.PI/2;
+  for(var k=0;k<data.length;k++){
+    var v=data[k].value;
+    if(v<=0)continue;
+    var angle=v/total*Math.PI*2;
+    var endAngle=startAngle+angle;
+    var x1=cx+r*Math.cos(startAngle),y1=cy+r*Math.sin(startAngle);
+    var x2=cx+r*Math.cos(endAngle),y2=cy+r*Math.sin(endAngle);
+    var x3=cx+ir*Math.cos(endAngle),y3=cy+ir*Math.sin(endAngle);
+    var x4=cx+ir*Math.cos(startAngle),y4=cy+ir*Math.sin(startAngle);
+    var large=angle>Math.PI?1:0;
+    var d="M "+x1+" "+y1+" A "+r+" "+r+" 0 "+large+" 1 "+x2+" "+y2+" L "+x3+" "+y3+" A "+ir+" "+ir+" 0 "+large+" 0 "+x4+" "+y4+" Z";
+    svg.innerHTML+='<path d="'+d+'" fill="'+colors[k%colors.length]+'" opacity="0.92"/>';
+    startAngle=endAngle;
+  }
+  svg.innerHTML+='<text x="70" y="68" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="Noto Sans KR">합계</text>';
+  svg.innerHTML+='<text x="70" y="82" text-anchor="middle" fill="#f1f5f9" font-size="14" font-weight="900" font-family="Noto Sans KR">'+f(total)+'</text>';
+}
+
+function drawAssetDonut(){
+  var data=[{label:"투자자산",value:투자자산},{label:"현금자산",value:현금자산},{label:"퇴직연금",value:Math.round(퇴직억*1e8)}];
+  var colors=["#4f9cf9","#34d399","#5eead4"];
+  drawDonut("donut-asset",data,colors);
+  var total=투자자산+현금자산+퇴직억*1e8;
+  var html="";
+  for(var i=0;i<data.length;i++){
+    var pct=(data[i].value/total*100).toFixed(1);
+    html+='<div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;background:'+colors[i]+';border-radius:2px;display:inline-block;flex-shrink:0;"></span>'+data[i].label+' <span style="color:#4a6080;">'+(data[i].value/1e8).toFixed(2)+'억 ('+pct+'%)</span></div>';
+  }
+  document.getElementById("donut-asset-legend").innerHTML=html;
+}
+
+function drawCategoryDonut(){
+  var s=calc();
+  var data=[{label:"🏠 공동",value:s.ct.공동.c},{label:"👨 근한",value:s.ct.근한.c},{label:"👩 예진",value:s.ct.예진.c},{label:"☀️ 태양",value:s.ct.태양.c}];
+  var colors=["#34d399","#4f9cf9","#a78bfa","#fbbf24"];
+  var filtered=[],fcolors=[];
+  for(var i=0;i<data.length;i++)if(data[i].value>0){filtered.push(data[i]);fcolors.push(colors[i]);}
+  drawDonut("donut-cat",filtered,fcolors);
+  var total=0;for(var k=0;k<filtered.length;k++)total+=filtered[k].value;
+  document.getElementById("cat-total").textContent=Math.round(total/10000);
+  var html="";
+  for(var j=0;j<filtered.length;j++){
+    var pct=total>0?(filtered[j].value/total*100).toFixed(1):0;
+    html+='<div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;background:'+fcolors[j]+';border-radius:2px;display:inline-block;flex-shrink:0;"></span>'+filtered[j].label+' <span style="color:#4a6080;">'+f(filtered[j].value)+' ('+pct+'%)</span></div>';
+  }
+  document.getElementById("donut-cat-legend").innerHTML=html;
+}
+
+function drawPlanVsActual(){
+  var s=calc();
+  var plan=CF[CUR_MONTH];
+  if(!plan)return;
+  var monthLbl=CUR_MONTH.startsWith("2027")?"27년 "+parseInt(CUR_MONTH.slice(5))+"월":parseInt(CUR_MONTH.slice(5))+"월";
+  document.getElementById("ana-month-lbl").textContent=monthLbl;
+  var items=[
+    {label:"수입",plan:plan.i,actual:s.ti,color:"#34d399"},
+    {label:"지출",plan:plan.e,actual:s.ce,color:"#f87171"},
+    {label:"저축",plan:plan.i-plan.e,actual:s.sv,color:"#4f9cf9"}
+  ];
+  var html='',maxV=Math.max.apply(null,items.map(function(it){return Math.max(Math.abs(it.plan),Math.abs(it.actual));}));
+  for(var i=0;i<items.length;i++){
+    var it=items[i];
+    var diff=it.actual-it.plan;
+    var diffPct=it.plan!==0?(diff/Math.abs(it.plan)*100):0;
+    var good=(it.label==="수입"||it.label==="저축")?diff>=0:diff<=0;
+    var arrow=diff>0?"▲":"▼";
+    var arrowColor=good?"#34d399":"#f87171";
+    var pPct=maxV>0?Math.abs(it.plan)/maxV*100:0;
+    var aPct=maxV>0?Math.abs(it.actual)/maxV*100:0;
+    html+='<div style="margin-bottom:12px;">';
+    html+='<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;"><span style="color:#cbd5e1;font-weight:700;">'+it.label+'</span><span style="color:'+arrowColor+';font-weight:700;">'+arrow+' '+(diffPct>=0?"+":"")+diffPct.toFixed(1)+'%</span></div>';
+    html+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><span style="font-size:9px;color:#4a6080;width:26px;">계획</span><div style="flex:1;background:#0a1020;height:14px;border-radius:7px;overflow:hidden;"><div style="background:#4a6080;height:100%;width:'+pPct+'%;"></div></div><span style="font-size:9px;color:#4a6080;width:62px;text-align:right;">'+f(it.plan)+'</span></div>';
+    html+='<div style="display:flex;align-items:center;gap:6px;"><span style="font-size:9px;color:#4a6080;width:26px;">실제</span><div style="flex:1;background:#0a1020;height:14px;border-radius:7px;overflow:hidden;"><div style="background:'+it.color+';height:100%;width:'+aPct+'%;"></div></div><span style="font-size:9px;color:'+it.color+';font-weight:700;width:62px;text-align:right;">'+f(it.actual)+'</span></div>';
+    html+='</div>';
+  }
+  document.getElementById("plan-vs-actual").innerHTML=html;
+  // 분석 텍스트
+  var iDiff=s.ti-plan.i,eDiff=s.ce-plan.e;
+  var iPct=plan.i>0?iDiff/plan.i*100:0,ePct=plan.e>0?eDiff/plan.e*100:0;
+  var insight="📌 ";
+  if(iDiff>0&&eDiff<0)insight+="<b style='color:#34d399;'>대박!</b> 수입은 +"+iPct.toFixed(1)+"%, 지출은 "+ePct.toFixed(1)+"%. 이번달 매우 우수해요!";
+  else if(iDiff>0)insight+="수입이 계획보다 <b style='color:#34d399;'>+"+iPct.toFixed(1)+"% 더 들어왔어요.</b> ";
+  else if(eDiff>0)insight+="지출이 계획보다 <b style='color:#f87171;'>+"+ePct.toFixed(1)+"% 많아요.</b> ";
+  else insight+="<b style='color:#4f9cf9;'>계획대로 진행 중!</b> ";
+  document.getElementById("plan-analysis").innerHTML=insight;
+}
+
+function drawWeekBar(){
+  var svg=document.getElementById("bar-week");
+  if(!svg)return;
+  var parent=svg.parentElement;
+  var W=Math.min(parent.getBoundingClientRect().width||320,680);
+  svg.setAttribute("width",W);
+  svg.setAttribute("viewBox","0 0 "+W+" 180");
+  var H=180,PL=44,PR=20,PT=20,PB=44;
+  var weeks={"1주차":{i:0,e:0},"2주차":{i:0,e:0},"3주차":{i:0,e:0},"4주차":{i:0,e:0},"5주차":{i:0,e:0}};
+  EN.filter(function(e){return isInMonth(e.d,CUR_MONTH);}).forEach(function(e){
+    if(weeks[e.w]){if(e.t==="수입")weeks[e.w].i+=e.a;else weeks[e.w].e+=e.a;}
+  });
+  var keys=Object.keys(weeks);
+  var maxV=0;
+  keys.forEach(function(k){if(weeks[k].i>maxV)maxV=weeks[k].i;if(weeks[k].e>maxV)maxV=weeks[k].e;});
+  if(maxV===0)maxV=1000000;
+  var bw=(W-PL-PR)/keys.length;
+  var html="";
+  for(var g=0;g<=4;g++){
+    var gy=PT+(H-PT-PB)*g/4;
+    var gv=maxV*(1-g/4);
+    html+='<line x1="'+PL+'" y1="'+gy+'" x2="'+(W-PR)+'" y2="'+gy+'" stroke="#1a3050" stroke-dasharray="2,3"/>';
+    html+='<text x="'+(PL-4)+'" y="'+(gy+3)+'" text-anchor="end" fill="#4a6080" font-size="8">'+f(gv)+'</text>';
+  }
+  for(var i=0;i<keys.length;i++){
+    var w=weeks[keys[i]],x=PL+i*bw+bw*0.15,bw2=(bw-bw*0.3)/2-2;
+    var iH=(H-PT-PB)*(w.i/maxV),eH=(H-PT-PB)*(w.e/maxV);
+    if(w.i>0)html+='<rect x="'+x+'" y="'+(H-PB-iH)+'" width="'+bw2+'" height="'+iH+'" fill="#34d399" rx="3" opacity="0.9"/>';
+    if(w.e>0)html+='<rect x="'+(x+bw2+4)+'" y="'+(H-PB-eH)+'" width="'+bw2+'" height="'+eH+'" fill="#f87171" rx="3" opacity="0.9"/>';
+    html+='<text x="'+(x+bw/2-bw*0.15)+'" y="'+(H-PB+13)+'" text-anchor="middle" fill="#cbd5e1" font-size="9">'+keys[i]+'</text>';
+    var net=w.i-w.e,netColor=net>=0?"#34d399":"#f87171";
+    if(w.i>0||w.e>0)html+='<text x="'+(x+bw/2-bw*0.15)+'" y="'+(H-PB+25)+'" text-anchor="middle" fill="'+netColor+'" font-size="8" font-weight="700">'+(net>=0?"+":"")+f(net)+'</text>';
+  }
+  html+='<rect x="'+(W-100)+'" y="4" width="8" height="8" fill="#34d399" rx="1"/><text x="'+(W-88)+'" y="11" fill="#cbd5e1" font-size="8">수입</text>';
+  html+='<rect x="'+(W-60)+'" y="4" width="8" height="8" fill="#f87171" rx="1"/><text x="'+(W-48)+'" y="11" fill="#cbd5e1" font-size="8">지출</text>';
+  svg.innerHTML=html;
+  var totalI=0,totalE=0;keys.forEach(function(k){totalI+=weeks[k].i;totalE+=weeks[k].e;});
+  document.getElementById("week-summary").textContent="총 수입 "+f(totalI)+" / 지출 "+f(totalE)+" / 순 "+f(totalI-totalE);
+}
+
+function drawHistogram(){
+  var svg=document.getElementById("histogram");
+  if(!svg)return;
+  var parent=svg.parentElement;
+  var W=Math.min(parent.getBoundingClientRect().width||320,680);
+  svg.setAttribute("width",W);
+  svg.setAttribute("viewBox","0 0 "+W+" 160");
+  var H=160,PL=30,PR=20,PT=24,PB=30;
+  var rets=[];
+  for(var i=1;i<WK.length;i++)rets.push((WK[i].v-WK[i-1].v)/WK[i-1].v*100);
+  if(rets.length===0)return;
+  var minR=Math.min.apply(null,rets),maxR=Math.max.apply(null,rets);
+  var meanR=_mean(rets),stdR=_std(rets);
+  var bins=8,binSize=(maxR-minR)/bins;
+  var counts=new Array(bins).fill(0);
+  rets.forEach(function(r){var b=Math.min(Math.floor((r-minR)/binSize),bins-1);counts[b]++;});
+  var maxCount=Math.max.apply(null,counts);
+  var bw=(W-PL-PR)/bins;
+  var html="";
+  if(minR<=0&&maxR>=0){
+    var zx=PL+(0-minR)/(maxR-minR)*(W-PL-PR);
+    html+='<line x1="'+zx+'" y1="'+PT+'" x2="'+zx+'" y2="'+(H-PB)+'" stroke="#fbbf24" stroke-dasharray="3,3"/>';
+  }
+  for(var i=0;i<bins;i++){
+    var bH=(H-PT-PB)*(counts[i]/maxCount);
+    var bx=PL+i*bw+1;
+    var binMid=minR+(i+0.5)*binSize;
+    var color=binMid>=0?"#34d399":"#f87171";
+    html+='<rect x="'+bx+'" y="'+(H-PB-bH)+'" width="'+(bw-2)+'" height="'+bH+'" fill="'+color+'" opacity="0.85" rx="2"/>';
+    if(counts[i]>0)html+='<text x="'+(bx+bw/2-1)+'" y="'+(H-PB-bH-3)+'" text-anchor="middle" fill="#cbd5e1" font-size="8">'+counts[i]+'</text>';
+  }
+  var mx=PL+(meanR-minR)/(maxR-minR)*(W-PL-PR);
+  html+='<line x1="'+mx+'" y1="'+PT+'" x2="'+mx+'" y2="'+(H-PB)+'" stroke="#5eead4" stroke-width="2" stroke-dasharray="4,2"/>';
+  html+='<text x="'+mx+'" y="'+(PT-4)+'" text-anchor="middle" fill="#5eead4" font-size="9" font-weight="700">μ='+meanR.toFixed(1)+'%</text>';
+  for(var k=0;k<=4;k++){
+    var lx=PL+(W-PL-PR)*k/4;
+    var lv=minR+(maxR-minR)*k/4;
+    html+='<text x="'+lx+'" y="'+(H-PB+12)+'" text-anchor="middle" fill="#4a6080" font-size="8">'+lv.toFixed(0)+'%</text>';
+  }
+  svg.innerHTML=html;
+  document.getElementById("histo-stats").innerHTML="평균 "+meanR.toFixed(2)+"% · σ "+stdR.toFixed(2)+"% · ["+minR.toFixed(1)+"~"+maxR.toFixed(1)+"]%";
+}
+
+function drawCumChart(){
+  var svg=document.getElementById("cumchart");
+  if(!svg)return;
+  var parent=svg.parentElement;
+  var W=Math.min(parent.getBoundingClientRect().width||320,680);
+  svg.setAttribute("width",W);
+  svg.setAttribute("viewBox","0 0 "+W+" 200");
+  var H=200,PL=40,PR=40,PT=24,PB=30;
+  var months=Object.keys(CF);
+  var cur=현자산;
+  var pess=[],neut=[],opt=[];
+  var cumP=cur,cumN=cur,cumO=cur;
+  for(var i=0;i<months.length;i++){
+    var sv=CF[months[i]].i-CF[months[i]].e;
+    cumP+=sv*0.7;cumN+=sv;cumO+=sv*1.3;
+    pess.push(cumP);neut.push(cumN);opt.push(cumO);
+  }
+  var maxV=Math.max(opt[opt.length-1],3000000000);
+  var minV=cur*0.95;
+  var n=months.length;
+  function px(i){return PL+(W-PL-PR)*i/(n-1);}
+  function py(v){return PT+(H-PT-PB)*(1-(v-minV)/(maxV-minV));}
+  var html="";
+  for(var g=0;g<=4;g++){
+    var gy=PT+(H-PT-PB)*g/4;
+    var gv=maxV-(maxV-minV)*g/4;
+    html+='<line x1="'+PL+'" y1="'+gy+'" x2="'+(W-PR)+'" y2="'+gy+'" stroke="#1a3050" stroke-dasharray="2,3"/>';
+    html+='<text x="'+(PL-4)+'" y="'+(gy+3)+'" text-anchor="end" fill="#4a6080" font-size="8">'+(gv/1e8).toFixed(1)+'억</text>';
+  }
+  var targetA=2716000000,targetB=2671000000;
+  if(targetA<=maxV&&targetA>=minV){
+    var tay=py(targetA);
+    html+='<line x1="'+PL+'" y1="'+tay+'" x2="'+(W-PR)+'" y2="'+tay+'" stroke="#4f9cf9" stroke-dasharray="4,3"/>';
+    html+='<text x="'+(W-PR+2)+'" y="'+(tay+3)+'" fill="#4f9cf9" font-size="8">A</text>';
+  }
+  if(targetB<=maxV&&targetB>=minV){
+    var tby=py(targetB);
+    html+='<line x1="'+PL+'" y1="'+tby+'" x2="'+(W-PR)+'" y2="'+tby+'" stroke="#fbbf24" stroke-dasharray="4,3"/>';
+    html+='<text x="'+(W-PR+2)+'" y="'+(tby+3)+'" fill="#fbbf24" font-size="8">B</text>';
+  }
+  var areaP="M "+px(0)+" "+py(pess[0]);
+  for(var k=0;k<n;k++)areaP+=" L "+px(k)+" "+py(pess[k]);
+  for(var k=n-1;k>=0;k--)areaP+=" L "+px(k)+" "+py(opt[k]);
+  html+='<path d="'+areaP+' Z" fill="#4f9cf9" opacity="0.1"/>';
+  var lineP="M "+px(0)+" "+py(pess[0]);
+  for(var k=1;k<n;k++)lineP+=" L "+px(k)+" "+py(pess[k]);
+  html+='<path d="'+lineP+'" stroke="#f87171" stroke-width="1.5" fill="none" stroke-dasharray="3,2" opacity="0.7"/>';
+  var lineO="M "+px(0)+" "+py(opt[0]);
+  for(var k=1;k<n;k++)lineO+=" L "+px(k)+" "+py(opt[k]);
+  html+='<path d="'+lineO+'" stroke="#34d399" stroke-width="1.5" fill="none" stroke-dasharray="3,2" opacity="0.7"/>';
+  var lineN="M "+px(0)+" "+py(neut[0]);
+  for(var k=1;k<n;k++)lineN+=" L "+px(k)+" "+py(neut[k]);
+  html+='<path d="'+lineN+'" stroke="#4f9cf9" stroke-width="2.2" fill="none"/>';
+  html+='<circle cx="'+px(n-1)+'" cy="'+py(neut[n-1])+'" r="4" fill="#4f9cf9"/>';
+  html+='<text x="'+px(n-1)+'" y="'+(py(neut[n-1])-8)+'" text-anchor="end" fill="#4f9cf9" font-size="9" font-weight="700">'+(neut[n-1]/1e8).toFixed(2)+'억</text>';
+  var xls=[0,Math.floor(n/2),n-1];
+  xls.forEach(function(idx){
+    var lbl=months[idx].slice(2).replace("-","/");
+    html+='<text x="'+px(idx)+'" y="'+(H-PB+12)+'" text-anchor="middle" fill="#cbd5e1" font-size="9">'+lbl+'</text>';
+  });
+  html+='<text x="'+PL+'" y="14" font-size="8"><tspan fill="#34d399">━낙관</tspan> <tspan fill="#4f9cf9">━계획</tspan> <tspan fill="#f87171">━보수</tspan></text>';
+  svg.innerHTML=html;
+  var lastN=neut[neut.length-1],lastO=opt[opt.length-1],lastP=pess[pess.length-1];
+  var html2="📈 입주(27/12) 예상: 보수 <b style=\'color:#f87171;\'>"+(lastP/1e8).toFixed(1)+"억</b> · 계획 <b style=\'color:#4f9cf9;\'>"+(lastN/1e8).toFixed(1)+"억</b> · 낙관 <b style=\'color:#34d399;\'>"+(lastO/1e8).toFixed(1)+"억</b>";
+  if(lastN>=targetA)html2+="<br><b style=\'color:#34d399;\'>✅ Case A 목표 달성 가능!</b>";
+  else if(lastN>=targetB)html2+="<br><b style=\'color:#fbbf24;\'>⚠️ Case B만 달성</b>";
+  else html2+="<br><b style=\'color:#f87171;\'>❌ 추가 노력 필요</b>";
+  document.getElementById("cumchart-summary").innerHTML=html2;
+}
+
+function drawFamilyBar(){
+  var svg=document.getElementById("family-bar");
+  if(!svg)return;
+  var parent=svg.parentElement;
+  var W=Math.min(parent.getBoundingClientRect().width||320,680);
+  svg.setAttribute("width",W);
+  svg.setAttribute("viewBox","0 0 "+W+" 160");
+  var H=160,PL=44,PR=20,PT=20,PB=24;
+  var data=[
+    {name:"근한",투자:1300000000,현금:96000000,퇴직:113000000},
+    {name:"예진",투자:862000000,현금:141000000,퇴직:98000000}
+  ];
+  var maxV=Math.max(data[0].투자+data[0].현금+data[0].퇴직,data[1].투자+data[1].현금+data[1].퇴직);
+  var bw=(W-PL-PR)/data.length-12;
+  var html="";
+  for(var g=0;g<=4;g++){
+    var gy=PT+(H-PT-PB)*g/4;
+    var gv=maxV*(1-g/4);
+    html+='<line x1="'+PL+'" y1="'+gy+'" x2="'+(W-PR)+'" y2="'+gy+'" stroke="#1a3050" stroke-dasharray="2,3"/>';
+    html+='<text x="'+(PL-4)+'" y="'+(gy+3)+'" text-anchor="end" fill="#4a6080" font-size="8">'+(gv/1e8).toFixed(1)+'억</text>';
+  }
+  for(var i=0;i<data.length;i++){
+    var d=data[i],x=PL+i*(bw+12)+6,y0=H-PB;
+    var iH=(H-PT-PB)*(d.투자/maxV),cH=(H-PT-PB)*(d.현금/maxV),rH=(H-PT-PB)*(d.퇴직/maxV);
+    html+='<rect x="'+x+'" y="'+(y0-iH)+'" width="'+bw+'" height="'+iH+'" fill="#4f9cf9" opacity="0.92"/>';
+    html+='<rect x="'+x+'" y="'+(y0-iH-cH)+'" width="'+bw+'" height="'+cH+'" fill="#34d399" opacity="0.92"/>';
+    html+='<rect x="'+x+'" y="'+(y0-iH-cH-rH)+'" width="'+bw+'" height="'+rH+'" fill="#5eead4" opacity="0.92"/>';
+    html+='<text x="'+(x+bw/2)+'" y="'+(H-PB+12)+'" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">'+d.name+'</text>';
+    html+='<text x="'+(x+bw/2)+'" y="'+(y0-iH-cH-rH-4)+'" text-anchor="middle" fill="#f1f5f9" font-size="10" font-weight="800">'+((d.투자+d.현금+d.퇴직)/1e8).toFixed(2)+'억</text>';
+  }
+  html+='<rect x="'+(W-100)+'" y="2" width="8" height="8" fill="#4f9cf9" rx="1"/><text x="'+(W-88)+'" y="9" fill="#cbd5e1" font-size="8">투자</text>';
+  html+='<rect x="'+(W-65)+'" y="2" width="8" height="8" fill="#34d399" rx="1"/><text x="'+(W-53)+'" y="9" fill="#cbd5e1" font-size="8">현금</text>';
+  html+='<rect x="'+(W-32)+'" y="2" width="8" height="8" fill="#5eead4" rx="1"/><text x="'+(W-20)+'" y="9" fill="#cbd5e1" font-size="8">퇴직</text>';
+  svg.innerHTML=html;
+}
+
+function drawInsight(){
+  var s=calc();
+  var plan=CF[CUR_MONTH];
+  if(!plan){document.getElementById("insight-box").innerHTML="";return;}
+  var monthLbl=parseInt(CUR_MONTH.slice(5))+"월";
+  var html='<div style="display:flex;flex-direction:column;gap:9px;">';
+  var iDiff=s.ti-plan.i,iPct=plan.i>0?(iDiff/plan.i*100):0;
+  if(iDiff>0){
+    html+='<div style="padding:9px 11px;background:#0a1f1b;border-left:3px solid #34d399;border-radius:8px;"><span style="color:#34d399;font-weight:700;">💰 수입 +'+iPct.toFixed(1)+'%</span><br><span style="color:#cbd5e1;font-size:11px;">계획보다 '+f(iDiff)+' 더 들어왔어요!</span>';
+    var extras=EN.filter(function(e){return isInMonth(e.d,CUR_MONTH)&&e.t==="수입"&&!e.n.includes("급여");});
+    if(extras.length>0){
+      var extraSum=0;extras.forEach(function(e){extraSum+=e.a;});
+      html+='<br><span style="color:#4a6080;font-size:10px;">▸ 부수입 '+extras.length+'건: '+f(extraSum)+'</span>';
+    }
+    html+='</div>';
+  }else if(iDiff<0){
+    html+='<div style="padding:9px 11px;background:#1f0a0a;border-left:3px solid #f87171;border-radius:8px;"><span style="color:#f87171;font-weight:700;">📉 수입 '+iPct.toFixed(1)+'%</span><br><span style="color:#cbd5e1;font-size:11px;">계획보다 '+f(Math.abs(iDiff))+' 부족</span></div>';
+  }
+  var eDiff=s.ce-plan.e,ePct=plan.e>0?(eDiff/plan.e*100):0;
+  if(eDiff>0){
+    html+='<div style="padding:9px 11px;background:#1f0a0a;border-left:3px solid #f87171;border-radius:8px;"><span style="color:#f87171;font-weight:700;">⚠️ 지출 +'+ePct.toFixed(1)+'%</span><br><span style="color:#cbd5e1;font-size:11px;">계획보다 '+f(eDiff)+' 더 썼어요</span>';
+    var bigSpend=EN.filter(function(e){return isInMonth(e.d,CUR_MONTH)&&e.t==="지출";});
+    bigSpend.sort(function(a,b){return b.a-a.a;});
+    if(bigSpend.length>0)html+='<br><span style="color:#4a6080;font-size:10px;">▸ 큰 지출: '+bigSpend.slice(0,2).map(function(e){return e.n+" "+f(e.a);}).join(", ")+'</span>';
+    html+='</div>';
+  }else if(eDiff<0){
+    html+='<div style="padding:9px 11px;background:#0a1f1b;border-left:3px solid #34d399;border-radius:8px;"><span style="color:#34d399;font-weight:700;">✨ 지출 '+ePct.toFixed(1)+'%</span><br><span style="color:#cbd5e1;font-size:11px;">계획보다 '+f(Math.abs(eDiff))+' 절약했어요!</span></div>';
+  }
+  var ct=s.ct,totalE=ct.공동.c+ct.근한.c+ct.예진.c+ct.태양.c;
+  if(totalE>0){
+    var maxCat="공동",maxVal=ct.공동.c;
+    ["근한","예진","태양"].forEach(function(k){if(ct[k].c>maxVal){maxVal=ct[k].c;maxCat=k;}});
+    var pct=(maxVal/totalE*100).toFixed(0);
+    html+='<div style="padding:9px 11px;background:#0a1429;border-left:3px solid #4f9cf9;border-radius:8px;"><span style="color:#4f9cf9;font-weight:700;">🎯 지출 집중도</span><br><span style="color:#cbd5e1;font-size:11px;">'+maxCat+' 카테고리가 전체의 '+pct+'%</span></div>';
+  }
+  var svDiff=s.sv-(plan.i-plan.e);
+  if(svDiff>0){
+    html+='<div style="padding:9px 11px;background:#0a1f1b;border-left:3px solid #5eead4;border-radius:8px;"><span style="color:#5eead4;font-weight:700;">🏆 '+monthLbl+' 저축 +'+f(svDiff)+'</span><br><span style="color:#cbd5e1;font-size:11px;">반디클까지 한걸음 더 가까워졌어요!</span></div>';
+  }else if(svDiff<0){
+    html+='<div style="padding:9px 11px;background:#1f1a0a;border-left:3px solid #fbbf24;border-radius:8px;"><span style="color:#fbbf24;font-weight:700;">💡 '+monthLbl+' 저축 '+f(svDiff)+'</span><br><span style="color:#cbd5e1;font-size:11px;">다음달 만회해봐요!</span></div>';
+  }
+  html+='</div>';
+  document.getElementById("insight-box").innerHTML=html;
+}
+
+function updateAnalytics(){
+  try{
+    updateKPI();
+    drawAssetDonut();
+    drawCategoryDonut();
+    drawPlanVsActual();
+    drawWeekBar();
+    drawHistogram();
+    drawCumChart();
+    drawFamilyBar();
+    drawInsight();
+  }catch(err){
+    console.error("analytics 오류:",err);
   }
 }
 
@@ -1101,6 +1587,8 @@ function gt(n,btn){
   document.querySelectorAll(".tb").forEach(function(b){b.classList.remove("on");});
   document.getElementById("s"+n).classList.add("on");
   btn.classList.add("on");
+  // 분석 탭 진입 시 시각화 갱신
+  if(n===2)setTimeout(updateAnalytics,50);
 }
 function setCase(c){
   caseType=c;
@@ -1129,7 +1617,7 @@ function onMonthChange(month){
   var label=month.startsWith("2027")?
     "27년 "+parseInt(month.slice(5))+"월":
     parseInt(month.slice(5))+"월";
-  document.getElementById("st").textContent="VER 1.2 · "+label+" 기준";
+  document.getElementById("st").textContent="VER 1.3 · "+label+" 기준";
   
   // 헤더 라벨 업데이트
   var hdLabel=document.getElementById("hd-label");
@@ -1183,7 +1671,7 @@ async function syncNotion(){
       });
       // 마지막 업데이트 시간 표시
       var upd=data["마지막업데이트"]||"";
-      stEl.textContent="VER 1.2 · "+upd.slice(0,10);
+      stEl.textContent="VER 1.3 · "+upd.slice(0,10);
       stEl.style.color="#4a6080";
       syncFailCount=0; // 성공 시 카운터 리셋
       var syncEl=document.getElementById("sync-st");
@@ -1192,7 +1680,7 @@ async function syncNotion(){
         syncEl.style.color="#34d399";
       }
     }else{
-      stEl.textContent="VER 1.2";
+      stEl.textContent="VER 1.3";
       stEl.style.color="#4a6080";
       var syncEl3=document.getElementById("sync-st");
       if(syncEl3){syncEl3.textContent="⚠️ 노션 데이터 없음";syncEl3.style.color="#fbbf24";}
@@ -1201,7 +1689,7 @@ async function syncNotion(){
   }catch(err){
     console.warn("노션 동기화 실패:",err.message);
     syncFailCount++;
-    stEl.textContent="VER 1.2";
+    stEl.textContent="VER 1.3";
     stEl.style.color="#4a6080";
     var syncEl2=document.getElementById("sync-st");
     if(syncEl2){
@@ -1242,11 +1730,20 @@ window.addEventListener("resize",function(){
   resizeTimer=setTimeout(function(){
     drawChart();
     drawRateChart();
+    // 분석 탭이 보이면 같이 갱신
+    if(document.getElementById("s2")&&document.getElementById("s2").classList.contains("on")){
+      updateAnalytics();
+    }
   },200);
 });
 // 화면 방향 전환 대응 (태블릿)
 window.addEventListener("orientationchange",function(){
-  setTimeout(function(){drawChart();drawRateChart();},300);
+  setTimeout(function(){
+    drawChart();drawRateChart();
+    if(document.getElementById("s2")&&document.getElementById("s2").classList.contains("on")){
+      updateAnalytics();
+    }
+  },300);
 });
 
 // 저장된 슬라이더 값 적용
@@ -1292,7 +1789,7 @@ if(CUR_MONTH!=="2026-05"){
   },800);
   // onMonthChange와 동일한 헤더 업데이트 로직
   var label=CUR_MONTH.startsWith("2027")?"27년 "+parseInt(CUR_MONTH.slice(5))+"월":parseInt(CUR_MONTH.slice(5))+"월";
-  document.getElementById("st").textContent="VER 1.2 · "+label+" 활성";
+  document.getElementById("st").textContent="VER 1.3 · "+label+" 활성";
   var hdLabel=document.getElementById("hd-label");
   var hdValue=document.getElementById("hd-value");
   if(hdLabel&&hdValue){
