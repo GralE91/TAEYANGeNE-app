@@ -83,7 +83,7 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 <div class="hd">
   <div>
     <div style="font-size:17px;font-weight:900;">☀️ TAEYANGene App</div>
-    <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">VER 1.3 · 5/10 기준</div>
+    <div style="font-size:10px;color:#4a6080;margin-top:2px;" id="st">VER 1.3 · 5/24 기준</div>
     <div style="font-size:10px;margin-top:1px;" id="sync-st"></div>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
@@ -110,8 +110,8 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
       <option value="2027-12">27년 12월</option>
     </select>
     <div style="text-align:right;">
-      <div style="font-size:10px;color:#4a6080;" id="hd-label">투자+현금 (5/10)</div>
-      <div style="font-size:20px;font-weight:900;color:#4f9cf9;" id="hd-value">23.99억</div>
+      <div style="font-size:10px;color:#4a6080;" id="hd-label">투자+현금 (5/24)</div>
+      <div style="font-size:20px;font-weight:900;color:#4f9cf9;" id="hd-value">26.06억</div>
     </div>
   </div>
 </div>
@@ -135,9 +135,9 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
   <div class="card">
     <div class="lbl">📊 자산 현황 · <span id="asset-date-lbl">5/10</span></div>
     <div class="g3">
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자자산</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;" id="invest-total">21.62억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;" id="invest-detail">근한 13.00억<br>예진 8.62억</div></div>
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">현금자산</div><div style="font-size:15px;font-weight:900;color:#34d399;">2.37억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 0.96억<br>예진 1.41억</div></div>
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">+퇴직연금</div><div style="font-size:15px;font-weight:900;color:#5eead4;">2.11억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.13억<br>예진 0.98억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자자산</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;" id="invest-total">22.96억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;" id="invest-detail">근한 14.33억<br>예진 8.63억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">현금자산</div><div style="font-size:15px;font-weight:900;color:#34d399;">3.10억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.17억<br>예진 1.93억</div></div>
+      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">+퇴직연금</div><div style="font-size:15px;font-weight:900;color:#5eead4;">2.34억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.25억<br>예진 1.09억</div></div>
     </div>
   </div>
 
@@ -270,7 +270,7 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
           <div>
             <div style="font-size:10px;color:#4a6080;">1/11 대비 투자자산 기대 수익률</div>
-            <div style="font-size:11px;color:#4a6080;margin-top:1px;">현재 실적: <span style="color:#34d399;font-weight:700;">+33.2%</span></div>
+            <div style="font-size:11px;color:#4a6080;margin-top:1px;">현재 실적: <span style="color:#34d399;font-weight:700;">+57.7%</span></div>
           </div>
           <div style="text-align:right;">
             <div style="font-size:22px;font-weight:900;color:#4f9cf9;" id="slider-val">33%</div>
@@ -505,14 +505,14 @@ var 대출합=신용+주담대+은행;
 var 총필요=C6*5+취득세+발코니;
 var 목표=총필요-대출합; // 전액자납 기준 26.71억
 
-// 자산 (5/3 기준)
-var 투자자산=2161818347,현금자산=237243371;
+// 자산 (5/24 기준)
+var 투자자산=2295949641,현금자산=310319342;
 var 현자산=투자자산+현금자산;
 var 월세=1660000;
 
 // 1/11 기준값 (수익률 기준점)
 var 기준자산=1652883707; // 1/11 총자산 (WK[0])
-var 현재수익률=(현자산-기준자산)/기준자산*100; // ≈ 33.2%
+var 현재수익률=(현자산-기준자산)/기준자산*100; // ≈ 57.7%
 
 // CF 계획
 var CF={
@@ -564,9 +564,10 @@ var WK=[
   {d:"2/22",v:20.13},{d:"3/1",v:21.98},{d:"3/8",v:19.69},
   {d:"3/15",v:19.49},{d:"3/22",v:20.13},{d:"3/29",v:19.29},
   {d:"4/5",v:18.69},{d:"4/12",v:19.83},{d:"4/19",v:21.00},
-  {d:"4/26",v:21.50},{d:"5/3",v:22.01},{d:"5/10",v:23.99}
+  {d:"4/26",v:21.50},{d:"5/3",v:22.01},{d:"5/10",v:24.73},
+  {d:"5/17",v:25.68},{d:"5/24",v:26.06}
 ];
-var 퇴직억=2.11;
+var 퇴직억=2.34; // 근한 1.25억 + 예진 1.09억
 var 목표억=목표/1e8; // 전액자납 26.71억
 
 // 노션 데이터
@@ -763,19 +764,22 @@ function drawRateChart(){
     html+='<text x="'+(PL-5)+'" y="'+(Y(r)+4).toFixed(1)+'" fill="#4a6080" font-size="8" text-anchor="end">'+r+'%</text>';
   }
 
-  // 막대 그래프
-  var barW=Math.max(4,(IW/n)-2);
+  // 꺾은선 그래프 (영역 채우기 포함)
+  var areaPath="M "+X(0).toFixed(1)+","+Y(0).toFixed(1);
+  rates.forEach(function(r,i){areaPath+=" L "+X(i).toFixed(1)+","+Y(r).toFixed(1);});
+  areaPath+=" L "+X(n-1).toFixed(1)+","+Y(0).toFixed(1)+" Z";
+  html+='<path d="'+areaPath+'" fill="#34d399" opacity="0.12"/>';
+  var linePath="M";
+  rates.forEach(function(r,i){linePath+=(i===0?"":" L")+X(i).toFixed(1)+","+Y(r).toFixed(1);});
+  html+='<path d="'+linePath+'" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linejoin="round"/>';
+  // 데이터 포인트
   rates.forEach(function(r,i){
-    var x=X(i)-barW/2;
-    var y0=Y(0),y1=Y(r);
-    var barH=Math.abs(y1-y0);
-    var isPos=r>=0;
     var isLast=(i===n-1);
-    var c=isLast?"#fbbf24":(isPos?"#34d399":"#f87171");
-    html+='<rect x="'+x.toFixed(1)+'" y="'+(isPos?y1:y0).toFixed(1)+'" width="'+barW+'" height="'+barH.toFixed(1)+'" fill="'+c+'" opacity="0.8" rx="2"/>';
-    // 라벨 (마지막 + 일부)
-    if(isLast||i===0){
-      html+='<text x="'+X(i).toFixed(1)+'" y="'+(isPos?y1-3:y1+10).toFixed(1)+'" fill="'+c+'" font-size="8" text-anchor="middle" font-weight="700">'+(r>=0?"+":"")+r.toFixed(1)+'%</text>';
+    var c=isLast?"#fbbf24":"#34d399";
+    html+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(r).toFixed(1)+'" r="'+(isLast?5:3)+'" fill="'+c+'" stroke="#060c18" stroke-width="1.5"/>';
+    if(isLast||i===0||i===n-2){
+      var anchor=i===0?"start":i===n-1?"end":"middle";
+      html+='<text x="'+X(i).toFixed(1)+'" y="'+(Y(r)-8).toFixed(1)+'" fill="'+c+'" font-size="9" text-anchor="'+anchor+'" font-weight="700">'+(r>=0?"+":"")+r.toFixed(1)+'%</text>';
     }
   });
 
@@ -1151,8 +1155,8 @@ function drawFamilyBar(){
   svg.setAttribute("viewBox","0 0 "+W+" 160");
   var H=160,PL=44,PR=20,PT=20,PB=24;
   var data=[
-    {name:"근한",투자:1300000000,현금:96000000,퇴직:113000000},
-    {name:"예진",투자:862000000,현금:141000000,퇴직:98000000}
+    {name:"근한",투자:1433426276,현금:117100000,퇴직:124582354},
+    {name:"예진",투자:862523365,현금:193219342,퇴직:109252701}
   ];
   var maxV=Math.max(data[0].투자+data[0].현금+data[0].퇴직,data[1].투자+data[1].현금+data[1].퇴직);
   var bw=(W-PL-PR)/data.length-12;
@@ -1267,7 +1271,7 @@ function ui(){
   var assetLbl=document.getElementById("asset-date-lbl");
   if(assetLbl){
     if(CUR_MONTH==="2026-05"){
-      assetLbl.textContent="5/10 (현재)";
+      assetLbl.textContent="5/24 (현재)";
     }else{
       assetLbl.textContent=mLabel+" 예상";
     }
@@ -1607,8 +1611,8 @@ function onMonthChange(month){
   var hdLabel=document.getElementById("hd-label");
   var hdValue=document.getElementById("hd-value");
   if(month==="2026-05"){
-    hdLabel.textContent="투자+현금 (5/10)";
-    hdValue.textContent="23.99억";
+    hdLabel.textContent="투자+현금 (5/24)";
+    hdValue.textContent="26.06억";
     hdValue.style.color="#4f9cf9";
   }else{
     // 다른 월은 예상 자산 표시 (현자산 + 누적 저축액)
