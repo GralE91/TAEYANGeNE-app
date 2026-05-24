@@ -146,11 +146,11 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
     <div style="text-align:center;padding:14px;background:#060c18;border-radius:12px;border:1px solid #34d39933;margin-bottom:14px;">
       <div style="font-size:10px;color:#34d399;margin-bottom:4px;font-weight:700;">전액자납 기준</div>
       <div style="font-size:28px;font-weight:900;color:#34d399;" id="goal-pct">-</div>
-      <div style="font-size:11px;color:#4a6080;margin-top:4px;">총 필요 현금 <span id="goal-need">26.71억</span> 중 <span id="goal-cur" style="color:#f1f5f9;font-weight:700;">-</span></div>
+      <div style="font-size:11px;color:#4a6080;margin-top:4px;">총 필요 현금 <span id="goal-need">27.01억</span> 중 <span id="goal-cur" style="color:#f1f5f9;font-weight:700;">-</span></div>
     </div>
     <div>
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span style="font-size:12px;color:#4a6080;">반디클 전액자납 (26.71억)</span>
+        <span style="font-size:12px;color:#4a6080;">반디클 전액자납 (27.01억)</span>
         <span style="font-size:12px;font-weight:700;color:#34d399;" id="goal-pct2">-</span>
       </div>
       <div class="pb"><div class="pf" id="goal-bar" style="width:0%;background:#34d399;"></div></div>
@@ -499,11 +499,11 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 
 <script>
 // ━━━ 반디클 상수 ━━━
-var C6=600000000,취득세=99000000,발코니=120000000;
-var 신용=198000000,주담대=200000000,은행=150000000;
-var 대출합=신용+주담대+은행;
+var C6=600000000,취득세=C6*5*0.033,발코니=150000000; // 분양가30억, 취득세3.3%, 발코니1.5억
+var 근한대출=349000000,예진대출=199000000; // 근한3.49억, 예진1.99억
+var 대출합=근한대출+예진대출;
 var 총필요=C6*5+취득세+발코니;
-var 목표=총필요-대출합; // 전액자납 기준 26.71억
+var 목표=총필요-대출합; // 전액자납 기준 27.01억
 
 // 자산 (5/24 기준)
 var 투자자산=2295949641,현금자산=310319342;
@@ -568,7 +568,7 @@ var WK=[
   {d:"5/17",v:25.68},{d:"5/24",v:26.06}
 ];
 var 퇴직억=2.34; // 근한 1.25억 + 예진 1.09억
-var 목표억=목표/1e8; // 전액자납 26.71억
+var 목표억=목표/1e8; // 전액자납 27.01억
 
 // 노션 데이터
 var EN=[
@@ -723,7 +723,7 @@ function drawChart(){
   html+='<text x="'+(lx-5).toFixed(1)+'" y="'+(ly2-10).toFixed(1)+'" fill="#5eead4" font-size="9" text-anchor="end">'+(WK[n-1].v+퇴직억).toFixed(2)+'억</text>';
   WK.forEach(function(d,i){if(i%4===0||i===n-1)html+='<text x="'+X(i).toFixed(1)+'" y="'+H+'" fill="#4a6080" font-size="8" text-anchor="middle">'+d.d+'</text>';});
   svg.innerHTML=html;
-  var leg=[{c:"#4f9cf9",l:"투자+현금",thick:true},{c:"#5eead4",l:"+퇴직"},{c:"#34d399",l:"목표(26.71억)",dash:true}];
+  var leg=[{c:"#4f9cf9",l:"투자+현금",thick:true},{c:"#5eead4",l:"+퇴직"},{c:"#34d399",l:"목표(27.01억)",dash:true}];
   document.getElementById("chart-legend").innerHTML=leg.map(function(x){
     return '<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#4a6080;"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="'+x.c+'" stroke-width="'+(x.thick?3:2)+'" stroke-dasharray="'+(x.dash?"6,3":"none")+'"/></svg>'+x.l+'</div>';
   }).join("");
@@ -1115,7 +1115,7 @@ function drawCumChart(){
     html+='<line x1="'+PL+'" y1="'+gy+'" x2="'+(W-PR)+'" y2="'+gy+'" stroke="#1a3050" stroke-dasharray="2,3"/>';
     html+='<text x="'+(PL-4)+'" y="'+(gy+3)+'" text-anchor="end" fill="#4a6080" font-size="8">'+(gv/1e8).toFixed(1)+'억</text>';
   }
-  var targetV=목표; // 전액자납 26.71억
+  var targetV=목표; // 전액자납 27.01억
   if(targetV<=maxV&&targetV>=minV){
     var tgy=py(targetV);
     html+='<line x1="'+PL+'" y1="'+tgy+'" x2="'+(W-PR)+'" y2="'+tgy+'" stroke="#34d399" stroke-dasharray="4,3"/>';
@@ -1473,7 +1473,7 @@ function initTL(){
     {k:"2026-12",l:"💳 중도금 1회차",amt:C6,note:"현금 6억 자납",c:"#5eead4"},
     {k:"2027-04",l:"💳 중도금 2회차",amt:C6,note:"현금 6억 자납",c:"#5eead4"},
     {k:"2027-08",l:"💳 중도금 3회차",amt:C6,note:"현금 6억 자납",c:"#fb923c"},
-    {k:"2027-12",l:"🎉 잔금 & 입주",amt:잔금시,note:"잔금6억+취득세9,900만+발코니1.2억\n신용1.98억+주담2억+은행1.5억 대출 차감",c:"#34d399"},
+    {k:"2027-12",l:"🎉 잔금 & 입주",amt:잔금시,note:"잔금6억+취득세9,900만+발코니1.5억\n근한3.49억+예진1.99억 대출 차감",c:"#34d399"},
   ];
   document.getElementById("tl").innerHTML=items.map(function(x,i){
     var ln=i<items.length-1?'<div class="ln"></div>':"";
@@ -1490,7 +1490,7 @@ function initTL(){
     {l:"계약금 6억",v:C6,c:"#4f9cf9"},
     {l:"중도금 1+2+3 (각 6억)",v:C6*3,c:"#5eead4"},
     {l:"잔금+취득세+발코니",v:C6+취득세+발코니,c:"#5eead4"},
-    {l:"신용+주담+은행 대출 차감",v:-대출합,c:"#34d399"},
+    {l:"근한3.49억+예진1.99억 대출 차감",v:-대출합,c:"#34d399"},
   ];
   document.getElementById("tl-summary").innerHTML=
     rows.map(function(x){return '<div class="row"><span style="color:#4a6080;">'+x.l+'</span><span style="color:'+x.c+';font-weight:700;">'+(x.v<0?"-":"+")+f(Math.abs(x.v))+'</span></div>';}).join("")+
