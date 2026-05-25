@@ -11,22 +11,35 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
-body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-height:100vh;padding-bottom:80px;-webkit-font-smoothing:antialiased;}
-.hd{background:linear-gradient(135deg,#090f1e,#0f1e38);border-bottom:1px solid #1a3050;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+body{background:radial-gradient(ellipse at top,#0a1428 0%,#040810 50%,#020509 100%);background-attachment:fixed;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-height:100vh;padding-bottom:80px;-webkit-font-smoothing:antialiased;letter-spacing:-0.1px;}
+.hd{background:linear-gradient(135deg,rgba(15,30,56,0.85),rgba(9,15,30,0.95));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(96,165,250,0.15);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 24px rgba(0,0,0,0.4);}
+/* 프리미엄 자산 박스 */
+.abox{position:relative;background:linear-gradient(145deg,rgba(15,25,45,0.9),rgba(8,15,28,0.95));border:1px solid rgba(148,163,184,0.08);border-radius:14px;padding:13px 12px;overflow:hidden;transition:transform .2s,border-color .2s;}
+.abox::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--ac,#4f9cf9);opacity:0.7;border-radius:14px 14px 0 0;}
+.abox:hover{transform:translateY(-1px);border-color:rgba(148,163,184,0.18);}
+.abox.locked{opacity:0.7;}
+.abox.locked::before{background:repeating-linear-gradient(90deg,#475569 0 4px,transparent 4px 8px);}
+.abox .atag{font-size:10px;color:#64748b;font-weight:700;margin-bottom:8px;letter-spacing:0.2px;}
+.abox .aval{font-size:18px;font-weight:900;letter-spacing:-0.5px;line-height:1.1;}
+.abox .adet{font-size:9px;color:#475569;margin-top:6px;line-height:1.7;font-weight:500;}
+.asset-hero{background:linear-gradient(160deg,rgba(13,25,41,0.95),rgba(8,15,28,0.98));border:1px solid rgba(96,165,250,0.12);box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.04);}
 @media(min-width:600px){.hd{padding:16px 24px;}.hd .hd-title{font-size:20px !important;}}
 /* 반응형 컨테이너 */
 .ct{padding:14px;max-width:480px;margin:0 auto;width:100%;}
 @media(min-width:600px){.ct{max-width:600px;padding:20px;}}
 @media(min-width:900px){.ct{max-width:720px;padding:24px;}}
-.card{background:#0d1929;border-radius:18px;padding:16px;border:1px solid #1a3050;margin-bottom:12px;}
-.lbl{font-size:11px;color:#64748b;font-weight:600;margin-bottom:8px;}
+.card{background:linear-gradient(160deg,rgba(13,25,41,0.95),rgba(10,20,35,0.92));border-radius:18px;padding:16px;border:1px solid rgba(148,163,184,0.08);margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.03);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+.lbl{font-size:11px;color:#64748b;font-weight:700;margin-bottom:10px;letter-spacing:0.3px;text-transform:uppercase;}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.box{background:#060c18;border-radius:12px;padding:11px 10px;border:1px solid #1a3050;}
-.sec{display:none;}.sec.on{display:block;}
-.tabs{position:fixed;bottom:0;left:0;right:0;background:#090f1e;border-top:1px solid #1a3050;display:flex;z-index:200;}
-.tb{flex:1;padding:9px 2px 11px;background:none;border:none;border-top:2px solid transparent;color:#4a6080;cursor:pointer;font-family:inherit;transition:color .2s;}
-.tb.on{border-top-color:#4f9cf9;color:#4f9cf9;}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;}
+.box{background:linear-gradient(145deg,rgba(6,12,24,0.9),rgba(4,8,16,0.95));border-radius:12px;padding:11px 10px;border:1px solid rgba(148,163,184,0.06);transition:border-color .2s;}
+.box:hover{border-color:rgba(148,163,184,0.14);}
+.sec{display:none;}.sec.on{display:block;animation:secIn .3s ease;}
+@keyframes secIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(9,15,30,0.85),rgba(9,15,30,0.98));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(96,165,250,0.12);display:flex;z-index:200;box-shadow:0 -4px 24px rgba(0,0,0,0.4);}
+.tb{flex:1;padding:10px 2px 12px;background:none;border:none;border-top:2px solid transparent;color:#475569;cursor:pointer;font-family:inherit;transition:all .25s;position:relative;}
+.tb.on{border-top-color:#60a5fa;color:#60a5fa;background:linear-gradient(180deg,rgba(96,165,250,0.08),transparent);}
 @media(min-width:600px){
   .tabs{max-width:600px;left:50%;transform:translateX(-50%);border-radius:16px 16px 0 0;border-left:1px solid #1a3050;border-right:1px solid #1a3050;}
   .tb{padding:12px 4px 14px;font-size:13px;}
@@ -110,8 +123,8 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
       <option value="2027-12">27년 12월</option>
     </select>
     <div style="text-align:right;">
-      <div style="font-size:10px;color:#4a6080;" id="hd-label">투자+현금 (5/24)</div>
-      <div style="font-size:20px;font-weight:900;color:#4f9cf9;" id="hd-value">26.06억</div>
+      <div style="font-size:10px;color:#64748b;letter-spacing:0.3px;text-transform:uppercase;font-weight:600;" id="hd-label">반디클 가용 · 5/24</div>
+      <div style="font-size:22px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#34d399);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px;" id="hd-value">25.46억</div>
     </div>
   </div>
 </div>
@@ -132,12 +145,38 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 
 <!-- ━━━ 홈 ━━━ -->
 <div class="sec on" id="s0">
-  <div class="card">
-    <div class="lbl">📊 자산 현황 · <span id="asset-date-lbl">5/10</span></div>
-    <div class="g3">
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">투자자산</div><div style="font-size:15px;font-weight:900;color:#4f9cf9;" id="invest-total">22.96억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;" id="invest-detail">근한 14.33억<br>예진 8.63억</div></div>
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">현금자산</div><div style="font-size:15px;font-weight:900;color:#34d399;">3.10억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.17억<br>예진 1.93억</div></div>
-      <div class="box"><div style="font-size:9px;color:#4a6080;margin-bottom:5px;font-weight:600;">+퇴직연금</div><div style="font-size:15px;font-weight:900;color:#5eead4;">2.34억</div><div style="font-size:9px;color:#4a6080;margin-top:4px;line-height:1.7;">근한 1.25억<br>예진 1.09억</div></div>
+  <div class="card asset-hero">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <div>
+        <div class="lbl" style="margin:0;">💎 자산 포트폴리오</div>
+        <div style="font-size:9px;color:#475569;margin-top:2px;letter-spacing:0.5px;">5/24 기준</div>
+      </div>
+      <div style="text-align:right;">
+        <div id="asset-total-label" style="font-size:9px;color:#64748b;font-weight:600;letter-spacing:0.5px;">반디클 가용 합계</div>
+        <div id="asset-total" style="font-size:18px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#34d399);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">25.46억</div>
+      </div>
+    </div>
+    <div class="g2" style="gap:10px;">
+      <div class="abox" style="--ac:#60a5fa;">
+        <div class="atag">투자자산</div>
+        <div class="aval" style="color:#60a5fa;">22.36억</div>
+        <div class="adet">근한 14.03억<br>예진 8.33억</div>
+      </div>
+      <div class="abox" style="--ac:#34d399;">
+        <div class="atag">현금성자산</div>
+        <div class="aval" style="color:#34d399;">3.10억</div>
+        <div class="adet">근한 1.17억<br>예진 1.93억</div>
+      </div>
+      <div class="abox locked" style="--ac:#94a3b8;">
+        <div class="atag" style="display:flex;justify-content:space-between;align-items:center;">국민성장펀드 <span style="background:#1e293b;color:#94a3b8;font-size:8px;padding:1px 5px;border-radius:4px;font-weight:700;letter-spacing:0.3px;">🔒 5Y</span></div>
+        <div class="aval" style="color:#94a3b8;">0.60억</div>
+        <div class="adet" style="color:#64748b;">반디클 사용 불가<br>(5년 폐쇄형)</div>
+      </div>
+      <div class="abox" style="--ac:#fbbf24;" id="pension-box">
+        <div class="atag" style="display:flex;justify-content:space-between;align-items:center;">퇴직연금 <button id="pension-toggle" onclick="togglePension()" style="background:#1e293b;border:1px solid #475569;color:#94a3b8;font-size:8px;padding:1px 6px;border-radius:4px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.3px;">미포함</button></div>
+        <div class="aval" style="color:#fbbf24;">2.34억</div>
+        <div class="adet">근한 1.25억<br>예진 1.09억</div>
+      </div>
     </div>
   </div>
 
@@ -547,14 +586,18 @@ var 대출합=근한대출+예진대출;
 var 총필요=C6*5+취득세+발코니;
 var 목표=총필요-대출합; // 전액자납 기준 27.01억
 
-// 자산 (5/24 기준)
-var 투자자산=2295949641,현금자산=310319342;
-var 현자산=투자자산+현금자산;
+// 자산 (5/24 기준) - 국민성장펀드(KGF)는 5년 폐쇄형이라 반디클 가용에서 제외
+var 국민성장펀드=60000000; // 근한 3천 + 예진 3천 = 6천만
+var 투자자산=2235949641; // 22.36억 (기존 22.96억 - KGF 0.6억)
+var 현금자산=310319342;  // 3.10억
+var 현자산=투자자산+현금자산; // 반디클 가용 자산 (25.46억, KGF 제외)
 var 월세=1660000;
 
-// 1/11 기준값 (수익률 기준점)
+// 1/11 기준값 (수익률 기준점) - WK 시계열은 KGF 포함 총자산
 var 기준자산=1652883707; // 1/11 총자산 (WK[0])
-var 현재수익률=(현자산-기준자산)/기준자산*100; // ≈ 57.7%
+var 총자산=현자산+국민성장펀드; // KGF 포함 총자산 (수익률 계산용)
+var 현재수익률=(총자산-기준자산)/기준자산*100; // ≈ 57.7%
+var 퇴직억=2.34; // 근한 1.25억 + 예진 1.09억
 
 // CF 계획
 var CF={
@@ -609,8 +652,8 @@ var WK=[
   {d:"4/26",v:21.50},{d:"5/3",v:22.01},{d:"5/10",v:24.73},
   {d:"5/17",v:25.68},{d:"5/24",v:26.06}
 ];
-var 퇴직억=2.34; // 근한 1.25억 + 예진 1.09억
 var 목표억=목표/1e8; // 전액자납 27.01억
+var 퇴직포함=false; // 퇴직연금 자산 포함 토글
 
 // 노션 데이터
 var EN=[
@@ -850,6 +893,28 @@ function drawRateChart(){
   document.getElementById("rate-table").innerHTML=tableHtml;
 }
 
+// ━━━ 퇴직연금 포함/미포함 토글 ━━━
+function togglePension(){
+  퇴직포함=!퇴직포함;
+  var btn=document.getElementById("pension-toggle");
+  var totalEl=document.getElementById("asset-total");
+  var hdValue=document.getElementById("hd-value");
+  var hdLabel=document.getElementById("hd-label");
+  var availAsset=현자산+(퇴직포함?퇴직억*1e8:0);
+  if(btn){
+    btn.textContent=퇴직포함?"포함":"미포함";
+    btn.style.color=퇴직포함?"#fbbf24":"#94a3b8";
+    btn.style.borderColor=퇴직포함?"#fbbf24":"#475569";
+    btn.style.background=퇴직포함?"rgba(251,191,36,0.15)":"#1e293b";
+  }
+  if(totalEl)totalEl.textContent=(availAsset/1e8).toFixed(2)+"억";
+  if(hdValue&&CUR_MONTH==="2026-05"){
+    hdValue.textContent=(availAsset/1e8).toFixed(2)+"억";
+    hdLabel.textContent=퇴직포함?"가용+퇴직 · 5/24":"반디클 가용 · 5/24";
+  }
+  toast(퇴직포함?"💼 퇴직연금 포함 (낙관)":"🛡️ 퇴직연금 미포함 (보수)","success",1200);
+}
+
 // ━━━ 슬라이더 업데이트 ━━━
 function onSlider(val){
   sliderRate=parseInt(val);
@@ -1011,10 +1076,10 @@ function drawDonut(svgId,data,colors){
 }
 
 function drawAssetDonut(){
-  var data=[{label:"투자자산",value:투자자산},{label:"현금자산",value:현금자산},{label:"퇴직연금",value:Math.round(퇴직억*1e8)}];
-  var colors=["#4f9cf9","#34d399","#5eead4"];
+  var data=[{label:"투자자산",value:투자자산},{label:"현금성",value:현금자산},{label:"국민성장펀드 🔒",value:국민성장펀드},{label:"퇴직연금",value:Math.round(퇴직억*1e8)}];
+  var colors=["#60a5fa","#34d399","#94a3b8","#fbbf24"];
   drawDonut("donut-asset",data,colors);
-  var total=투자자산+현금자산+퇴직억*1e8;
+  var total=투자자산+현금자산+국민성장펀드+퇴직억*1e8;
   var html="";
   for(var i=0;i<data.length;i++){
     var pct=(data[i].value/total*100).toFixed(1);
@@ -1238,11 +1303,13 @@ function drawFamilyBar(){
   svg.setAttribute("width",W);
   svg.setAttribute("viewBox","0 0 "+W+" 160");
   var H=160,PL=44,PR=20,PT=20,PB=24;
+  // 투자(22.36) = 14.03+8.33, 현금(3.10) = 1.17+1.93, KGF(0.6) = 0.3+0.3, 퇴직(2.34) = 1.25+1.09
   var data=[
-    {name:"근한",투자:1433426276,현금:117100000,퇴직:124582354},
-    {name:"예진",투자:862523365,현금:193219342,퇴직:109252701}
+    {name:"근한",투자:1403426276,현금:117100000,kgf:30000000,퇴직:124582354},
+    {name:"예진",투자:832523365,현금:193219342,kgf:30000000,퇴직:109252701}
   ];
-  var maxV=Math.max(data[0].투자+data[0].현금+data[0].퇴직,data[1].투자+data[1].현금+data[1].퇴직);
+  function sumD(d){return d.투자+d.현금+d.kgf+d.퇴직;}
+  var maxV=Math.max(sumD(data[0]),sumD(data[1]));
   var bw=(W-PL-PR)/data.length-12;
   var html="";
   for(var g=0;g<=4;g++){
@@ -1253,16 +1320,18 @@ function drawFamilyBar(){
   }
   for(var i=0;i<data.length;i++){
     var d=data[i],x=PL+i*(bw+12)+6,y0=H-PB;
-    var iH=(H-PT-PB)*(d.투자/maxV),cH=(H-PT-PB)*(d.현금/maxV),rH=(H-PT-PB)*(d.퇴직/maxV);
-    html+='<rect x="'+x+'" y="'+(y0-iH)+'" width="'+bw+'" height="'+iH+'" fill="#4f9cf9" opacity="0.92"/>';
+    var iH=(H-PT-PB)*(d.투자/maxV),cH=(H-PT-PB)*(d.현금/maxV),kH=(H-PT-PB)*(d.kgf/maxV),rH=(H-PT-PB)*(d.퇴직/maxV);
+    html+='<rect x="'+x+'" y="'+(y0-iH)+'" width="'+bw+'" height="'+iH+'" fill="#60a5fa" opacity="0.92"/>';
     html+='<rect x="'+x+'" y="'+(y0-iH-cH)+'" width="'+bw+'" height="'+cH+'" fill="#34d399" opacity="0.92"/>';
-    html+='<rect x="'+x+'" y="'+(y0-iH-cH-rH)+'" width="'+bw+'" height="'+rH+'" fill="#5eead4" opacity="0.92"/>';
+    html+='<rect x="'+x+'" y="'+(y0-iH-cH-kH)+'" width="'+bw+'" height="'+kH+'" fill="#94a3b8" opacity="0.7"/>';
+    html+='<rect x="'+x+'" y="'+(y0-iH-cH-kH-rH)+'" width="'+bw+'" height="'+rH+'" fill="#fbbf24" opacity="0.9"/>';
     html+='<text x="'+(x+bw/2)+'" y="'+(H-PB+12)+'" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="700">'+d.name+'</text>';
-    html+='<text x="'+(x+bw/2)+'" y="'+(y0-iH-cH-rH-4)+'" text-anchor="middle" fill="#f1f5f9" font-size="10" font-weight="800">'+((d.투자+d.현금+d.퇴직)/1e8).toFixed(2)+'억</text>';
+    html+='<text x="'+(x+bw/2)+'" y="'+(y0-iH-cH-kH-rH-4)+'" text-anchor="middle" fill="#f1f5f9" font-size="10" font-weight="800">'+(sumD(d)/1e8).toFixed(2)+'억</text>';
   }
-  html+='<rect x="'+(W-100)+'" y="2" width="8" height="8" fill="#4f9cf9" rx="1"/><text x="'+(W-88)+'" y="9" fill="#cbd5e1" font-size="8">투자</text>';
-  html+='<rect x="'+(W-65)+'" y="2" width="8" height="8" fill="#34d399" rx="1"/><text x="'+(W-53)+'" y="9" fill="#cbd5e1" font-size="8">현금</text>';
-  html+='<rect x="'+(W-32)+'" y="2" width="8" height="8" fill="#5eead4" rx="1"/><text x="'+(W-20)+'" y="9" fill="#cbd5e1" font-size="8">퇴직</text>';
+  html+='<rect x="'+(W-140)+'" y="2" width="7" height="7" fill="#60a5fa" rx="1"/><text x="'+(W-130)+'" y="9" fill="#cbd5e1" font-size="8">투자</text>';
+  html+='<rect x="'+(W-108)+'" y="2" width="7" height="7" fill="#34d399" rx="1"/><text x="'+(W-98)+'" y="9" fill="#cbd5e1" font-size="8">현금</text>';
+  html+='<rect x="'+(W-76)+'" y="2" width="7" height="7" fill="#94a3b8" rx="1" opacity="0.7"/><text x="'+(W-66)+'" y="9" fill="#94a3b8" font-size="8">KGF</text>';
+  html+='<rect x="'+(W-40)+'" y="2" width="7" height="7" fill="#fbbf24" rx="1"/><text x="'+(W-30)+'" y="9" fill="#cbd5e1" font-size="8">퇴직</text>';
   svg.innerHTML=html;
 }
 
@@ -1735,9 +1804,12 @@ function onMonthChange(month){
   var hdLabel=document.getElementById("hd-label");
   var hdValue=document.getElementById("hd-value");
   if(month==="2026-05"){
-    hdLabel.textContent="투자+현금 (5/24)";
-    hdValue.textContent="26.06억";
-    hdValue.style.color="#4f9cf9";
+    hdLabel.textContent="반디클 가용 · 5/24";
+    hdValue.textContent=(현자산/1e8+(퇴직포함?퇴직억:0)).toFixed(2)+"억";
+    hdValue.style.background="linear-gradient(135deg,#60a5fa,#34d399)";
+    hdValue.style.webkitBackgroundClip="text";
+    hdValue.style.backgroundClip="text";
+    hdValue.style.webkitTextFillColor="transparent";
   }else{
     // 다른 월은 예상 자산 표시 (현자산 + 누적 저축액)
     var cumSv=0;
