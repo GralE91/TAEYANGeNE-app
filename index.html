@@ -263,7 +263,10 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 
     <!-- STEP 3: 투자수익률 슬라이더 -->
     <div style="margin-bottom:14px;">
-      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">📈 STEP 3. 투자수익률 시뮬 (전액자납)</div>
+      <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:6px;">📈 STEP 3. 투자수익률 시뮬 (전액자납)</div>
+      <div style="background:#0a1020;border-radius:8px;padding:7px 10px;margin-bottom:8px;font-size:10px;color:#4a6080;line-height:1.6;">
+        🔗 <b style="color:#5eead4;">CF분석</b>의 미래 저축 누적 <b id="lc-cf-link" style="color:#5eead4;">-</b> + 슬라이더 기준 투자수익 → 한계지출 산출
+      </div>
 
       <!-- 슬라이더 -->
       <div class="slider-wrap" style="margin-bottom:10px;">
@@ -317,18 +320,40 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
     <!-- STEP 4 -->
     <div>
       <div style="font-size:12px;font-weight:800;color:#4a6080;margin-bottom:8px;">🎯 STEP 4. 이번달 한계지출 (수익률 <span id="step4-rate">33</span>% 기준)</div>
-      <div class="g2" style="margin-bottom:10px;">
-        <div class="box" style="text-align:center;">
-          <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">월 한계지출</div>
-          <div style="font-size:20px;font-weight:900;color:#f87171;" id="limit-monthly">-</div>
-          <div style="font-size:9px;color:#4a6080;margin-top:3px;">이 안에서 써야 해요</div>
+
+      <!-- 월/주/일 한계 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
+        <div class="box" style="text-align:center;padding:8px 4px;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">월 한계</div>
+          <div style="font-size:15px;font-weight:900;color:#f87171;" id="limit-monthly">-</div>
         </div>
-        <div class="box" style="text-align:center;">
-          <div style="font-size:9px;color:#4a6080;margin-bottom:4px;">주간 한계지출</div>
-          <div style="font-size:20px;font-weight:900;color:#fb923c;" id="limit-weekly">-</div>
-          <div style="font-size:9px;color:#4a6080;margin-top:3px;">주당 이 정도면 돼요</div>
+        <div class="box" style="text-align:center;padding:8px 4px;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">주 한계</div>
+          <div style="font-size:15px;font-weight:900;color:#fb923c;" id="limit-weekly">-</div>
+        </div>
+        <div class="box" style="text-align:center;padding:8px 4px;">
+          <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">일 한계</div>
+          <div style="font-size:15px;font-weight:900;color:#fbbf24;" id="limit-daily">-</div>
         </div>
       </div>
+
+      <!-- 이번달 지출 진행 게이지 (계획 대비 현재 페이스) -->
+      <div style="background:#060c18;border-radius:10px;padding:10px 12px;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:11px;font-weight:700;color:#cbd5e1;">📅 이번달 진행</span>
+          <span id="month-prog-status" style="font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;">-</span>
+        </div>
+        <div style="background:#0a1020;height:12px;border-radius:6px;overflow:hidden;position:relative;margin-bottom:5px;">
+          <div id="month-spend-bar" style="height:100%;width:0%;background:#f87171;transition:width .6s;"></div>
+          <div id="month-pace-marker" style="position:absolute;top:-2px;height:16px;width:2px;background:#fbbf24;left:0%;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:#4a6080;">
+          <span>사용 <span id="month-spend-amt" style="color:#f87171;font-weight:700;">-</span></span>
+          <span>경과 <span id="month-days" style="color:#fbbf24;font-weight:700;">-</span>일</span>
+          <span>한도 <span id="month-limit-amt" style="color:#cbd5e1;font-weight:700;">-</span></span>
+        </div>
+      </div>
+
       <div id="lm" style="background:#061208;border-radius:8px;padding:10px 12px;font-size:12px;color:#34d399;line-height:1.8;">계획 페이스로 잘 가고 있어요 👍</div>
     </div>
   </div>
@@ -449,6 +474,23 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
       <div class="box" style="text-align:center;"><div style="font-size:9px;color:#4a6080;margin-bottom:3px;">실제저축</div><div style="font-size:14px;font-weight:900;color:#4f9cf9;" id="cs">-</div></div>
     </div>
   </div>
+
+  <!-- 누적 저축 진행 게이지 -->
+  <div class="card" style="border:1px solid #4f9cf933;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div class="lbl" style="margin:0;">🎯 누적 저축 진행</div>
+      <span id="cf-prog-badge" style="font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;">-</span>
+    </div>
+    <div style="background:#0a1020;height:18px;border-radius:9px;overflow:hidden;position:relative;margin-bottom:6px;">
+      <div id="cf-prog-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#4f9cf9,#5eead4);transition:width .6s;"></div>
+      <div id="cf-prog-marker" style="position:absolute;top:0;height:100%;width:2px;background:#fbbf24;left:0%;"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:#4a6080;margin-bottom:8px;">
+      <span>실적 <span id="cf-prog-act" style="color:#5eead4;font-weight:700;">-</span></span>
+      <span>계획 <span id="cf-prog-plan" style="color:#fbbf24;font-weight:700;">-</span></span>
+    </div>
+    <div id="cf-prog-msg" style="font-size:11px;color:#cbd5e1;background:#060c18;border-radius:8px;padding:8px 10px;line-height:1.6;">-</div>
+  </div>
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
       <div class="lbl" style="margin:0;">📊 CF 계획 전체</div>
@@ -491,9 +533,9 @@ body{background:#060c18;color:#f1f5f9;font-family:"Noto Sans KR",sans-serif;min-
 
 <div class="tabs">
   <button class="tb on" onclick="gt(0,this)"><div style="font-size:17px;">🏠</div><div style="font-size:8px;margin-top:1px;">홈</div></button>
+  <button class="tb" onclick="gt(3,this)"><div style="font-size:17px;">💸</div><div style="font-size:8px;margin-top:1px;">CF분석</div></button>
   <button class="tb" onclick="gt(1,this)"><div style="font-size:17px;">🎯</div><div style="font-size:8px;margin-top:1px;">한계소비</div></button>
   <button class="tb" onclick="gt(2,this)"><div style="font-size:17px;">📊</div><div style="font-size:8px;margin-top:1px;">분석</div></button>
-  <button class="tb" onclick="gt(3,this)"><div style="font-size:17px;">💸</div><div style="font-size:8px;margin-top:1px;">CF분석</div></button>
   <button class="tb" onclick="gt(4,this)"><div style="font-size:17px;">📅</div><div style="font-size:8px;margin-top:1px;">납부일정</div></button>
 </div>
 
@@ -852,6 +894,44 @@ function updateSimulation(){
   }
   document.getElementById("limit-monthly").textContent=f(limitMonthly);
   document.getElementById("limit-weekly").textContent=f(Math.round(limitMonthly/5));
+  // 일 한계: 가계월 30일 가정 (21일~다음달 20일)
+  var limitDaily=Math.round(limitMonthly/30);
+  var lmd=document.getElementById("limit-daily");
+  if(lmd)lmd.textContent=f(limitDaily);
+
+  // CF 연결 라벨 (한계소비 → CF분석 연계 표시)
+  var cfLink=document.getElementById("lc-cf-link");
+  if(cfLink)cfLink.textContent=f(pureSave);
+
+  // 이번달 진행 게이지
+  var todayD=new Date();
+  var anchor=new Date(todayD.getFullYear(),todayD.getMonth(),21);
+  if(todayD.getDate()<21)anchor=new Date(todayD.getFullYear(),todayD.getMonth()-1,21);
+  var daysElapsed=Math.max(1,Math.min(30,Math.floor((todayD-anchor)/(1000*60*60*24))+1));
+  var spendPct=limitMonthly>0?s.ce/limitMonthly*100:0;
+  var pacePct=daysElapsed/30*100;
+  var spendBar=document.getElementById("month-spend-bar");
+  var paceMarker=document.getElementById("month-pace-marker");
+  var monthSpendAmt=document.getElementById("month-spend-amt");
+  var monthDays=document.getElementById("month-days");
+  var monthLimit=document.getElementById("month-limit-amt");
+  var monthProgStatus=document.getElementById("month-prog-status");
+  if(spendBar){
+    spendBar.style.width=Math.min(150,spendPct).toFixed(1)+"%";
+    paceMarker.style.left=Math.min(100,pacePct).toFixed(1)+"%";
+    monthSpendAmt.textContent=f(s.ce);
+    monthDays.textContent=daysElapsed;
+    monthLimit.textContent=f(limitMonthly);
+    var onPace=spendPct<=pacePct+5;
+    spendBar.style.background=onPace?"#34d399":(spendPct>100?"#f87171":"#fb923c");
+    var psBg=onPace?"#0e2a1a":(spendPct>100?"#2a0e0e":"#2a1c0e");
+    var psFg=onPace?"#34d399":(spendPct>100?"#f87171":"#fb923c");
+    var psTxt=onPace?"✅ 페이스 OK":(spendPct>100?"🚨 한도 초과":"⚠️ 페이스 빠름");
+    monthProgStatus.textContent=psTxt;
+    monthProgStatus.style.background=psBg;
+    monthProgStatus.style.color=psFg;
+    monthProgStatus.style.border="1px solid "+psFg+"55";
+  }
 
   // 결론
   var ok=s.sv>=planSv;
@@ -1349,30 +1429,68 @@ function ui(){
     
     var rowOpacity=isClosed?"1":"0.5"; // 미래 월은 흐리게
     var actText=isClosed?(actSv!==null?f(actSv):"-"):"⏳";
-    var diffText=isClosed?(df===null?"-":(df>=0?"+":"")+f(Math.abs(df))):"예정";
-    var diffColor=isClosed?(df===null?"#4a6080":df>=0?"#34d399":"#f87171"):"#4a6080";
-    
+    var diffCell;
+    if(!isClosed){
+      diffCell='<span style="color:#4a6080;font-size:9px;">예정</span>';
+    }else if(df===null){
+      diffCell='<span style="color:#4a6080;">-</span>';
+    }else{
+      var arr=df>=0?"▲":"▼";
+      var bg=df>=0?"#0e2a1a":"#2a0e0e";
+      var fg=df>=0?"#34d399":"#f87171";
+      diffCell='<span style="display:inline-block;background:'+bg+';color:'+fg+';font-weight:800;padding:3px 6px;border-radius:6px;font-size:10px;border:1px solid '+fg+'33;">'+arr+' '+(df>=0?"+":"-")+f(Math.abs(df))+'</span>';
+    }
+
     tb+='<tr style="background:'+(cur?"#1a305044":"transparent")+';border-bottom:1px solid #1a305022;opacity:'+rowOpacity+';">'+
       '<td style="padding:6px 4px;color:'+(cur?"#4f9cf9":"#4a6080")+';font-weight:'+(cur?700:400)+';text-align:left;">'+k.slice(2)+'</td>'+
       '<td style="color:#34d399;">'+f(v.i)+'</td><td style="color:#f87171;">'+f(v.e)+'</td>'+
       '<td style="color:#4f9cf9;font-weight:700;">'+f(sv)+'</td>'+
       '<td style="color:'+(isClosed?"#34d399":"#4a6080")+';">'+actText+'</td>'+
-      '<td style="font-weight:700;color:'+diffColor+';font-size:'+(isClosed?"10px":"9px")+';">'+diffText+'</td></tr>';
+      '<td style="text-align:right;padding:4px;">'+diffCell+'</td></tr>';
   });
   document.getElementById("cftb").innerHTML=tb;
   totalActSv=totalActSv_local; // 전역 업데이트
   var diffTotal=totalActSv-totalPlanSv;
+  var dArr=diffTotal>=0?"▲":"▼";
+  var dBg=diffTotal>=0?"#0e2a1a":"#2a0e0e";
+  var dFg=diffTotal>=0?"#34d399":"#f87171";
+  var diffBadge='<span style="display:inline-block;background:'+dBg+';color:'+dFg+';font-weight:900;padding:4px 8px;border-radius:8px;font-size:11px;border:1px solid '+dFg+'55;">'+dArr+' '+(diffTotal>=0?"+":"-")+f(Math.abs(diffTotal))+'</span>';
   document.getElementById("cf-foot").innerHTML=
     '<tr style="border-top:2px solid #1a3050;background:#0d1929;">'+
-    '<td style="padding:7px 4px;font-weight:800;color:#f1f5f9;text-align:left;">합계</td>'+
+    '<td style="padding:8px 4px;font-weight:800;color:#f1f5f9;text-align:left;">합계</td>'+
     '<td></td><td></td>'+
     '<td style="color:#4f9cf9;font-weight:900;">'+f(totalPlanSv)+'</td>'+
     '<td style="color:#5eead4;font-weight:900;">'+f(totalActSv)+'</td>'+
-    '<td style="font-weight:900;color:'+(diffTotal>=0?"#34d399":"#f87171")+';font-size:10px;">'+(diffTotal>=0?"+":"")+f(diffTotal)+'</td></tr>'+
+    '<td style="text-align:right;padding:6px 4px;">'+diffBadge+'</td></tr>'+
     '<tr style="background:#0a1020;">'+
     '<td colspan="2" style="padding:6px 4px;font-size:9px;color:#4a6080;text-align:left;">💡 현자산+예상저축</td>'+
     '<td colspan="2" style="padding:6px 4px;font-size:9px;color:#fbbf24;text-align:left;">⏳ 미래 = 계획값</td>'+
     '<td colspan="2" style="padding:6px 4px;font-size:11px;font-weight:900;color:#5eead4;text-align:right;">'+f(현자산+totalActSv)+'</td></tr>';
+
+  // 누적 저축 진행 게이지 (실적 vs 계획)
+  var progPctAct=totalPlanSv>0?totalActSv/totalPlanSv*100:0;
+  var progBar=document.getElementById("cf-prog-bar");
+  var progBadge=document.getElementById("cf-prog-badge");
+  var progAct=document.getElementById("cf-prog-act");
+  var progPlan=document.getElementById("cf-prog-plan");
+  var progMsg=document.getElementById("cf-prog-msg");
+  if(progBar){
+    progBar.style.width=Math.min(150,progPctAct).toFixed(1)+"%";
+    progBar.style.background=diffTotal>=0?"linear-gradient(90deg,#4f9cf9,#34d399)":"linear-gradient(90deg,#fb923c,#f87171)";
+    progAct.textContent=f(totalActSv);
+    progPlan.textContent=f(totalPlanSv);
+    var pBg=diffTotal>=0?"#0e2a1a":"#2a0e0e";
+    var pFg=diffTotal>=0?"#34d399":"#f87171";
+    progBadge.textContent=(diffTotal>=0?"▲ 계획 대비 +":"▼ 계획 대비 -")+f(Math.abs(diffTotal));
+    progBadge.style.background=pBg;
+    progBadge.style.color=pFg;
+    progBadge.style.border="1px solid "+pFg+"55";
+    if(diffTotal>=0){
+      progMsg.innerHTML="✅ 계획보다 <b style='color:#34d399;'>"+f(Math.abs(diffTotal))+"</b> 더 저축 중. 이대로면 입주 시점 여유 확보!";
+    }else{
+      progMsg.innerHTML="⚠️ 계획 대비 <b style='color:#f87171;'>"+f(Math.abs(diffTotal))+"</b> 부족. 한계소비 탭에서 월 한계지출 확인 권장.";
+    }
+  }
 
   // 게이지
   var planExp=CF[CUR_MONTH].e;
@@ -1415,8 +1533,10 @@ function ui(){
   document.getElementById("lsv").textContent=f(s.sv);
   document.getElementById("lsv").style.color=s.sv>=planSv?"#4f9cf9":"#f87171";
   var svEl=document.getElementById("sv-diff");
-  svEl.textContent=(svDiff>=0?"+":"")+f(svDiff)+" (계획 "+f(planSv)+")";
-  svEl.style.color=svDiff>=0?"#4f9cf9":"#f87171";
+  var svArr=svDiff>=0?"▲":"▼";
+  var svBg=svDiff>=0?"#0e2a1a":"#2a0e0e";
+  var svFg=svDiff>=0?"#34d399":"#f87171";
+  svEl.innerHTML='<span style="display:inline-block;background:'+svBg+';color:'+svFg+';font-weight:900;padding:3px 8px;border-radius:6px;font-size:12px;border:1px solid '+svFg+'55;">'+svArr+' '+(svDiff>=0?"+":"-")+f(Math.abs(svDiff))+'</span> <span style="color:#4a6080;font-size:10px;">계획 '+f(planSv)+'</span>';
 
   // 슬라이더 초기 설정
   document.getElementById("slider-val").textContent=sliderRate+"%";
