@@ -181,19 +181,40 @@ body{background:radial-gradient(ellipse at top,#0a1428 0%,#040810 50%,#020509 10
   </div>
 
   <div class="card">
-    <div class="lbl">🎯 반디클 목표 달성률</div>
-    <div style="text-align:center;padding:14px;background:#060c18;border-radius:12px;border:1px solid #34d39933;margin-bottom:14px;">
-      <div style="font-size:10px;color:#34d399;margin-bottom:4px;font-weight:700;">전액자납 기준</div>
-      <div style="font-size:28px;font-weight:900;color:#34d399;" id="goal-pct">-</div>
-      <div style="font-size:11px;color:#4a6080;margin-top:4px;">총 필요 현금 <span id="goal-need">27.01억</span> 중 <span id="goal-cur" style="color:#f1f5f9;font-weight:700;">-</span></div>
+    <div class="lbl">🎯 반디클 자금 계획</div>
+
+    <!-- 총 분양가 (메인 큰 숫자) -->
+    <div style="text-align:center;padding:16px;background:linear-gradient(160deg,rgba(10,20,40,0.6),rgba(4,8,16,0.8));border-radius:14px;border:1px solid rgba(96,165,250,0.18);margin-bottom:12px;">
+      <div style="font-size:10px;color:#64748b;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;">총 분양가 (필요 자금)</div>
+      <div style="font-size:32px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#34d399);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.8px;line-height:1.1;">32.49억</div>
+      <div style="font-size:10px;color:#475569;margin-top:6px;letter-spacing:0.2px;">분양가 30억 · 취득세 0.99억(3.3%) · 옵션 1.5억</div>
     </div>
-    <div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span style="font-size:12px;color:#4a6080;">반디클 전액자납 (27.01억)</span>
-        <span style="font-size:12px;font-weight:700;color:#34d399;" id="goal-pct2">-</span>
+
+    <!-- 대출 / 자납 분해 -->
+    <div class="g2" style="margin-bottom:14px;gap:8px;">
+      <div class="box" style="text-align:center;padding:12px 8px;border-color:rgba(251,191,36,0.2);background:linear-gradient(145deg,rgba(30,20,5,0.4),rgba(8,15,28,0.95));">
+        <div style="font-size:9px;color:#64748b;font-weight:700;margin-bottom:5px;letter-spacing:0.3px;">대출 가능액</div>
+        <div style="font-size:18px;font-weight:900;color:#fbbf24;letter-spacing:-0.3px;">5.48억</div>
+        <div style="font-size:8px;color:#475569;margin-top:4px;line-height:1.6;">근한 3.49억<br>예진 1.99억</div>
       </div>
-      <div class="pb"><div class="pf" id="goal-bar" style="width:0%;background:#34d399;"></div></div>
-      <div style="font-size:10px;color:#4a6080;margin-top:4px;text-align:right;" id="goal-remain">남은 금액 계산 중...</div>
+      <div class="box" style="text-align:center;padding:12px 8px;border-color:rgba(52,211,153,0.22);background:linear-gradient(145deg,rgba(5,30,20,0.4),rgba(8,15,28,0.95));">
+        <div style="font-size:9px;color:#64748b;font-weight:700;margin-bottom:5px;letter-spacing:0.3px;">자납 필요</div>
+        <div style="font-size:18px;font-weight:900;color:#34d399;letter-spacing:-0.3px;">27.01억</div>
+        <div style="font-size:8px;color:#475569;margin-top:4px;line-height:1.6;">자체 현금으로<br>마련해야 할 금액</div>
+      </div>
+    </div>
+
+    <!-- 자납 진행률 -->
+    <div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;align-items:baseline;">
+        <span style="font-size:11px;color:#64748b;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;">자납 진행률</span>
+        <span style="font-size:20px;font-weight:900;background:linear-gradient(135deg,#34d399,#60a5fa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;" id="goal-pct">-</span>
+      </div>
+      <div class="pb" style="height:10px;background:rgba(6,12,24,0.95);border-color:rgba(148,163,184,0.08);"><div class="pf" id="goal-bar" style="width:0%;background:linear-gradient(90deg,#34d399,#60a5fa);box-shadow:0 0 10px rgba(52,211,153,0.4);"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;">
+        <span style="color:#475569;">현재 자산 <span id="goal-cur" style="color:#cbd5e1;font-weight:700;">-</span></span>
+        <span style="color:#475569;">부족분 <span id="goal-remain" style="color:#fbbf24;font-weight:700;">-</span></span>
+      </div>
     </div>
   </div>
 
@@ -333,8 +354,9 @@ body{background:radial-gradient(ellipse at top,#0a1428 0%,#040810 50%,#020509 10
       <div style="background:#060c18;border-radius:10px;padding:12px;">
         <div class="g3" style="margin-bottom:10px;">
           <div style="text-align:center;">
-            <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">총 필요현금</div>
+            <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">자납 필요</div>
             <div style="font-size:13px;font-weight:900;" id="sim-total">-</div>
+            <div style="font-size:8px;color:#475569;margin-top:2px;">분양32.49-대출5.48</div>
           </div>
           <div style="text-align:center;">
             <div style="font-size:9px;color:#4a6080;margin-bottom:3px;">예상투자자산</div>
@@ -808,7 +830,7 @@ function drawChart(){
   html+='<text x="'+(lx-5).toFixed(1)+'" y="'+(ly2-10).toFixed(1)+'" fill="#5eead4" font-size="9" text-anchor="end">'+(WK[n-1].v+퇴직억).toFixed(2)+'억</text>';
   WK.forEach(function(d,i){if(i%4===0||i===n-1)html+='<text x="'+X(i).toFixed(1)+'" y="'+H+'" fill="#4a6080" font-size="8" text-anchor="middle">'+d.d+'</text>';});
   svg.innerHTML=html;
-  var leg=[{c:"#4f9cf9",l:"투자+현금",thick:true},{c:"#5eead4",l:"+퇴직"},{c:"#34d399",l:"목표(27.01억)",dash:true}];
+  var leg=[{c:"#4f9cf9",l:"투자+현금",thick:true},{c:"#5eead4",l:"+퇴직"},{c:"#34d399",l:"자납 27.01억 (분양32.49-대출5.48)",dash:true}];
   document.getElementById("chart-legend").innerHTML=leg.map(function(x){
     return '<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#4a6080;"><svg width="18" height="8"><line x1="0" y1="4" x2="18" y2="4" stroke="'+x.c+'" stroke-width="'+(x.thick?3:2)+'" stroke-dasharray="'+(x.dash?"6,3":"none")+'"/></svg>'+x.l+'</div>';
   }).join("");
@@ -1290,8 +1312,8 @@ function drawCumChart(){
   svg.innerHTML=html;
   var lastN=neut[neut.length-1],lastO=opt[opt.length-1],lastP=pess[pess.length-1];
   var html2="📈 입주(27/12) 예상: 보수 <b style=\'color:#f87171;\'>"+(lastP/1e8).toFixed(1)+"억</b> · 계획 <b style=\'color:#4f9cf9;\'>"+(lastN/1e8).toFixed(1)+"억</b> · 낙관 <b style=\'color:#34d399;\'>"+(lastO/1e8).toFixed(1)+"억</b>";
-  if(lastN>=목표)html2+="<br><b style=\'color:#34d399;\'>✅ 전액자납 목표 달성 가능!</b>";
-  else html2+="<br><b style=\'color:#f87171;\'>❌ 추가 저축 필요 — "+f(목표-lastN)+" 부족</b>";
+  if(lastN>=목표)html2+="<br><b style=\'color:#34d399;\'>✅ 자납 27.01억 달성 가능! (대출 5.48억 별도)</b>";
+  else html2+="<br><b style=\'color:#f87171;\'>❌ 자납 부족 — "+f(목표-lastN)+" 부족 (대출 5.48억 별도)</b>";
   document.getElementById("cumchart-summary").innerHTML=html2;
 }
 
@@ -1624,7 +1646,7 @@ function ui(){
   if(goalPct2El)goalPct2El.textContent=pctVal.toFixed(1)+"%";
   if(goalBarEl)goalBarEl.style.width=pctVal.toFixed(1)+"%";
   if(goalCurEl)goalCurEl.textContent=f(현자산);
-  if(goalRemainEl)goalRemainEl.textContent="남은 금액 "+f(remain);
+  if(goalRemainEl)goalRemainEl.textContent=remain>0?f(remain):"달성!";
   }catch(err){
     console.error("ui 오류:",err);
   }
